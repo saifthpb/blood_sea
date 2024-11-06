@@ -22,8 +22,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainActivity extends StatelessWidget {
+class MainActivity extends StatefulWidget {
   //const SplashScreenActivity({super.key});
+  @override
+  _MainActivityState createState() => _MainActivityState();
+}
+class _MainActivityState extends State<MainActivity> {
+  int _selectedIndex = 0;
+  final List<Widget> _pages = [
+    homeFragment(),
+    searchFragment(),
+    profileFragment(),
+    notificationFragment(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +57,23 @@ class MainActivity extends StatelessWidget {
              isScrollable: true,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
-            //
-            //
+
             tabs: [
               Tab(icon: Icon(Icons.home)),
               Tab(icon: Icon(Icons.search)),
               Tab(icon: Icon(Icons.person)),
-            //
             ]
              ),
           ),
-          body: TabBarView(
-              children: [
-                homeFragment(),
-                searchFragment(),
-                profileFragment(),
-
-          ],
-          ),
+          body: _pages[_selectedIndex],
+          // TabBarView(
+          //     children: [
+          //       homeFragment(),
+          //       searchFragment(),
+          //       profileFragment(),
+          //
+          // ],
+          // ),
           drawer: Drawer(
             child: ListView(
               children: [
@@ -68,7 +84,6 @@ class MainActivity extends StatelessWidget {
                     accountName: Text("Saiful Sarwar"),
                     accountEmail: Text("ssb2001@gmail.com"),
                     currentAccountPicture: CircleAvatar(
-
                       radius: 30.0,
                         backgroundImage: AssetImage('assets/ssbf.png'),
 
@@ -82,22 +97,39 @@ class MainActivity extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.home),
                   title: Text("Home"),
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.pop(context);
+                    setState(() {
+                      _selectedIndex=0;
+                    });
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.person),
                   title: Text("Profile"),
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.pop(context);
+                    setState(() {
+                      _selectedIndex=2;
+                    });
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.search),
                   title: Text("Search"),
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.pop(context);
+                    setState(() {
+                      _selectedIndex=1;
+                    });
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.contact_emergency),
                   title: Text("Contact"),
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.logout),
@@ -121,9 +153,12 @@ class MainActivity extends StatelessWidget {
               backgroundColor: Colors.red,
               selectedItemColor: Colors.white, // Color for selected item
               unselectedItemColor: Colors.white, // Color for unselected items
+              currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
 
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
               BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notification"),
 
