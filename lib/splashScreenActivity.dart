@@ -37,10 +37,23 @@ class _splashScreenActivityState extends State<splashScreenActivity> {
             SizedBox(height: 20),
             // App name or slogan
             Text(
-              "Blood Donation App",
+              "Welcome to Blood Donation App",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Divider(
+              color: Colors.white, // Color of the line
+              thickness: 1, // Thickness of the line
+              height: 10, // Space around the line
+            ),
+            Text(
+              "Save Lives by Donating Blood",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -48,6 +61,28 @@ class _splashScreenActivityState extends State<splashScreenActivity> {
             // Loading indicator
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+            SizedBox(height: 150,),
+            Text(
+              "Developped By Saiful Sarwar || Roquib Pramanik",
+              style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Divider(
+              color: Colors.white, // Color of the line
+              thickness: 1, // Thickness of the line
+              height: 20, // Space around the line
+            ),
+            Text(
+              "Supported by teamExpressBD",
+              style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
