@@ -1,3 +1,4 @@
+import 'package:blood_sea/loginActivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -66,15 +67,16 @@ class donorRegistration extends StatelessWidget {
           unselectedItemColor: Colors.white,
 
         ),
-        floatingActionButton: FloatingActionButton(
-            elevation: 10,
-            child: Icon(Icons.add),
-            backgroundColor: Colors.red,
-            onPressed: (){
-              MySnackBar("Hello Foat", context);
-            }
-
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //     elevation: 10,
+        //     child: Icon(Icons.add),
+        //     backgroundColor: Colors.red,
+        //     onPressed: (){
+        //       MySnackBar("Hello Foat", context);
+        //     }
+        //
+        // ),
+        //floating action bar will be needed in future
         drawer: Drawer(
           child: ListView(
             children: [
@@ -175,63 +177,94 @@ class donorRegistration extends StatelessWidget {
         //     ],
         //   ),
         // ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10), child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Full Name",
 
-              ),
-            )
-              ,),
-            Padding(
-              padding: EdgeInsets.all(10), child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Email Account",
-
-              ),
-            )
-              ,),
-            Padding(
-              padding: EdgeInsets.all(10), child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Mobile Number",
-              ),
-            )
-              ,),
-            Padding(
-              padding: EdgeInsets.all(10), child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Select Blood Group",
-              ),
-            )
-              ,),
-            Padding(
-              padding: EdgeInsets.all(10), child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Select District",
-              ),
-            )
-              ,),
-            Padding(
-              padding: EdgeInsets.all(10), child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Thana/Upazila/City",
-              ),
-            )
-              ,),
-            Padding(padding: EdgeInsets.all(10),
-              child: ElevatedButton(onPressed: (){}, child: Text("Submit"), style: buttonStyle,)
-              ,)
-          ],
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(5), child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Full Name",
+                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+            
+                  ),
+                )
+                  ,),
+                Padding(
+                  padding: EdgeInsets.all(5), child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Email Account",
+                   contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+            
+                  ),
+                )
+                  ,),
+                Padding(
+                  padding: EdgeInsets.all(5), child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Mobile Number",
+                   contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+                  ),
+                )
+                  ,),
+                Padding(
+                  padding: EdgeInsets.all(5),
+                  child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Select Blood Group",
+                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  ),
+                    items: [
+                      'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'
+                    ].map((bloodGroup){
+                      return DropdownMenuItem(
+                        value: bloodGroup,
+                              child: Text(bloodGroup),
+                      );
+                    }).toList(),
+                    onChanged: (value){
+                    print("Selected Blood Group: $value");
+            
+                    },
+                )
+                  ,),
+                Padding(
+                  padding: EdgeInsets.all(5), child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Select District",
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+                  ),
+                )
+                  ,),
+                Padding(
+                  padding: EdgeInsets.all(5), child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Thana/Upazila/City",
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+                  ),
+                )
+                  ,),
+                Padding(padding: EdgeInsets.all(5),
+                  child: ElevatedButton(onPressed: (){}, child: Text("Submit"), style: buttonStyle,)
+                  ,),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> loginActivity()),);
+                  },
+                  child: Text("Registered Member !! Please Sign In"),
+                )
+              ],
+            ),
+          ),
         ),
 
       ),

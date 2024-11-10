@@ -69,6 +69,7 @@ flutter:
     - assets/logotx.png
     - assets/blood_symbol.jpg
     - assets/ssbf.png
+    - assets/reg_sym.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

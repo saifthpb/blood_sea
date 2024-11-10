@@ -1,4 +1,7 @@
+import 'package:blood_sea/donorRegistration.dart';
 import 'package:blood_sea/fragments/homeFragment.dart';
+import 'package:blood_sea/clientSignUp.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class loginActivity extends StatelessWidget {
@@ -96,6 +99,12 @@ class loginActivity extends StatelessWidget {
                       TextSpan(
                         text: "please sign up",
                         style: TextStyle(color: Colors.red), // Color for "sign up"
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = (){
+                          Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=>clientSignUp()),
+                          );
+                          }
                       ),
                     ],
                   ),
@@ -130,10 +139,99 @@ class loginActivity extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 30,),
+
+              // Card(
+              //   elevation: 5,
+              //   color: Colors.blue,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(8),
+              //   ),
+              //   child: Padding(
+              //       padding: EdgeInsets.all(5.0),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Text("Want to be a Donor?",
+              //         style: TextStyle(
+              //           fontSize: 10,
+              //           color: Colors.yellow,
+              //           fontStyle: FontStyle.italic,
+              //         ),
+              //         ),
+              //         SizedBox(height: 5,),
+              //         Icon(Icons.people_outline,
+              //         color: Colors.white,),
+              //         Text("Go Donor Registration",
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //           ),
+              //         // Icon(
+              //         //   Icons.arrow_right,
+              //         //  color: Colors.white,
+              //         //     ),
+              //       ],
+              //     ),
+              //
+              //   ),
+              //
+              // )
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => donorRegistration(),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 5,
+                  color: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Want to be a Donor?",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.yellow,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Icon(
+                          Icons.people_outline,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Go Donor Registration",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+
             ],
           ),
+          
         ),
       ),
+      
     );
   }
 }

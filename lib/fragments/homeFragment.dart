@@ -176,6 +176,7 @@ class _HomeFragmentState extends State<homeFragment> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+              //fontFamily: 'fonts/Lato-Bold.ttf',
               color: Colors.green,
             ),
             ),
