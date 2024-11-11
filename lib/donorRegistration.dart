@@ -185,7 +185,8 @@ class donorRegistration extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(5), child: TextField(
+                  padding: EdgeInsets.all(5),
+                  child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Full Name",
@@ -195,7 +196,8 @@ class donorRegistration extends StatelessWidget {
                 )
                   ,),
                 Padding(
-                  padding: EdgeInsets.all(5), child: TextField(
+                  padding: EdgeInsets.all(5),
+                  child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Email Account",
@@ -205,7 +207,8 @@ class donorRegistration extends StatelessWidget {
                 )
                   ,),
                 Padding(
-                  padding: EdgeInsets.all(5), child: TextField(
+                  padding: EdgeInsets.all(5),
+                  child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Mobile Number",
@@ -253,7 +256,8 @@ class donorRegistration extends StatelessWidget {
                   ),
                 )
                   ,),
-                Padding(padding: EdgeInsets.all(5),
+                Padding(
+                  padding: EdgeInsets.all(5),
                   child: ElevatedButton(onPressed: (){}, child: Text("Submit"), style: buttonStyle,)
                   ,),
                 GestureDetector(

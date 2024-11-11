@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:blood_sea/fragments/donorSearchFragment.dart';
+//import '../fragment/donorSearchFragment.dart';
+
 
 class homeFragment extends StatefulWidget {
   @override
@@ -142,7 +145,13 @@ class _HomeFragmentState extends State<homeFragment> {
               ),
             ),
             ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(
+                    context, MaterialPageRoute(
+                    builder: (context)=> donorSearchFragment(),
+                ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
