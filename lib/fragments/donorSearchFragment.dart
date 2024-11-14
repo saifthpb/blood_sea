@@ -1,5 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:blood_sea/fragments/notificationFragment.dart';
+import 'package:blood_sea/fragments/shareFragment.dart';
+import 'package:blood_sea/loginActivity.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // For session management
+import 'package:blood_sea/fragments/donorSearchFragment.dart';
+import 'package:blood_sea/fragments/homeFragment.dart';
+import 'package:blood_sea/fragments/profileFragment.dart';
+import 'package:blood_sea/fragments/searchFragment.dart';
+import 'package:blood_sea/fragments/contactFragment.dart';
 
 class donorSearchFragment extends StatefulWidget {
   @override
@@ -34,6 +42,18 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
     {'name': 'Kamal Hossain', 'mobile': '018452367', 'address': 'Banani, Dhaka'},
     {'name': 'Rashid Khan', 'mobile': '015762341', 'address': 'Gulshan, Dhaka'},
   ];
+
+  // Logout functionality using SharedPreferences (or Firebase if preferred)
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('isLoggedIn'); // Clear login session data
+
+    // Navigate to the login screen after logging out
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context)=> loginActivity()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,6 +308,79 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
           ],
         ),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Colors.redAccent),
+              accountName: Text("Saiful Sarwar"),
+              accountEmail: Text("ssb2001@gmail.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/ssbf.png'),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Home"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=> homeFragment()),);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text("Profile"),
+              onTap: () {
+                Navigator.pop(context);
+                // Navigate to profile fragment
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => profileFragment()),);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text("Search"),
+              onTap: () {
+                Navigator.pop(context);
+                // Navigate to search fragment
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => searchFragment()),);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contact_emergency),
+              title: Text("Contact"),
+              onTap: () {
+                Navigator.pop(context);
+                // Navigate to contact page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => contactFragment()),);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Logout"),
+              onTap: () {
+                // Implement logout functionality
+                _logout();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.arrow_back),
+              title: Text("Back"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+
     );
   }
 }
