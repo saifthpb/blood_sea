@@ -149,7 +149,7 @@ class clientAreaFragment extends StatefulWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Client Notification",
+            Text("Notification from donor",
             style: TextStyle(
               fontSize: 25,
               fontStyle: FontStyle.italic,

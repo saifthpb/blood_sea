@@ -1,4 +1,5 @@
 import 'package:blood_sea/fragments/clientAreaFragment.dart';
+import 'package:blood_sea/fragments/donorsAreaFragment.dart';
 import 'package:blood_sea/fragments/notificationFragment.dart';
 import 'package:blood_sea/fragments/shareFragment.dart';
 import 'package:blood_sea/loginActivity.dart';
@@ -297,7 +298,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                         DataCell(
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> clientAreaFragment()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> donorsAreaFragment()));
                             },
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
