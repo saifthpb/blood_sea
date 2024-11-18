@@ -1,17 +1,36 @@
 import 'package:blood_sea/loginActivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 void main(){
   runApp(const donorRegistration());
 }
-class donorRegistration extends StatelessWidget {
-  const donorRegistration({super.key});
+class donorRegistration extends StatefulWidget {
+  //const donorRegistration({super.key});
+  const donorRegistration({Key? key}) : super(key: key);
 
-  MySnackBar(String message, BuildContext context){
-    return ScaffoldMessenger.of(context).showSnackBar(
+  @override
+  _donorRegistrationState createState() => _donorRegistrationState();
+}
+
+class _donorRegistrationState extends State<donorRegistration> {
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
+  void MySnackBar(String message, BuildContext context){
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
-
     );
   }
 
@@ -32,9 +51,6 @@ class donorRegistration extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: Colors.green),
       darkTheme: ThemeData(primaryColor: Colors.cyan),
-
-
-
       home: Scaffold(
         appBar: AppBar(
           toolbarHeight: 60,
@@ -256,6 +272,18 @@ class donorRegistration extends StatelessWidget {
                   ),
                 )
                   ,),
+                //image upload Padding start
+                Padding(
+                  padding: EdgeInsets.all(5),
+                  child: _selectedImage != null
+                      ? Image.file(_selectedImage!, height: 150, width: 150, fit: BoxFit.cover)
+                      : ElevatedButton.icon(
+                    onPressed: _pickImage,
+                    icon: Icon(Icons.upload),
+                    label: Text("Upload Photo"),
+                    style: buttonStyle,
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.all(5),
                   child: ElevatedButton(onPressed: (){}, child: Text("Submit"), style: buttonStyle,)
