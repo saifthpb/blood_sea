@@ -1,4 +1,5 @@
 import 'package:blood_sea/fragments/notificationFragment.dart';
+import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
 import 'package:blood_sea/fragments/shareFragment.dart';
 import 'package:blood_sea/loginActivity.dart';
 import 'package:flutter/material.dart';
@@ -126,6 +127,21 @@ class _HomeFragmentState extends State<homeFragment> {
                   MaterialPageRoute(builder: (context) => contactFragment()),);
               },
             ),
+            Divider(height: 2,),
+
+            ListTile(
+              leading: Icon(Icons.arrow_back),
+              title: Text("Privacy Policy"),
+              onTap: () {
+                //Navigator.pop(context);
+                Navigator.pop(context);
+                // Navigate to contact page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+              },
+            ),
+
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logout"),

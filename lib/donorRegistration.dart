@@ -200,6 +200,13 @@ class _donorRegistrationState extends State<donorRegistration> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text("Donor Registration",
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18
+                ),),
+                SizedBox(height: 5,),
                 Padding(
                   padding: EdgeInsets.all(5),
                   child: TextField(
