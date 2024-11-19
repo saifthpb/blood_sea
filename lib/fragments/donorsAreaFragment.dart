@@ -160,7 +160,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
             Divider(height: 5,),
             SizedBox(height: 10,),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: Text(
                 "A person name sent you a request. Are you available? If you are agree please contact to ..01711775577",
                 style: TextStyle(
@@ -171,9 +171,13 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
                 ),
               ),
             ),
-            Icon(Icons.arrow_right,
-            size: 50,
-            color: Colors.green,),
+        IconButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>clientAreaFragment(),));
+
+        },
+            icon: Icon(Icons.arrow_right,
+            color: Colors.green,
+                size: 50,))
 
           ],
         ),
