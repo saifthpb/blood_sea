@@ -5,10 +5,11 @@ import 'package:blood_sea/loginActivity.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For session management
 import 'package:blood_sea/fragments/donorSearchFragment.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
+//import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/profileFragment.dart';
 import 'package:blood_sea/fragments/searchFragment.dart';
 import 'package:blood_sea/fragments/contactFragment.dart';
+import '../donorRegistration.dart';
 
 class homeFragment extends StatefulWidget {
   @override
@@ -294,26 +295,26 @@ class _HomeFragmentState extends State<homeFragment> {
                   Stack(
                     alignment: Alignment.center,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child:  Container(
-                          height: 50,
-                          width: 80,
-                          color: Colors.red,
-                        ),
-                      ),
-
-                      // Image.asset(
-                      //   'assets/ssbf.png', // Make sure to use the full path and file extension
-                      //   height: 100, // Adjust height for better visibility
-                      //   width: 100, // Adjust width as needed
-                      //   fit: BoxFit.cover,
-                      // ),
-                      Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => donorRegistration()),);
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child:  Container(
+                            height: 50,
+                            width: 80,
+                            color: Colors.red,
+                            child: Center(
+                              child:   Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
