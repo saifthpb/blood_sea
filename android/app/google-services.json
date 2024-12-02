@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965946138871",
+    "project_id": "blood-sea-57816",
+    "storage_bucket": "blood-sea-57816.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965946138871:android:4ec7f372a350fbfad2b3f2",
+        "android_client_info": {
+          "package_name": "com.example.blood_sea"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnfgoQrbLtKT8D-mDOY6zyYtLkU3ukFdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
