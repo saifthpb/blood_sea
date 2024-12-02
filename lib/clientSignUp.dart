@@ -1,9 +1,69 @@
 import 'package:blood_sea/fragments/donorsAreaFragment.dart';
 import 'package:blood_sea/donorRegistration.dart';
+import 'package:blood_sea/fragments/homeFragment.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class clientSignUp extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
+  // Controllers to retrieve user input
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+
+  // Function to handle sign-up
+  Future<void> _handleSignUp(BuildContext context) async{
+    if(_formKey.currentState!.validate()){
+      try{
+        // Create Firebase Authentication user
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+        );
+
+        // Store additional user details in Firestore
+        await FirebaseFirestore.instance
+        .collection('clients')
+        .doc(userCredential.user! .uid)
+        .set({
+          'name' : _nameController.text.trim(),
+          'email' : _emailController.text.trim(),
+          // 'password' : _passwordController.text,
+          'phone' : _phoneController.text.trim(),
+          'address' : _addressController.text.trim(),
+          'created_at' : Timestamp.now(),
+        });
+        // Success feedback
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Succesfully Signed Up")),
+        );
+
+        _formKey.currentState!.reset();
+        _nameController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+        _phoneController.clear();
+        _addressController.clear();
+
+        // Optionally navigate to another page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => homeFragment()),
+        );
+
+      } catch(e){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Something went wrong, please try again: $e")),
+        );
+      }
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +82,7 @@ class clientSignUp extends StatelessWidget {
             children: [
               // Full Name Input
               TextFormField(
+                controller: _nameController,
                 decoration: InputDecoration(
                   labelText: "Full Name",
                   border: OutlineInputBorder(),
@@ -38,6 +99,7 @@ class clientSignUp extends StatelessWidget {
 
               // Email Address Input
               TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: "Email Address",
                   border: OutlineInputBorder(),
@@ -56,8 +118,39 @@ class clientSignUp extends StatelessWidget {
               ),
               SizedBox(height: 16),
 
+              // Password Input
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.lock, color: Colors.red),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.visibility,
+                      color: Colors.red,
+                    ),
+                    onPressed: () {
+                      // Add logic to toggle visibility if needed
+                    },
+                  ),
+                ),
+                obscureText: true, // Hides the password as user types
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters long';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+
               // Mobile Number Input
               TextFormField(
+                controller: _phoneController,
                 decoration: InputDecoration(
                   labelText: "Mobile Number",
                   border: OutlineInputBorder(),
@@ -78,6 +171,7 @@ class clientSignUp extends StatelessWidget {
 
               // Address Input
               TextFormField(
+                controller: _addressController,
                 decoration: InputDecoration(
                   labelText: "Address",
                   border: OutlineInputBorder(),
@@ -95,13 +189,14 @@ class clientSignUp extends StatelessWidget {
 
               // Submit Button
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form Submitted Successfully!')),
-                    );
-                  }
-                },
+                onPressed:  () => _handleSignUp(context),
+                //{
+                  // if (_formKey.currentState!.validate()) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(content: Text('Form Submitted Successfully!')),
+                  //   );
+                  // }
+                //},
                 child: Text("Submit",
                 style: TextStyle(
                   fontSize: 16,
