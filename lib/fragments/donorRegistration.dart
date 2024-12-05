@@ -295,6 +295,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 void main() {
@@ -321,6 +322,7 @@ class _donorRegistrationState extends State<donorRegistration> {
   String? _selectedBloodGroup;
   final TextEditingController _districtController = TextEditingController();
   final TextEditingController _thanaController = TextEditingController();
+  final TextEditingController _lastDonateDateController = TextEditingController();
 
   @override
   void initState() {
@@ -383,6 +385,7 @@ class _donorRegistrationState extends State<donorRegistration> {
           'district': _districtController.text.trim(),
           'thana': _thanaController.text.trim(),
           'photoUrl': photoUrl,
+          'lastDonateDate': _lastDonateDateController.text.trim(),
           'registeredAt': FieldValue.serverTimestamp(),
         });
 
@@ -397,13 +400,33 @@ class _donorRegistrationState extends State<donorRegistration> {
     }
   }
 
+  // Future<void> _pickImage() async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //     setState(() {
+  //       _selectedImage = File(image.path);
+  //     });
+  //   }
+  // }
+
   Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
+    if (_isRunningOnEmulator()) {
       setState(() {
-        _selectedImage = File(image.path);
+        _selectedImage = File('assets/mock_image.jpg');
       });
+    } else {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
     }
+  }
+
+  bool _isRunningOnEmulator() {
+    // Detect if the app is running on an emulator
+    return !kReleaseMode && !kIsWeb && Platform.isAndroid;
   }
 
   @override
@@ -463,6 +486,34 @@ class _donorRegistrationState extends State<donorRegistration> {
                 controller: _thanaController,
                 decoration: InputDecoration(labelText: "Thana/Upazila"),
               ),
+              SizedBox(height: 10),
+              SizedBox(height: 10),
+              TextField(
+                controller: _lastDonateDateController, // Rename controller to suit the field, e.g., _lastDonateDateController
+                readOnly: true, // Prevent manual input
+                decoration: InputDecoration(
+                  labelText: "Last Donate Date",
+                  suffixIcon: Icon(Icons.calendar_today), // Calendar icon for better UX
+                ),
+                onTap: () async {
+                  // Display the date picker
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(), // Set the current date as the default
+                    firstDate: DateTime(2000), // Earliest date
+                    lastDate: DateTime(2100), // Latest date
+                  );
+
+                  if (pickedDate != null) {
+                    // Format the picked date to a readable string
+                    String formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                    // Update the controller's text with the selected date
+                    _lastDonateDateController.text = formattedDate;
+                  }
+                },
+              ),
+
+
               SizedBox(height: 10),
               _selectedImage != null
                   ? Image.file(_selectedImage!, height: 150, width: 150)
