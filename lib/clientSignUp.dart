@@ -1,5 +1,5 @@
 import 'package:blood_sea/fragments/donorsAreaFragment.dart';
-import 'package:blood_sea/donorRegistration.dart';
+import 'package:blood_sea/fragments/donorRegistration.dart';
 import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

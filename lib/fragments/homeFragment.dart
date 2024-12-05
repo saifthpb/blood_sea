@@ -9,7 +9,8 @@ import 'package:blood_sea/fragments/donorSearchFragment.dart';
 import 'package:blood_sea/fragments/profileFragment.dart';
 import 'package:blood_sea/fragments/searchFragment.dart';
 import 'package:blood_sea/fragments/contactFragment.dart';
-import '../donorRegistration.dart';
+import 'package:blood_sea/fragments/donorListFragment.dart';
+import 'donorRegistration.dart';
 
 class homeFragment extends StatefulWidget {
   @override
@@ -251,7 +252,10 @@ class _HomeFragmentState extends State<homeFragment> {
             ),
             SizedBox(height: 10,),
             OutlinedButton(
-              onPressed: (){},
+              onPressed: (){
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => donorList()),);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => donorListFragment()),);
+              },
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
                   color: Colors.blue,

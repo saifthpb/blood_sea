@@ -1,10 +1,19 @@
-import 'package:blood_sea/donorRegistration.dart';
+import 'package:blood_sea/fragments/donorRegistration.dart';
 import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/clientSignUp.dart';
+import 'package:blood_sea/userRegistration.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import 'fragments/homeFragment.dart';
+
 class loginActivity extends StatelessWidget {
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +50,7 @@ class loginActivity extends StatelessWidget {
               SizedBox(height: 20),
               // Email text field
               TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email, color: Colors.red[800]),
                   labelText: 'Email',
@@ -55,6 +65,7 @@ class loginActivity extends StatelessWidget {
               SizedBox(height: 10),
               // Password text field
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock, color: Colors.red[800]),
@@ -68,20 +79,7 @@ class loginActivity extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10,),
-              // Container(
-              //   height: 40,
-              //   width: double.infinity,
-              //   padding: EdgeInsets.symmetric(horizontal: 5.0,),
-              //   child: Text("If You Are Not Registered Member, Please Sign Up",
-              //   style: TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //   color: Colors.blue,
-              //     fontStyle: FontStyle.italic,
-              //     fontSize: 12,
-              //   ),
-              //     textAlign: TextAlign.right,
-              //   ),
-              // ),
+
               Container(
                 height: 40,
                 width: double.infinity,
@@ -103,6 +101,7 @@ class loginActivity extends StatelessWidget {
                           ..onTap = (){
                           Navigator.push(context,
                           MaterialPageRoute(builder: (context)=>clientSignUp()),
+                            //MaterialPageRoute(builder: (context)=>userRegistration()),
                           );
                           }
                       ),
@@ -113,15 +112,45 @@ class loginActivity extends StatelessWidget {
               ),
 
               //SizedBox(height: 10),
-              // Login button
+              // Login button with logic
               SizedBox(
                 width: double.infinity,
+
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Login logic goes here
-                    Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => homeFragment()),
-                    );
+                    final String email = _emailController.text.trim();
+                    final String password = _passwordController.text.trim();
+
+                    if(email.isEmpty || password.isEmpty){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Please fill in all fields")),
+                      );
+
+                      return;
+                    }
+                    try{
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .signInWithEmailAndPassword(
+                          email: email,
+                          password: password
+                      );
+                      // Navigate to homeFragment on successful login
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => homeFragment()),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Invalid Email or Password! Please Try Again.", style: TextStyle(
+                          backgroundColor: Colors.red,
+                          fontWeight: FontWeight.bold
+                        ),)),
+                      );
+                    }
+                    // Navigator.pushReplacement(context,
+                    // MaterialPageRoute(builder: (context) => homeFragment()),
+                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red[800],
