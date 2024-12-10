@@ -25,6 +25,9 @@ class _DonorListFragment extends State<donorListFragment> {
   String selectedDistrict = 'All'; // Default filter
   String selectedThana = 'All'; // Default filter
   DateTime threeMonthsAgo = DateTime.now().subtract(Duration(days: 90));
+  // Filter options for blood groups and districts
+  List<String> bloodGroups = ['All', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+  List<String> districts = ['All', 'Dhaka', 'Chittagong', 'Sylhet', 'Khulna']; // Add districts as needed
 
 
   int _selectedIndex = 0;
@@ -35,23 +38,6 @@ class _DonorListFragment extends State<donorListFragment> {
     });
   }
 
-  // final List<Map<String, String>> persons = [
-  //   {
-  //     'name': 'Abdur Roquibe',
-  //     'phone': '01711184339',
-  //     'email': 'ssb2001@gmail.com',
-  //     'bloodGroup': 'O+',
-  //     'location': 'Paikpara, Mirpur 1, Dhaka'
-  //   },
-  //   {
-  //     'name': 'Reneka Ahmed',
-  //     'phone': '01676163181',
-  //     'email': 'reneka@gmail.com',
-  //     'bloodGroup': 'B+',
-  //     'location': 'Maghbazar, Dhaka'
-  //   },
-  //   // Add more person entries here
-  // ];
 
   // Logout functionality using SharedPreferences (or Firebase if preferred)
   Future<void> _logout() async {
@@ -189,6 +175,138 @@ class _DonorListFragment extends State<donorListFragment> {
           ],
         ),
       ),
+      // Body Start
+      body: Column(
+        children: [
+          // Filters for blood group and district
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: selectedBloodGroup, // Selected blood group filter
+                    onChanged: (value) {
+                      setState(() {
+                        selectedBloodGroup = value!;
+                      });
+                    },
+                    items: bloodGroups.map((group) {
+                      return DropdownMenuItem<String>(
+                        value: group,
+                        child: Text(group), // Blood group name
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: selectedDistrict, // Selected district filter
+                    onChanged: (value) {
+                      setState(() {
+                        selectedDistrict = value!;
+                      });
+                    },
+                    items: districts.map((district) {
+                      return DropdownMenuItem<String>(
+                        value: district,
+                        child: Text(district), // District name
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Donor List
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('clients').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator()); // Show loading indicator
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No donors found.')); // Show no data message
+                }
+
+                // Filter donors based on selected criteria
+                var donors = snapshot.data!.docs.map((doc) {
+                  var data = doc.data() as Map<String, dynamic>;
+                  return doc.data() as Map<String, dynamic>;
+                  // var bloodGroupMatches = selectedBloodGroup == 'All' || data['bloodGroup'] == selectedBloodGroup;
+                  // var districtMatches = selectedDistrict == 'All' || data['district'] == selectedDistrict;
+                  // return bloodGroupMatches && districtMatches;
+                }).toList();
+
+                return ListView.builder(
+                  itemCount: donors.length,
+                  itemBuilder: (context, index) {
+                    var donor = donors[index];
+                    return ListTile(
+                      title: Text(donor['name'] ?? 'Unknown'),
+                      subtitle: Text('Blood Group: ${donor['bloodGroup'] ?? 'N/A'}'),
+                    );
+
+                    // Extract donor details
+                    String name = donor['name'] ?? 'Unknown'; // For name
+                    String phone = donor['phone'] ?? 'N/A'; // For phone
+                    String email = donor['email'] ?? 'N/A'; // For email
+                    String bloodGroup = donor['bloodGroup'] ?? 'N/A'; // For blood group
+                    String district = donor['district'] ?? 'N/A'; // For district
+                    String thana = donor['thana'] ?? 'N/A'; // For thana
+                    DateTime? lastDonateDate = (donor['lastDonateDate'] as Timestamp?)?.toDate(); // For last donate date
+                    bool isAvailable = lastDonateDate == null || lastDonateDate.isBefore(threeMonthsAgo);
+
+                    return Card(
+                      margin: EdgeInsets.all(8),
+                      child: ListTile(
+                        title: Text(name), // Donor name
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Thana: $thana'), // Thana
+                            Text('District: $district'), // District
+                            Text('Blood Group: $bloodGroup'), // Blood Group
+                            Text('Phone: $phone'), // Phone
+                            Text('Email: $email'), // Email
+                          ],
+                        ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              isAvailable ? 'Available' : 'Unavailable', // Availability status
+                              style: TextStyle(
+                                color: isAvailable ? Colors.green : Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            ElevatedButton(
+                              onPressed: isAvailable
+                                  ? () {
+                                // Implement "Request Send" logic here
+                              }
+                                  : null,
+                              child: Text('Request Send'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      // Body End
+
+
 
       //bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
