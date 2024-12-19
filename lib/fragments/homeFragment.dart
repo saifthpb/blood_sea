@@ -227,7 +227,7 @@ class _HomeFragmentState extends State<homeFragment> {
                     children: [
                       Text("Send Request",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

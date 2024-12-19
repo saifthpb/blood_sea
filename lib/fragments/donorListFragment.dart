@@ -207,11 +207,14 @@ class _DonorListFragment extends State<donorListFragment> {
                               Text('Email: $email'),
                             ],
                           ),
-                          trailing: Flexible(
+                          trailing: SingleChildScrollView(
+                            reverse: true,
+                          //trailing: Flexible(                    //earlier
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
+
                                 Text(
                                   isAvailable ? 'Available' : 'Unavailable',
                                   style: TextStyle(
@@ -225,7 +228,11 @@ class _DonorListFragment extends State<donorListFragment> {
                                     backgroundColor: Colors.red,
                                   ),
                                   onPressed: isAvailable ? () {} : null,
-                                  child: Text('Request Send'),
+                                  child: Text('Request Send',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white
+                                  ),),
                                 ),
                               ],
                             ),

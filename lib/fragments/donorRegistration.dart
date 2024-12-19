@@ -389,6 +389,15 @@ class _donorRegistrationState extends State<donorRegistration> {
           'registeredAt': FieldValue.serverTimestamp(),
         });
 
+        // Clear the form fields
+        setState(() {
+          _selectedBloodGroup = null;
+          _districtController.clear();
+          _thanaController.clear();
+          _lastDonateDateController.clear();
+          _selectedImage = null;
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Donor registration successful!")),
         );
