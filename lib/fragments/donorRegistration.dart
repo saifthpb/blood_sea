@@ -297,6 +297,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
+import 'package:blood_sea/fragments/homeFragment.dart';
+import 'package:blood_sea/fragments/notificationFragment.dart';
+import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
+import 'package:blood_sea/fragments/shareFragment.dart';
+import 'package:blood_sea/loginActivity.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // For session management
+import 'package:blood_sea/fragments/donorSearchFragment.dart';
+//import 'package:blood_sea/fragments/homeFragment.dart';
+import 'package:blood_sea/fragments/profileFragment.dart';
+import 'package:blood_sea/fragments/searchFragment.dart';
+import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/fragments/donorListFragment.dart';
+import 'donorRegistration.dart';
 
 void main() {
   runApp(const donorRegistration());
@@ -314,6 +328,14 @@ class _donorRegistrationState extends State<donorRegistration> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
   String? _userName;
@@ -322,13 +344,17 @@ class _donorRegistrationState extends State<donorRegistration> {
   String? _selectedBloodGroup;
   final TextEditingController _districtController = TextEditingController();
   final TextEditingController _thanaController = TextEditingController();
-  final TextEditingController _lastDonateDateController = TextEditingController();
+final TextEditingController _lastDonateDateController = TextEditingController();
+
+
 
   @override
   void initState() {
     super.initState();
     _fetchUserData();
   }
+
+
 
   Future<void> _fetchUserData() async {
     try {
@@ -368,7 +394,20 @@ class _donorRegistrationState extends State<donorRegistration> {
     return null;
   }
 
+  @override
+  void dispose() {
+    _lastDonateDateController.dispose();
+    super.dispose();
+  }
+
   Future<void> _submitDonorData() async {
+    if (_selectedBloodGroup == null || _districtController.text.isEmpty || _thanaController.text.isEmpty || _lastDonateDateController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please fill all the fields!")),
+      );
+      return;
+    }
+
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -376,6 +415,13 @@ class _donorRegistrationState extends State<donorRegistration> {
         if (_selectedImage != null) {
           photoUrl = await _uploadImage(_selectedImage!);
         }
+
+        // Convert the 'lastDonateDate' from string to Timestamp - added these lines 26 december 24, but does not work
+         DateTime lastDonateDate = DateTime.parse(_lastDonateDateController.text.trim());
+        Timestamp lastDonateTimestamp = Timestamp.fromDate(lastDonateDate);
+
+        //lastDonate Date
+
 
         await _firestore.collection('clients').doc(user.uid).update({
           'name': _userName,
@@ -385,7 +431,7 @@ class _donorRegistrationState extends State<donorRegistration> {
           'district': _districtController.text.trim(),
           'thana': _thanaController.text.trim(),
           'photoUrl': photoUrl,
-          'lastDonateDate': _lastDonateDateController.text.trim(),
+          //'lastDonateDate': lastDonateTimestamp, // Storing as Timestamp
           'registeredAt': FieldValue.serverTimestamp(),
         });
 
@@ -498,7 +544,8 @@ class _donorRegistrationState extends State<donorRegistration> {
               SizedBox(height: 10),
               SizedBox(height: 10),
               TextField(
-                controller: _lastDonateDateController, // Rename controller to suit the field, e.g., _lastDonateDateController
+                  controller: _lastDonateDateController, // Rename controller to suit the field, e.g., _lastDonateDateController
+
                 readOnly: true, // Prevent manual input
                 decoration: InputDecoration(
                   labelText: "Last Donate Date",
@@ -539,6 +586,65 @@ class _donorRegistrationState extends State<donorRegistration> {
               ),
             ],
           ),
+        ),
+
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.red,
+          selectedItemColor: Colors.white, // Color for selected item
+          unselectedItemColor: Colors.white, // Color for unselected items
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+
+            // Navigate to the respective pages based on the index
+            switch (index) {
+              case 0:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => homeFragment()),
+                );
+                break;
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => searchFragment()),
+                );
+                break;
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => profileFragment()),
+                );
+                break;
+              case 3:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => notificationFragment()),
+                );
+                break;
+            }
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: "Search",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: "Notifications",
+            ),
+          ],
         ),
       ),
     );

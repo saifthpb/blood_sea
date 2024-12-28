@@ -196,13 +196,22 @@ class _HomeFragmentState extends State<homeFragment> {
                 fontWeight: FontWeight.bold,
             ),
       ),
-            Text("read terms and conditions",
-            style:
-              TextStyle(
-                fontSize: 11,
-                fontStyle: FontStyle.italic,
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: (){
+                // Navigate to privacyPolicyFragment.dart
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),
+                );
+              },
+              child: Text("read terms and conditions",
+              style:
+                TextStyle(
+                  fontSize: 11,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             ElevatedButton(

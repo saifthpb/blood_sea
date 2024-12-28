@@ -278,6 +278,8 @@ class _ProfileFragment extends State<profileFragment> {
             context,
             MaterialPageRoute(builder: (context) => donorRegistration()),
           );
+
+
         },
         backgroundColor: Colors.red,
         tooltip: "Register as Donor",

@@ -82,6 +82,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Welcome to Donors Area"),
+              SizedBox(height: 10,),
               Padding(
                 padding: EdgeInsets.all(5),
                 child: DropdownButtonFormField<String>(
