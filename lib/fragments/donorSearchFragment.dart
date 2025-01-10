@@ -301,7 +301,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                         DataCell(
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const donorsAreaFragment()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> donorsAreaFragment()));
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -343,7 +343,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> const homeFragment()),);
+                  MaterialPageRoute(builder: (context)=> homeFragment()),);
               },
             ),
             ListTile(
@@ -354,7 +354,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                 // Navigate to profile fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const profileFragment()),);
+                  MaterialPageRoute(builder: (context) => profileFragment()),);
               },
             ),
             ListTile(
@@ -365,7 +365,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const searchFragment()),);
+                  MaterialPageRoute(builder: (context) => searchFragment()),);
               },
             ),
             ListTile(
@@ -414,25 +414,25 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const homeFragment()),
+                MaterialPageRoute(builder: (context) => homeFragment()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const searchFragment()),
+                MaterialPageRoute(builder: (context) => searchFragment()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const profileFragment()),
+                MaterialPageRoute(builder: (context) => profileFragment()),
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const notificationFragment()),
+                MaterialPageRoute(builder: (context) => notificationFragment()),
               );
               break;
           }

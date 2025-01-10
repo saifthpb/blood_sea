@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: splashScreenActivity(),
     );
@@ -37,10 +37,10 @@ class MainActivity extends StatefulWidget {
 class _MainActivityState extends State<MainActivity> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    const homeFragment(),
-    const searchFragment(),
-    const profileFragment(),
-    const notificationFragment(),
+    homeFragment(),
+    searchFragment(),
+    profileFragment(),
+    notificationFragment(),
   ];
 
   void _onItemTapped(int index) {

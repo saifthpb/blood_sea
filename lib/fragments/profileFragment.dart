@@ -137,7 +137,7 @@ class _ProfileFragment extends State<profileFragment> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const notificationFragment()),
+                MaterialPageRoute(builder: (context) => notificationFragment()),
               );
             },
           ),
@@ -146,7 +146,7 @@ class _ProfileFragment extends State<profileFragment> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const searchFragment()),
+                MaterialPageRoute(builder: (context) => searchFragment()),
               );
             },
           ),

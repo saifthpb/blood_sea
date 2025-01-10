@@ -61,7 +61,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
             onPressed: () {
               // Handle notifications tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const notificationFragment()));
+                  MaterialPageRoute(builder: (context)=>notificationFragment()));
             },
           ),
           IconButton(
@@ -69,7 +69,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const searchFragment()));
+                  MaterialPageRoute(builder: (context)=>searchFragment()));
             },
           ),
         ],
@@ -92,7 +92,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> const homeFragment()),);
+                  MaterialPageRoute(builder: (context)=> homeFragment()),);
               },
             ),
             ListTile(
@@ -103,7 +103,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
                 // Navigate to profile fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const profileFragment()),);
+                  MaterialPageRoute(builder: (context) => profileFragment()),);
               },
             ),
             ListTile(
@@ -114,7 +114,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const searchFragment()),);
+                  MaterialPageRoute(builder: (context) => searchFragment()),);
               },
             ),
             ListTile(
@@ -174,7 +174,7 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
               ),
             ),
         IconButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const clientAreaFragment(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>clientAreaFragment(),));
 
         },
             icon: const Icon(Icons.arrow_right,
@@ -200,25 +200,25 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const homeFragment()),
+                MaterialPageRoute(builder: (context) => homeFragment()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const searchFragment()),
+                MaterialPageRoute(builder: (context) => searchFragment()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const profileFragment()),
+                MaterialPageRoute(builder: (context) => profileFragment()),
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const notificationFragment()),
+                MaterialPageRoute(builder: (context) => notificationFragment()),
               );
               break;
           }

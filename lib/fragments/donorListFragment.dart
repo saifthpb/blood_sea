@@ -53,13 +53,13 @@ class _DonorListFragment extends State<donorListFragment> {
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const notificationFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => notificationFragment()));
             },
           ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const searchFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => searchFragment()));
             },
           ),
         ],
@@ -80,21 +80,21 @@ class _DonorListFragment extends State<donorListFragment> {
               leading: const Icon(Icons.home),
               title: const Text("Home"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const homeFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => homeFragment()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text("Profile"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const profileFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => profileFragment()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.search),
               title: const Text("Search"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const searchFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => searchFragment()));
               },
             ),
             ListTile(
@@ -109,7 +109,7 @@ class _DonorListFragment extends State<donorListFragment> {
               leading: const Icon(Icons.arrow_back),
               title: const Text("Privacy Policy"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const privacyPolicyFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => privacyPolicyFragment()));
               },
             ),
             ListTile(
@@ -264,16 +264,16 @@ class _DonorListFragment extends State<donorListFragment> {
 
           switch (index) {
             case 0:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const homeFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => homeFragment()));
               break;
             case 1:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const searchFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => searchFragment()));
               break;
             case 2:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const profileFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => profileFragment()));
               break;
             case 3:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const notificationFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => notificationFragment()));
               break;
           }
         },

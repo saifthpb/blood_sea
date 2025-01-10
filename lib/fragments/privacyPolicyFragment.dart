@@ -62,7 +62,7 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
             onPressed: () {
               // Handle notifications tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const notificationFragment()));
+                  MaterialPageRoute(builder: (context)=>notificationFragment()));
             },
           ),
           IconButton(
@@ -70,7 +70,7 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const searchFragment()));
+                  MaterialPageRoute(builder: (context)=>searchFragment()));
             },
           ),
         ],
@@ -93,7 +93,7 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> const homeFragment()),);
+                  MaterialPageRoute(builder: (context)=> homeFragment()),);
               },
             ),
             ListTile(
@@ -104,7 +104,7 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
                 // Navigate to profile fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const profileFragment()),);
+                  MaterialPageRoute(builder: (context) => profileFragment()),);
               },
             ),
             ListTile(
@@ -115,7 +115,7 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const searchFragment()),);
+                  MaterialPageRoute(builder: (context) => searchFragment()),);
               },
             ),
             ListTile(
@@ -140,7 +140,7 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),);
+                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
               },
             ),
 
@@ -234,25 +234,25 @@ class _PrivacyPolicyFragment extends State<privacyPolicyFragment> {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const homeFragment()),
+                MaterialPageRoute(builder: (context) => homeFragment()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const searchFragment()),
+                MaterialPageRoute(builder: (context) => searchFragment()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const profileFragment()),
+                MaterialPageRoute(builder: (context) => profileFragment()),
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const notificationFragment()),
+                MaterialPageRoute(builder: (context) => notificationFragment()),
               );
               break;
           }

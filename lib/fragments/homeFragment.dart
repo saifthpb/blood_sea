@@ -64,7 +64,7 @@ class _HomeFragmentState extends State<homeFragment> {
             onPressed: () {
               // Handle notifications tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const notificationFragment()));
+                  MaterialPageRoute(builder: (context)=>notificationFragment()));
             },
           ),
           IconButton(
@@ -72,7 +72,7 @@ class _HomeFragmentState extends State<homeFragment> {
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const searchFragment()));
+                  MaterialPageRoute(builder: (context)=>searchFragment()));
             },
           ),
         ],
@@ -95,7 +95,7 @@ class _HomeFragmentState extends State<homeFragment> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> const homeFragment()),);
+                    MaterialPageRoute(builder: (context)=> homeFragment()),);
               },
             ),
             ListTile(
@@ -106,7 +106,7 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to profile fragment
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const profileFragment()),);
+                    MaterialPageRoute(builder: (context) => profileFragment()),);
               },
             ),
             ListTile(
@@ -117,7 +117,7 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const searchFragment()),);
+                  MaterialPageRoute(builder: (context) => searchFragment()),);
               },
             ),
             ListTile(
@@ -142,7 +142,7 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),);
+                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
               },
             ),
 
@@ -203,7 +203,7 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to privacyPolicyFragment.dart
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),
+                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),
                 );
               },
               child: const Text("read terms and conditions",
@@ -220,7 +220,7 @@ class _HomeFragmentState extends State<homeFragment> {
               onPressed: (){
                 Navigator.push(
                     context, MaterialPageRoute(
-                    builder: (context)=> const donorSearchFragment(),
+                    builder: (context)=> donorSearchFragment(),
                 ),
                 );
               },
@@ -265,7 +265,7 @@ class _HomeFragmentState extends State<homeFragment> {
             OutlinedButton(
               onPressed: (){
                 //Navigator.push(context, MaterialPageRoute(builder: (context) => donorList()),);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const donorListFragment()),);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => donorListFragment()),);
               },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(
@@ -391,25 +391,25 @@ class _HomeFragmentState extends State<homeFragment> {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const homeFragment()),
+                MaterialPageRoute(builder: (context) => homeFragment()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const searchFragment()),
+                MaterialPageRoute(builder: (context) => searchFragment()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const profileFragment()),
+                MaterialPageRoute(builder: (context) => profileFragment()),
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const notificationFragment()),
+                MaterialPageRoute(builder: (context) => notificationFragment()),
               );
               break;
           }

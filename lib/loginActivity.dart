@@ -141,7 +141,7 @@ class loginActivity extends StatelessWidget {
                         );
                         // Navigate to homeFragment on successful login
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => const homeFragment()),
+                            MaterialPageRoute(builder: (context) => homeFragment()),
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(

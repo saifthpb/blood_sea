@@ -289,6 +289,7 @@
 // }
 
 //new codes
+import 'package:blood_sea/loginActivity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -298,10 +299,18 @@ import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/notificationFragment.dart';
-// For session management
+import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
+import 'package:blood_sea/fragments/shareFragment.dart';
+import 'package:blood_sea/loginActivity.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // For session management
+import 'package:blood_sea/fragments/donorSearchFragment.dart';
 //import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/profileFragment.dart';
 import 'package:blood_sea/fragments/searchFragment.dart';
+import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/fragments/donorListFragment.dart';
+import 'donorRegistration.dart';
 
 void main() {
   runApp(const donorRegistration());

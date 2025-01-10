@@ -55,7 +55,7 @@ class clientSignUp extends StatelessWidget {
         // Optionally navigate to another page
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const homeFragment()),
+          MaterialPageRoute(builder: (context) => homeFragment()),
         );
 
       } catch(e){
@@ -204,7 +204,7 @@ class clientSignUp extends StatelessWidget {
                   //   );
                   // }
                 //},
-                child: const Text("Submit",
+                child: Text("Submit",
                 style: TextStyle(
                   fontSize: 16,
                 ),),
