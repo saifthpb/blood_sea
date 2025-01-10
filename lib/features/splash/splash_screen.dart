@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:blood_sea/features/auth/login_screen.dart';
+import 'package:blood_sea/features/home/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../auth/login_screen.dart'; // Import the Login page
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,13 +15,42 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Timer to navigate to the Login page after 3 seconds
-    Timer(const Duration(seconds: 3), () {
+    checkAuthStatus();
+  }
+
+  Future<void> checkAuthStatus() async {
+    try {
+      // Wait for 2 seconds to show splash screen
+      await Future.delayed(const Duration(seconds: 2));
+      
+      if (!mounted) return;
+
+      // Check if user is signed in
+      final User? currentUser = FirebaseAuth.instance.currentUser;
+      
+      if (!mounted) return;
+
+      if (currentUser != null) {
+        // User is signed in
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        // No user is signed in
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      }
+    } catch (e) {
+      // Handle any errors
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => loginActivity()),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
       );
-    });
+    }
   }
 
   @override
