@@ -14,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class profileFragment extends StatefulWidget {
+  const profileFragment({super.key});
+
   @override
   _ProfileFragment createState() => _ProfileFragment();
 }
@@ -116,35 +118,35 @@ class _ProfileFragment extends State<profileFragment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("Profile"),
+        title: const Text("Profile"),
         foregroundColor: Colors.white,
         elevation: 5,
         titleSpacing: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => shareFragment()),
+                MaterialPageRoute(builder: (context) => const shareFragment()),
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => notificationFragment()),
+                MaterialPageRoute(builder: (context) => const notificationFragment()),
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => searchFragment()),
+                MaterialPageRoute(builder: (context) => const searchFragment()),
               );
             },
           ),
@@ -223,7 +225,7 @@ class _ProfileFragment extends State<profileFragment> {
       //   ),
       // ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator()) // Show loading spinner if data isn't loaded
+          ? const Center(child: CircularProgressIndicator()) // Show loading spinner if data isn't loaded
           : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -237,36 +239,36 @@ class _ProfileFragment extends State<profileFragment> {
                   backgroundColor: Colors.grey.shade200,
                 ),
               ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Name: ${name ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 8),
             Text("Email: ${email ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Phone: ${phone ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Thana: ${thana ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("District: ${district ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Blood Group: ${bloodGroup ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Photo: ${photoUrl ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Last Donate Date: ${formatDate(lastDonateDate) ?? 'Not Available'}",
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
 
 
           ],
@@ -276,14 +278,14 @@ class _ProfileFragment extends State<profileFragment> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => donorRegistration()),
+            MaterialPageRoute(builder: (context) => const donorRegistration()),
           );
 
 
         },
         backgroundColor: Colors.red,
         tooltip: "Register as Donor",
-        child: Text(
+        child: const Text(
           "+",
           style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
         ),

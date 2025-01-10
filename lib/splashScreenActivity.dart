@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'loginActivity.dart'; // Import the Login page
 
 class splashScreenActivity extends StatefulWidget {
+  const splashScreenActivity({super.key});
+
   @override
   _splashScreenActivityState createState() => _splashScreenActivityState();
 }
@@ -12,7 +14,7 @@ class _splashScreenActivityState extends State<splashScreenActivity> {
   void initState() {
     super.initState();
     // Timer to navigate to the Login page after 3 seconds
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => loginActivity()),
@@ -24,7 +26,7 @@ class _splashScreenActivityState extends State<splashScreenActivity> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red[800], // Reddish background color
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

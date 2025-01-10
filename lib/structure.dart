@@ -15,7 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main(){
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class structurePage extends StatefulWidget {
@@ -57,34 +57,34 @@ class _structurePageState extends State<structurePage> {
         //appbar start
         appBar: AppBar(
           backgroundColor: Colors.redAccent,
-          title: Text("Donor List"),
+          title: const Text("Donor List"),
           foregroundColor: Colors.white,
           elevation: 5,
           titleSpacing: 0,
           actions: [
 
             IconButton(
-              icon: Icon(Icons.share),
+              icon: const Icon(Icons.share),
               onPressed: () {
                 // Handle settings tap
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=>shareFragment()));
+                    MaterialPageRoute(builder: (context)=>const shareFragment()));
               },
             ),
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: const Icon(Icons.notifications),
               onPressed: () {
                 // Handle notifications tap
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=>notificationFragment()));
+                    MaterialPageRoute(builder: (context)=>const notificationFragment()));
               },
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 // Handle settings tap
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=>searchFragment()));
+                    MaterialPageRoute(builder: (context)=>const searchFragment()));
               },
             ),
           ],
@@ -95,7 +95,7 @@ class _structurePageState extends State<structurePage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              UserAccountsDrawerHeader(
+              const UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.redAccent),
                 accountName: Text("Saiful Sarwar"),
                 accountEmail: Text("ssb2001@gmail.com"),
@@ -104,73 +104,73 @@ class _structurePageState extends State<structurePage> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.home),
-                title: Text("Home"),
+                leading: const Icon(Icons.home),
+                title: const Text("Home"),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> homeFragment()),);
+                    MaterialPageRoute(builder: (context)=> const homeFragment()),);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.person),
-                title: Text("Profile"),
+                leading: const Icon(Icons.person),
+                title: const Text("Profile"),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to profile fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => profileFragment()),);
+                    MaterialPageRoute(builder: (context) => const profileFragment()),);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.search),
-                title: Text("Search"),
+                leading: const Icon(Icons.search),
+                title: const Text("Search"),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to search fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => searchFragment()),);
+                    MaterialPageRoute(builder: (context) => const searchFragment()),);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.contact_emergency),
-                title: Text("Contact"),
+                leading: const Icon(Icons.contact_emergency),
+                title: const Text("Contact"),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to contact page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => contactFragment()),);
+                    MaterialPageRoute(builder: (context) => const contactFragment()),);
                 },
               ),
-              Divider(height: 2,),
+              const Divider(height: 2,),
 
               ListTile(
-                leading: Icon(Icons.arrow_back),
-                title: Text("Privacy Policy"),
+                leading: const Icon(Icons.arrow_back),
+                title: const Text("Privacy Policy"),
                 onTap: () {
                   //Navigator.pop(context);
                   Navigator.pop(context);
                   // Navigate to contact page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+                    MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),);
                 },
               ),
 
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Logout"),
+                leading: const Icon(Icons.logout),
+                title: const Text("Logout"),
                 onTap: () {
                   // Implement logout functionality
                   _logout();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.arrow_back),
-                title: Text("Back"),
+                leading: const Icon(Icons.arrow_back),
+                title: const Text("Back"),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -197,30 +197,30 @@ class _structurePageState extends State<structurePage> {
               case 0:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => homeFragment()),
+                  MaterialPageRoute(builder: (context) => const homeFragment()),
                 );
                 break;
               case 1:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => searchFragment()),
+                  MaterialPageRoute(builder: (context) => const searchFragment()),
                 );
                 break;
               case 2:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => profileFragment()),
+                  MaterialPageRoute(builder: (context) => const profileFragment()),
                 );
                 break;
               case 3:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => notificationFragment()),
+                  MaterialPageRoute(builder: (context) => const notificationFragment()),
                 );
                 break;
             }
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",

@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 class cardFragment extends StatelessWidget {
@@ -11,37 +10,37 @@ class cardFragment extends StatelessWidget {
         crossAxisCount: 2,
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 100,
             width: 100,
-            child: Card(
+            child: const Card(
               color: Colors.red,
               elevation: 6,
             ),
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 100,
             width: 100,
-            child: Card(
+            child: const Card(
               color: Colors.red,
               elevation: 6,
             ),
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 100,
             width: 100,
-            child: Card(
+            child: const Card(
               color: Colors.red,
               elevation: 6,
             ),
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 100,
             width: 100,
-            child: Card(
+            child: const Card(
               color: Colors.red,
               elevation: 6,
             ),

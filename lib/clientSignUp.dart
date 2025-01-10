@@ -15,6 +15,8 @@ class clientSignUp extends StatelessWidget {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
+  clientSignUp({super.key});
+
   // Function to handle sign-up
   Future<void> _handleSignUp(BuildContext context) async{
     if(_formKey.currentState!.validate()){
@@ -40,7 +42,7 @@ class clientSignUp extends StatelessWidget {
         });
         // Success feedback
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Succesfully Signed Up")),
+          const SnackBar(content: Text("Succesfully Signed Up")),
         );
 
         _formKey.currentState!.reset();
@@ -53,7 +55,7 @@ class clientSignUp extends StatelessWidget {
         // Optionally navigate to another page
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => homeFragment()),
+          MaterialPageRoute(builder: (context) => const homeFragment()),
         );
 
       } catch(e){
@@ -71,7 +73,7 @@ class clientSignUp extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
-        title: Text("Client Sign Up",
+        title: const Text("Client Sign Up",
         ),
       ),
       body: Padding(
@@ -83,7 +85,7 @@ class clientSignUp extends StatelessWidget {
               // Full Name Input
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Full Name",
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person,  color: Colors.red),
@@ -95,12 +97,12 @@ class clientSignUp extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Email Address Input
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Email Address",
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email, color: Colors.red),
@@ -116,17 +118,17 @@ class clientSignUp extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Password Input
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock, color: Colors.red),
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.lock, color: Colors.red),
                   suffixIcon: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.visibility,
                       color: Colors.red,
                     ),
@@ -146,12 +148,12 @@ class clientSignUp extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Mobile Number Input
               TextFormField(
                 controller: _phoneController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Mobile Number",
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.phone, color: Colors.red),
@@ -167,12 +169,12 @@ class clientSignUp extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Address Input
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Address",
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.location_on, color: Colors.red,),
@@ -185,11 +187,16 @@ class clientSignUp extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
 
               // Submit Button
               ElevatedButton(
                 onPressed:  () => _handleSignUp(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
                 //{
                   // if (_formKey.currentState!.validate()) {
                   //   ScaffoldMessenger.of(context).showSnackBar(
@@ -197,22 +204,17 @@ class clientSignUp extends StatelessWidget {
                   //   );
                   // }
                 //},
-                child: Text("Submit",
+                child: const Text("Submit",
                 style: TextStyle(
                   fontSize: 16,
                 ),),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 50),
-                ),
               ),
-              SizedBox(height: 35,),
+              const SizedBox(height: 35,),
           GestureDetector(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>donorRegistration()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const donorRegistration()));
             },
-            child: Text("Want to be a donor? Please Register",
+            child: const Text("Want to be a donor? Please Register",
             style: TextStyle(
               fontSize: 20,
               fontStyle: FontStyle.italic,

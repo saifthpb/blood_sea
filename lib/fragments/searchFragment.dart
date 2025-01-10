@@ -12,6 +12,9 @@ import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
 import 'package:blood_sea/fragments/contactFragment.dart';
 
 class searchFragment extends StatefulWidget {
+  const searchFragment({super.key});
+
+  @override
   _searchFragment createState() => _searchFragment();
 }
 
@@ -38,7 +41,7 @@ class _searchFragment extends State<searchFragment> {
         appBar: AppBar(
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
-          title: Text("Search", style: TextStyle(
+          title: const Text("Search", style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24
           ),),
@@ -47,7 +50,7 @@ class _searchFragment extends State<searchFragment> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              UserAccountsDrawerHeader(
+              const UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.redAccent),
                 accountName: Text("Saiful Sarwar"),
                 accountEmail: Text("ssb2001@gmail.com"),
@@ -56,73 +59,73 @@ class _searchFragment extends State<searchFragment> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.home),
-                title: Text("Home"),
+                leading: const Icon(Icons.home),
+                title: const Text("Home"),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> homeFragment()),);
+                    MaterialPageRoute(builder: (context)=> const homeFragment()),);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.person),
-                title: Text("Profile"),
+                leading: const Icon(Icons.person),
+                title: const Text("Profile"),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to profile fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => profileFragment()),);
+                    MaterialPageRoute(builder: (context) => const profileFragment()),);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.search),
-                title: Text("Search"),
+                leading: const Icon(Icons.search),
+                title: const Text("Search"),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to search fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => searchFragment()),);
+                    MaterialPageRoute(builder: (context) => const searchFragment()),);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.contact_emergency),
-                title: Text("Contact"),
+                leading: const Icon(Icons.contact_emergency),
+                title: const Text("Contact"),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to contact page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => contactFragment()),);
+                    MaterialPageRoute(builder: (context) => const contactFragment()),);
                 },
               ),
-              Divider(height: 2,),
+              const Divider(height: 2,),
 
               ListTile(
-                leading: Icon(Icons.arrow_back),
-                title: Text("Privacy Policy"),
+                leading: const Icon(Icons.arrow_back),
+                title: const Text("Privacy Policy"),
                 onTap: () {
                   //Navigator.pop(context);
                   Navigator.pop(context);
                   // Navigate to contact page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+                    MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),);
                 },
               ),
 
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Logout"),
+                leading: const Icon(Icons.logout),
+                title: const Text("Logout"),
                 onTap: () {
                   // Implement logout functionality
                   _logout();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.arrow_back),
-                title: Text("Back"),
+                leading: const Icon(Icons.arrow_back),
+                title: const Text("Back"),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -132,13 +135,13 @@ class _searchFragment extends State<searchFragment> {
         ),
 
 
-        body: Text("Search Your Donor"),
+        body: const Text("Search Your Donor"),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.red,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
-            items:[
+            items:const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
               BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
@@ -150,14 +153,14 @@ class _searchFragment extends State<searchFragment> {
     onPressed: () {
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => searchResultFragment()),
+    MaterialPageRoute(builder: (context) => const searchResultFragment()),
     );
 
 
     },
     backgroundColor: Colors.red,
     tooltip: "Register as Donor",
-    child: Text(
+    child: const Text(
     "+",
     style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
     ),

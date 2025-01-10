@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // Initialize Firebase
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: splashScreenActivity(),
     );
@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MainActivity extends StatefulWidget {
+  const MainActivity({super.key});
+
   //const SplashScreenActivity({super.key});
   @override
   _MainActivityState createState() => _MainActivityState();
@@ -35,10 +37,10 @@ class MainActivity extends StatefulWidget {
 class _MainActivityState extends State<MainActivity> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    homeFragment(),
-    searchFragment(),
-    profileFragment(),
-    notificationFragment(),
+    const homeFragment(),
+    const searchFragment(),
+    const profileFragment(),
+    const notificationFragment(),
   ];
 
   void _onItemTapped(int index) {
@@ -55,11 +57,11 @@ class _MainActivityState extends State<MainActivity> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.red,
-            title: Text("Blood Donation App"),
+            title: const Text("Blood Donation App"),
             foregroundColor: Colors.yellow,
             elevation: 10,
             titleSpacing: 10,
-              bottom:TabBar(
+              bottom:const TabBar(
              isScrollable: true,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
@@ -83,7 +85,7 @@ class _MainActivityState extends State<MainActivity> {
           drawer: Drawer(
             child: ListView(
               children: [
-                DrawerHeader(
+                const DrawerHeader(
                   padding: EdgeInsets.all(0),
                   child: UserAccountsDrawerHeader(
                     decoration: BoxDecoration(color: Colors.red),
@@ -95,14 +97,14 @@ class _MainActivityState extends State<MainActivity> {
 
 
                     ),
-                    margin: const EdgeInsets.all(0),
+                    margin: EdgeInsets.all(0),
                     
 
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text("Home"),
+                  leading: const Icon(Icons.home),
+                  title: const Text("Home"),
                   onTap: (){
                     Navigator.pop(context);
                     setState(() {
@@ -111,8 +113,8 @@ class _MainActivityState extends State<MainActivity> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text("Profile"),
+                  leading: const Icon(Icons.person),
+                  title: const Text("Profile"),
                   onTap: (){
                     Navigator.pop(context);
                     setState(() {
@@ -121,8 +123,8 @@ class _MainActivityState extends State<MainActivity> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.search),
-                  title: Text("Search"),
+                  leading: const Icon(Icons.search),
+                  title: const Text("Search"),
                   onTap: (){
                     Navigator.pop(context);
                     setState(() {
@@ -131,22 +133,22 @@ class _MainActivityState extends State<MainActivity> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.contact_emergency),
-                  title: Text("Contact"),
+                  leading: const Icon(Icons.contact_emergency),
+                  title: const Text("Contact"),
                   onTap: (){
                     Navigator.pop(context);
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text("Logout"),
+                  leading: const Icon(Icons.logout),
+                  title: const Text("Logout"),
                   onTap: (){
 
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.arrow_back),
-                  title: Text("Back"),
+                  leading: const Icon(Icons.arrow_back),
+                  title: const Text("Back"),
                   onTap: (){
                     Navigator.pop(context); //for drawer close
                   },
@@ -162,7 +164,7 @@ class _MainActivityState extends State<MainActivity> {
               currentIndex: _selectedIndex,
             onTap: _onItemTapped,
 
-            items: [
+            items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
               BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),

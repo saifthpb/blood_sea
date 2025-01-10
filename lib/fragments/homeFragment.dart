@@ -13,6 +13,8 @@ import 'package:blood_sea/fragments/donorListFragment.dart';
 import 'donorRegistration.dart';
 
 class homeFragment extends StatefulWidget {
+  const homeFragment({super.key});
+
   @override
   _HomeFragmentState createState() => _HomeFragmentState();
 }
@@ -43,34 +45,34 @@ class _HomeFragmentState extends State<homeFragment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("Home"),
+        title: const Text("Home"),
         foregroundColor: Colors.white,
         elevation: 5,
         titleSpacing: 0,
         actions: [
 
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>shareFragment()));
+                  MaterialPageRoute(builder: (context)=>const shareFragment()));
             },
           ),
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               // Handle notifications tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>notificationFragment()));
+                  MaterialPageRoute(builder: (context)=>const notificationFragment()));
             },
           ),
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>searchFragment()));
+                  MaterialPageRoute(builder: (context)=>const searchFragment()));
             },
           ),
         ],
@@ -79,7 +81,7 @@ class _HomeFragmentState extends State<homeFragment> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.redAccent),
               accountName: Text("Saiful Sarwar"),
               accountEmail: Text("ssb2001@gmail.com"),
@@ -88,73 +90,73 @@ class _HomeFragmentState extends State<homeFragment> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> homeFragment()),);
+                    MaterialPageRoute(builder: (context)=> const homeFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Profile"),
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
               onTap: () {
                 Navigator.pop(context);
                 // Navigate to profile fragment
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => profileFragment()),);
+                    MaterialPageRoute(builder: (context) => const profileFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.search),
-              title: Text("Search"),
+              leading: const Icon(Icons.search),
+              title: const Text("Search"),
               onTap: () {
                 Navigator.pop(context);
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => searchFragment()),);
+                  MaterialPageRoute(builder: (context) => const searchFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.contact_emergency),
-              title: Text("Contact"),
+              leading: const Icon(Icons.contact_emergency),
+              title: const Text("Contact"),
               onTap: () {
                 Navigator.pop(context);
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => contactFragment()),);
+                  MaterialPageRoute(builder: (context) => const contactFragment()),);
               },
             ),
-            Divider(height: 2,),
+            const Divider(height: 2,),
 
             ListTile(
-              leading: Icon(Icons.arrow_back),
-              title: Text("Privacy Policy"),
+              leading: const Icon(Icons.arrow_back),
+              title: const Text("Privacy Policy"),
               onTap: () {
                 //Navigator.pop(context);
                 Navigator.pop(context);
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+                  MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),);
               },
             ),
 
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
               onTap: () {
                 // Implement logout functionality
                 _logout();
               },
             ),
             ListTile(
-              leading: Icon(Icons.arrow_back),
-              title: Text("Back"),
+              leading: const Icon(Icons.arrow_back),
+              title: const Text("Back"),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -166,12 +168,12 @@ class _HomeFragmentState extends State<homeFragment> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.favorite,
               size: 80,
               color: Colors.redAccent,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Text(
             //   "Welcome to Blood Donation App!",
             //   style: TextStyle(
@@ -180,7 +182,7 @@ class _HomeFragmentState extends State<homeFragment> {
             //     color: Colors.redAccent,
             //   ),
             // ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             // Text(
             //   "Save lives by donating blood.",
             //   style: TextStyle(
@@ -188,8 +190,8 @@ class _HomeFragmentState extends State<homeFragment> {
             //     color: Colors.black54,
             //   ),
             // ),
-            SizedBox(height: 20,),
-            Text("Need Blood?",
+            const SizedBox(height: 20,),
+            const Text("Need Blood?",
               style: TextStyle(
               fontSize: 24,
               color: Colors.red,
@@ -201,10 +203,10 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to privacyPolicyFragment.dart
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),
+                  MaterialPageRoute(builder: (context) => const privacyPolicyFragment()),
                 );
               },
-              child: Text("read terms and conditions",
+              child: const Text("read terms and conditions",
               style:
                 TextStyle(
                   fontSize: 11,
@@ -218,20 +220,20 @@ class _HomeFragmentState extends State<homeFragment> {
               onPressed: (){
                 Navigator.push(
                     context, MaterialPageRoute(
-                    builder: (context)=> donorSearchFragment(),
+                    builder: (context)=> const donorSearchFragment(),
                 ),
                 );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.zero,
                 ),
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
               ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("Send Request",
@@ -250,8 +252,8 @@ class _HomeFragmentState extends State<homeFragment> {
 
 
             ),
-            SizedBox(height: 10,),
-            Text("Total Donor: .....Dynamic Code",
+            const SizedBox(height: 10,),
+            const Text("Total Donor: .....Dynamic Code",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -259,27 +261,27 @@ class _HomeFragmentState extends State<homeFragment> {
               color: Colors.green,
             ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             OutlinedButton(
               onPressed: (){
                 //Navigator.push(context, MaterialPageRoute(builder: (context) => donorList()),);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => donorListFragment()),);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const donorListFragment()),);
               },
               style: OutlinedButton.styleFrom(
-                side: BorderSide(
+                side: const BorderSide(
                   color: Colors.blue,
                   width: 2,
                 ),
                 foregroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal:8, vertical: 4),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.symmetric(horizontal:8, vertical: 4),
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                       Radius.circular(10),
                   ),
                 ),
-              minimumSize: Size(50, 36)
+              minimumSize: const Size(50, 36)
               ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -292,25 +294,25 @@ class _HomeFragmentState extends State<homeFragment> {
                   ],
                 ),
             ),
-            SizedBox(width: 5,),
+            const SizedBox(width: 5,),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center, // Center row contents if needed
                 children: [
-                  Text(
+                  const Text(
                     "Want to be a Donor?",
                     style: TextStyle(
                       color: Colors.red,
                     ),
                   ),
-                  SizedBox(width: 8), // Space between text and image
+                  const SizedBox(width: 8), // Space between text and image
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       GestureDetector(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => donorRegistration()),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const donorRegistration()),);
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
@@ -318,7 +320,7 @@ class _HomeFragmentState extends State<homeFragment> {
                             height: 50,
                             width: 80,
                             color: Colors.red,
-                            child: Center(
+                            child: const Center(
                               child:   Text(
                                 "Sign Up",
                                 style: TextStyle(
@@ -337,7 +339,7 @@ class _HomeFragmentState extends State<homeFragment> {
             ),
 
 
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             //start donor registration text
 
             //start donor registration text
@@ -347,7 +349,7 @@ class _HomeFragmentState extends State<homeFragment> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Padding(
+              child: const Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -389,30 +391,30 @@ class _HomeFragmentState extends State<homeFragment> {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => homeFragment()),
+                MaterialPageRoute(builder: (context) => const homeFragment()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => searchFragment()),
+                MaterialPageRoute(builder: (context) => const searchFragment()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => profileFragment()),
+                MaterialPageRoute(builder: (context) => const profileFragment()),
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => notificationFragment()),
+                MaterialPageRoute(builder: (context) => const notificationFragment()),
               );
               break;
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",

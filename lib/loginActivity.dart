@@ -14,6 +14,8 @@ class loginActivity extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  loginActivity({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +34,14 @@ class loginActivity extends StatelessWidget {
                   backgroundColor: Colors.white,
                   child: Image.asset('assets/logotx.png'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Blood donation symbol
                 // Icon(
                 //   Icons.bloodtype, // Blood donation symbol
                 //   color: Colors.red[800],
                 //   size: 80,
                 // ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   "Blood Donation App",
                   style: TextStyle(
@@ -48,7 +50,7 @@ class loginActivity extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Email text field
                 TextField(
                   controller: _emailController,
@@ -63,7 +65,7 @@ class loginActivity extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 // Password text field
                 TextField(
                   controller: _passwordController,
@@ -79,25 +81,25 @@ class loginActivity extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
         
                 Container(
                   height: 40,
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: RichText(
                     text: TextSpan(
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
                         color: Colors.blue, // Default color for the main text
                         fontSize: 12,
                       ),
                       children: <TextSpan>[
-                        TextSpan(text: "If you are not a registered member, "),
+                        const TextSpan(text: "If you are not a registered member, "),
                         TextSpan(
                           text: "please sign up",
-                          style: TextStyle(color: Colors.red), // Color for "sign up"
+                          style: const TextStyle(color: Colors.red), // Color for "sign up"
                           recognizer: TapGestureRecognizer()
                             ..onTap = (){
                             Navigator.push(context,
@@ -125,7 +127,7 @@ class loginActivity extends StatelessWidget {
         
                       if(email.isEmpty || password.isEmpty){
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Please fill in all fields")),
+                          const SnackBar(content: Text("Please fill in all fields")),
                         );
         
                         return;
@@ -139,11 +141,11 @@ class loginActivity extends StatelessWidget {
                         );
                         // Navigate to homeFragment on successful login
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => homeFragment()),
+                            MaterialPageRoute(builder: (context) => const homeFragment()),
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Invalid Email or Password! Please Try Again.", style: TextStyle(
+                          const SnackBar(content: Text("Invalid Email or Password! Please Try Again.", style: TextStyle(
                             backgroundColor: Colors.red,
                             fontWeight: FontWeight.bold
                           ),)),
@@ -155,12 +157,12 @@ class loginActivity extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red[800],
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Login",
                       style: TextStyle(
                         fontSize: 18,
@@ -169,7 +171,7 @@ class loginActivity extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 30,),
+                const SizedBox(height: 30,),
         
                 // Card(
                 //   elevation: 5,
@@ -214,7 +216,7 @@ class loginActivity extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => donorRegistration(),
+                        builder: (context) => const donorRegistration(),
                       ),
                     );
                   },
@@ -224,7 +226,7 @@ class loginActivity extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.all(5.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

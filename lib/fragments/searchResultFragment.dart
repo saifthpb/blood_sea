@@ -1,19 +1,10 @@
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/loginActivity.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/fragments/donorSearchFragment.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
-import 'package:blood_sea/fragments/donorListFragment.dart';
+// For session management
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'donorRegistration.dart';
 
 class searchResultFragment extends StatefulWidget {
+  const searchResultFragment({super.key});
+
   @override
   _searchResultFragment createState() => _searchResultFragment();
 }
@@ -67,7 +58,7 @@ class _searchResultFragment extends State<searchResultFragment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text('Filter Donors', style: TextStyle(
+        title: const Text('Filter Donors', style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
             color: Colors.white
@@ -80,7 +71,7 @@ class _searchResultFragment extends State<searchResultFragment> {
           children: [
             // Blood Group Dropdown
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Select Blood Group'),
+              decoration: const InputDecoration(labelText: 'Select Blood Group'),
               value: selectedBloodGroup,
               items: bloodGroups.map((group) {
                 return DropdownMenuItem(
@@ -94,11 +85,11 @@ class _searchResultFragment extends State<searchResultFragment> {
                 });
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // District Dropdown
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Select District'),
+              decoration: const InputDecoration(labelText: 'Select District'),
               value: selectedDistrict,
               items: districts.map((district) {
                 return DropdownMenuItem(
@@ -112,14 +103,14 @@ class _searchResultFragment extends State<searchResultFragment> {
                 });
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Filter Button
             ElevatedButton(
               onPressed: filterDonors,
-              child: Text('Filter Donors'),
+              child: const Text('Filter Donors'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Display Filtered Results
             Expanded(
@@ -145,7 +136,7 @@ class _searchResultFragment extends State<searchResultFragment> {
         backgroundColor: Colors.red,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
-        items:[
+        items:const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),

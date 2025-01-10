@@ -12,6 +12,8 @@ import 'package:blood_sea/fragments/searchFragment.dart';
 import 'package:blood_sea/fragments/contactFragment.dart';
 
 class donorSearchFragment extends StatefulWidget {
+  const donorSearchFragment({super.key});
+
   @override
   _DonorSearchFragmentState createState() => _DonorSearchFragmentState();
 }
@@ -70,7 +72,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("Donor Search"),
+        title: const Text("Donor Search"),
         foregroundColor: Colors.white,
         elevation: 5,
         titleSpacing: 0,
@@ -81,12 +83,12 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Welcome to Donors Area"),
-              SizedBox(height: 10,),
+              const Text("Welcome to Donors Area"),
+              const SizedBox(height: 10,),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Select Blood Group",
                     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -105,11 +107,11 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: TextField(
                   controller: _dateController,
                   readOnly: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Date of blood requirement",
                     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -131,7 +133,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: Autocomplete<String>(
                   optionsBuilder: (TextEditingValue textEditingValue) {
                     if (textEditingValue.text.isEmpty) {
@@ -144,7 +146,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                     return TextField(
                       controller: textController,
                       focusNode: focusNode,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Patient's Location",
                         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -158,13 +160,13 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: ElevatedButton(
                   onPressed: () {
                     print("Show Donor List button clicked");
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -174,7 +176,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [Colors.redAccent, Colors.orangeAccent],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -184,7 +186,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                     child: Container(
                       alignment: Alignment.center,
                       height: 50,
-                      child: Text(
+                      child: const Text(
                         "Show Donor List",
                         style: TextStyle(
                           color: Colors.white,
@@ -196,7 +198,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Donor List Table
               // Expanded(
               //   child: SingleChildScrollView(
@@ -237,7 +239,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
               //   ),
               // ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
@@ -272,20 +274,20 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                     ],
                     rows: [
                       DataRow(cells: [
-                        DataCell(Text("Sheikh", style: TextStyle(fontSize: 12))),
-                        DataCell(Text("017156458", style: TextStyle(fontSize: 12))),
-                        DataCell(Text("Dhanmondi", style: TextStyle(fontSize: 12))),
+                        const DataCell(Text("Sheikh", style: TextStyle(fontSize: 12))),
+                        const DataCell(Text("017156458", style: TextStyle(fontSize: 12))),
+                        const DataCell(Text("Dhanmondi", style: TextStyle(fontSize: 12))),
                         DataCell(
                           ElevatedButton(
                             onPressed: () {
                               // Add your button action here
                             },
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                               backgroundColor: Colors.redAccent,
-                              minimumSize: Size(70, 30),
+                              minimumSize: const Size(70, 30),
                             ),
-                            child: Text(
+                            child: const Text(
                               "Send Request",
                               style: TextStyle(fontSize: 12, color: Colors.white),
                             ),
@@ -293,20 +295,20 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
                         ),
                       ]),
                       DataRow(cells: [
-                        DataCell(Text("Rahim", style: TextStyle(fontSize: 12))),
-                        DataCell(Text("016123456", style: TextStyle(fontSize: 12))),
-                        DataCell(Text("Mirpur", style: TextStyle(fontSize: 12))),
+                        const DataCell(Text("Rahim", style: TextStyle(fontSize: 12))),
+                        const DataCell(Text("016123456", style: TextStyle(fontSize: 12))),
+                        const DataCell(Text("Mirpur", style: TextStyle(fontSize: 12))),
                         DataCell(
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> donorsAreaFragment()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const donorsAreaFragment()));
                             },
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                               backgroundColor: Colors.redAccent,
-                              minimumSize: Size(70, 30),
+                              minimumSize: const Size(70, 30),
                             ),
-                            child: Text(
+                            child: const Text(
                               "Send Request",
                               style: TextStyle(fontSize: 12, color: Colors.white),
         
@@ -327,7 +329,7 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.redAccent),
               accountName: Text("Saiful Sarwar"),
               accountEmail: Text("ssb2001@gmail.com"),
@@ -336,58 +338,58 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> homeFragment()),);
+                  MaterialPageRoute(builder: (context)=> const homeFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Profile"),
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
               onTap: () {
                 Navigator.pop(context);
                 // Navigate to profile fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => profileFragment()),);
+                  MaterialPageRoute(builder: (context) => const profileFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.search),
-              title: Text("Search"),
+              leading: const Icon(Icons.search),
+              title: const Text("Search"),
               onTap: () {
                 Navigator.pop(context);
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => searchFragment()),);
+                  MaterialPageRoute(builder: (context) => const searchFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.contact_emergency),
-              title: Text("Contact"),
+              leading: const Icon(Icons.contact_emergency),
+              title: const Text("Contact"),
               onTap: () {
                 Navigator.pop(context);
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => contactFragment()),);
+                  MaterialPageRoute(builder: (context) => const contactFragment()),);
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
               onTap: () {
                 // Implement logout functionality
                 _logout();
               },
             ),
             ListTile(
-              leading: Icon(Icons.arrow_back),
-              title: Text("Back"),
+              leading: const Icon(Icons.arrow_back),
+              title: const Text("Back"),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -412,30 +414,30 @@ class _DonorSearchFragmentState extends State<donorSearchFragment> {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => homeFragment()),
+                MaterialPageRoute(builder: (context) => const homeFragment()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => searchFragment()),
+                MaterialPageRoute(builder: (context) => const searchFragment()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => profileFragment()),
+                MaterialPageRoute(builder: (context) => const profileFragment()),
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => notificationFragment()),
+                MaterialPageRoute(builder: (context) => const notificationFragment()),
               );
               break;
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",

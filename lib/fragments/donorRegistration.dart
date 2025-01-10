@@ -289,7 +289,6 @@
 // }
 
 //new codes
-import 'package:blood_sea/loginActivity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -299,25 +298,17 @@ import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/loginActivity.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/fragments/donorSearchFragment.dart';
+// For session management
 //import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/profileFragment.dart';
 import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
-import 'package:blood_sea/fragments/donorListFragment.dart';
-import 'donorRegistration.dart';
 
 void main() {
   runApp(const donorRegistration());
 }
 
 class donorRegistration extends StatefulWidget {
-  const donorRegistration({Key? key}) : super(key: key);
+  const donorRegistration({super.key});
 
   @override
   _donorRegistrationState createState() => _donorRegistrationState();
@@ -403,7 +394,7 @@ final TextEditingController _lastDonateDateController = TextEditingController();
   Future<void> _submitDonorData() async {
     if (_selectedBloodGroup == null || _districtController.text.isEmpty || _thanaController.text.isEmpty || _lastDonateDateController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please fill all the fields!")),
+        const SnackBar(content: Text("Please fill all the fields!")),
       );
       return;
     }
@@ -445,7 +436,7 @@ final TextEditingController _lastDonateDateController = TextEditingController();
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Donor registration successful!")),
+          const SnackBar(content: Text("Donor registration successful!")),
         );
       }
     } catch (e) {
@@ -487,9 +478,9 @@ final TextEditingController _lastDonateDateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-      minimumSize: Size(double.infinity, 60),
+      minimumSize: const Size(double.infinity, 60),
       backgroundColor: Colors.green,
-      textStyle: TextStyle(fontSize: 20),
+      textStyle: const TextStyle(fontSize: 20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
     );
 
@@ -497,57 +488,57 @@ final TextEditingController _lastDonateDateController = TextEditingController();
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Donor Registration"),
+          title: const Text("Donor Registration"),
           backgroundColor: Colors.red,
         ),
         body: _userName == null || _userEmail == null || _userPhone == null
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               TextField(
                 controller: TextEditingController(text: _userName),
                 readOnly: true,
-                decoration: InputDecoration(labelText: "Fullname"),
+                decoration: const InputDecoration(labelText: "Fullname"),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: TextEditingController(text: _userEmail),
                 readOnly: true,
-                decoration: InputDecoration(labelText: "Email"),
+                decoration: const InputDecoration(labelText: "Email"),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: TextEditingController(text: _userPhone),
                 readOnly: true,
-                decoration: InputDecoration(labelText: "Phone"),
+                decoration: const InputDecoration(labelText: "Phone"),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 items: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
                     .map((group) => DropdownMenuItem(value: group, child: Text(group)))
                     .toList(),
                 onChanged: (value) => setState(() => _selectedBloodGroup = value),
-                decoration: InputDecoration(labelText: "Blood Group"),
+                decoration: const InputDecoration(labelText: "Blood Group"),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: _districtController,
-                decoration: InputDecoration(labelText: "District"),
+                decoration: const InputDecoration(labelText: "District"),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: _thanaController,
-                decoration: InputDecoration(labelText: "Thana/Upazila"),
+                decoration: const InputDecoration(labelText: "Thana/Upazila"),
               ),
-              SizedBox(height: 10),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                   controller: _lastDonateDateController, // Rename controller to suit the field, e.g., _lastDonateDateController
 
                 readOnly: true, // Prevent manual input
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Last Donate Date",
                   suffixIcon: Icon(Icons.calendar_today), // Calendar icon for better UX
                 ),
@@ -570,19 +561,19 @@ final TextEditingController _lastDonateDateController = TextEditingController();
               ),
 
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _selectedImage != null
                   ? Image.file(_selectedImage!, height: 150, width: 150)
                   : ElevatedButton.icon(
                 onPressed: _pickImage,
-                icon: Icon(Icons.upload),
-                label: Text("Upload Photo"),
+                icon: const Icon(Icons.upload),
+                label: const Text("Upload Photo"),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _submitDonorData,
-                child: Text("Submit"),
                 style: buttonStyle,
+                child: const Text("Submit"),
               ),
             ],
           ),
@@ -604,30 +595,30 @@ final TextEditingController _lastDonateDateController = TextEditingController();
               case 0:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => homeFragment()),
+                  MaterialPageRoute(builder: (context) => const homeFragment()),
                 );
                 break;
               case 1:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => searchFragment()),
+                  MaterialPageRoute(builder: (context) => const searchFragment()),
                 );
                 break;
               case 2:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => profileFragment()),
+                  MaterialPageRoute(builder: (context) => const profileFragment()),
                 );
                 break;
               case 3:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => notificationFragment()),
+                  MaterialPageRoute(builder: (context) => const notificationFragment()),
                 );
                 break;
             }
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",

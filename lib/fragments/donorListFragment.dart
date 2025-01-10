@@ -11,6 +11,8 @@ import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
 import 'package:blood_sea/fragments/contactFragment.dart';
 
 class donorListFragment extends StatefulWidget {
+  const donorListFragment({super.key});
+
   @override
   _DonorListFragment createState() => _DonorListFragment();
 }
@@ -18,7 +20,7 @@ class donorListFragment extends StatefulWidget {
 class _DonorListFragment extends State<donorListFragment> {
   String selectedBloodGroup = 'All';
   String selectedDistrict = 'All';
-  DateTime threeMonthsAgo = DateTime.now().subtract(Duration(days: 90));
+  DateTime threeMonthsAgo = DateTime.now().subtract(const Duration(days: 90));
 
   List<String> bloodGroups = ['All', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   List<String> districts = ['All', 'Dhaka', 'Chittagong', 'Sylhet', 'Khulna'];
@@ -40,24 +42,24 @@ class _DonorListFragment extends State<donorListFragment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("Donor List"),
+        title: const Text("Donor List"),
         actions: [
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => shareFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const shareFragment()));
             },
           ),
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => notificationFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const notificationFragment()));
             },
           ),
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => searchFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const searchFragment()));
             },
           ),
         ],
@@ -66,7 +68,7 @@ class _DonorListFragment extends State<donorListFragment> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.redAccent),
               accountName: Text("Saiful Sarwar"),
               accountEmail: Text("ssb2001@gmail.com"),
@@ -75,44 +77,44 @@ class _DonorListFragment extends State<donorListFragment> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => homeFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const homeFragment()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Profile"),
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => profileFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const profileFragment()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.search),
-              title: Text("Search"),
+              leading: const Icon(Icons.search),
+              title: const Text("Search"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => searchFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const searchFragment()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.contact_emergency),
-              title: Text("Contact"),
+              leading: const Icon(Icons.contact_emergency),
+              title: const Text("Contact"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => contactFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const contactFragment()));
               },
             ),
-            Divider(height: 2),
+            const Divider(height: 2),
             ListTile(
-              leading: Icon(Icons.arrow_back),
-              title: Text("Privacy Policy"),
+              leading: const Icon(Icons.arrow_back),
+              title: const Text("Privacy Policy"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => privacyPolicyFragment()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const privacyPolicyFragment()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
               onTap: _logout,
             ),
           ],
@@ -141,7 +143,7 @@ class _DonorListFragment extends State<donorListFragment> {
                       }).toList(),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: DropdownButton<String>(
                       value: selectedDistrict,
@@ -166,11 +168,11 @@ class _DonorListFragment extends State<donorListFragment> {
                 stream: FirebaseFirestore.instance.collection('clients').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('No donors found.'));
+                    return const Center(child: Text('No donors found.'));
                   }
 
                   var donors = snapshot.data!.docs.where((doc) {
@@ -194,7 +196,7 @@ class _DonorListFragment extends State<donorListFragment> {
                       bool isAvailable = lastDonateDate == null || lastDonateDate.isBefore(threeMonthsAgo);
 
                       return Card(
-                        margin: EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(8),
                         child: ListTile(
                           title: Text(name),
                           subtitle: Column(
@@ -222,13 +224,13 @@ class _DonorListFragment extends State<donorListFragment> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
                                   ),
                                   onPressed: isAvailable ? () {} : null,
-                                  child: Text('Request Send',
+                                  child: const Text('Request Send',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.white
@@ -262,20 +264,20 @@ class _DonorListFragment extends State<donorListFragment> {
 
           switch (index) {
             case 0:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => homeFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const homeFragment()));
               break;
             case 1:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => searchFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const searchFragment()));
               break;
             case 2:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => profileFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const profileFragment()));
               break;
             case 3:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => notificationFragment()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const notificationFragment()));
               break;
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),

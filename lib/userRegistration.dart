@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class userRegistration extends StatefulWidget {
+  const userRegistration({super.key});
+
   @override
   _UserRegistrationPageState createState() => _UserRegistrationPageState();
 }
@@ -51,24 +51,24 @@ class _UserRegistrationPageState extends State<userRegistration> {
         child: Column(
           children: [
             // Basic user registration fields
-            TextField(controller: _nameController, decoration: InputDecoration(labelText: 'Full Name')),
-            TextField(controller: _emailController, decoration: InputDecoration(labelText: 'Email')),
-            TextField(controller: _phoneController, decoration: InputDecoration(labelText: 'Phone')),
-            TextField(controller: _passwordController, decoration: InputDecoration(labelText: 'Password'), obscureText: true),
+            TextField(controller: _nameController, decoration: const InputDecoration(labelText: 'Full Name')),
+            TextField(controller: _emailController, decoration: const InputDecoration(labelText: 'Email')),
+            TextField(controller: _phoneController, decoration: const InputDecoration(labelText: 'Phone')),
+            TextField(controller: _passwordController, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
             ElevatedButton(
               onPressed: _toggleDonorSection,
               child: Text(_isDonor ? 'Hide Donor Registration' : 'Donor Registration'),
             ),
             // Donor-specific fields, shown only when _isDonor is true
             if (_isDonor) ...[
-              TextField(controller: _bloodGroupController, decoration: InputDecoration(labelText: 'Blood Group')),
-              TextField(controller: _addressController, decoration: InputDecoration(labelText: 'Address')),
-              TextField(controller: _lastDonateDateController, decoration: InputDecoration(labelText: 'Last Donate Date')),
+              TextField(controller: _bloodGroupController, decoration: const InputDecoration(labelText: 'Blood Group')),
+              TextField(controller: _addressController, decoration: const InputDecoration(labelText: 'Address')),
+              TextField(controller: _lastDonateDateController, decoration: const InputDecoration(labelText: 'Last Donate Date')),
               // Implement photo upload logic here
             ],
             ElevatedButton(
               onPressed: _registerUser,
-              child: Text('Register'),
+              child: const Text('Register'),
             ),
           ],
         ),
