@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class contactFragment extends StatelessWidget {
-  const contactFragment({super.key});
+class ContactScreen extends StatelessWidget {
+  const ContactScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/splashScreenActivity.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/profile/profile.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class userRegistration extends StatefulWidget {
-  const userRegistration({super.key});
+class UserRegistrationScreen extends StatefulWidget {
+  const UserRegistrationScreen({super.key});
 
   @override
-  _UserRegistrationPageState createState() => _UserRegistrationPageState();
+  _UserRegistrationScreenState createState() => _UserRegistrationScreenState();
 }
-
-class _UserRegistrationPageState extends State<userRegistration> {
+// 01796952324
+class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   bool _isDonor = false; // Tracks whether the donor section should be shown
 
   // Controllers for user registration

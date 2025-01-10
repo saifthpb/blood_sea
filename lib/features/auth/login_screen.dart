@@ -1,20 +1,20 @@
-import 'package:blood_sea/fragments/donorRegistration.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/clientSignUp.dart';
-import 'package:blood_sea/userRegistration.dart';
+import 'package:blood_sea/features/auth/donor_registration_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/auth/client_signup_screen.dart';
+import 'package:blood_sea/features/auth/user_registration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'fragments/homeFragment.dart';
+import '../home/home.dart';
 
-class loginActivity extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  loginActivity({super.key});
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

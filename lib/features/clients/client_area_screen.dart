@@ -1,23 +1,23 @@
-import 'package:blood_sea/fragments/clientAreaFragment.dart';
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/loginActivity.dart';
+import 'package:blood_sea/features/clients/client_area_screen.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/share/share.dart';
+import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/fragments/donorSearchFragment.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/features/donors/donor_search_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/profile/profile.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 
-class donorsAreaFragment extends StatefulWidget {
-  const donorsAreaFragment({super.key});
+class ClientAreaScreen extends StatefulWidget {
+  const ClientAreaScreen({super.key});
 
   @override
-  _DonorsAreaFragmentState createState() => _DonorsAreaFragmentState();
+  _ClientAreaScreenState createState() => _ClientAreaScreenState();
 }
-class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
-  //const clientAreaFragment({super.key});
+  class _ClientAreaScreenState extends State<ClientAreaScreen>{
+  //const ClientAreaScreen({super.key});
 
   int _selectedIndex = 0;
 
@@ -146,102 +146,91 @@ class _DonorsAreaFragmentState extends State<donorsAreaFragment>{
           ],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Notification from Client's",
+            Text("Notification from donor",
+            style: TextStyle(
+              fontSize: 25,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              color: Colors.red
+            ),),
+            Divider(height: 5,),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Text("A person name Sazal accepted your request. Please contact with the number: 8801759653250",
               style: TextStyle(
-                  fontSize: 25,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green
+                fontSize: 14,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
               ),
-            ),
-            const Divider(height: 5,),
-            const SizedBox(height: 10,),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "A person name sent you a request. Are you available? If you are agree please contact to ..01711775577",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
               ),
-            ),
-        IconButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>clientAreaFragment(),));
-
-        },
-            icon: const Icon(Icons.arrow_right,
-            color: Colors.green,
-                size: 50,))
-
+            )
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red,
-        selectedItemColor: Colors.white, // Color for selected item
-        unselectedItemColor: Colors.white, // Color for unselected items
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.red,
+      selectedItemColor: Colors.white, // Color for selected item
+      unselectedItemColor: Colors.white, // Color for unselected items
+      currentIndex: _selectedIndex,
+      onTap: (int index) {
+        setState(() {
+          _selectedIndex = index;
+        });
 
-          // Navigate to the respective pages based on the index
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => homeFragment()),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => searchFragment()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => profileFragment()),
-              );
-              break;
-            case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => notificationFragment()),
-              );
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: "Search",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: "Notifications",
-          ),
-        ],
-      ),
+        // Navigate to the respective pages based on the index
+        switch (index) {
+          case 0:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => homeFragment()),
+            );
+            break;
+          case 1:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => searchFragment()),
+            );
+            break;
+          case 2:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => profileFragment()),
+            );
+            break;
+          case 3:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => notificationFragment()),
+            );
+            break;
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: "Search",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: "Profile",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications),
+          label: "Notifications",
+        ),
+      ],
+    ),
     );
   }
 }

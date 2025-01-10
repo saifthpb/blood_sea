@@ -1,11 +1,11 @@
-import 'package:blood_sea/fragments/donorsAreaFragment.dart';
-import 'package:blood_sea/fragments/donorRegistration.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
+import 'package:blood_sea/features/donors/donors_area_screen.dart';
+import 'package:blood_sea/features/auth/donor_registration_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class clientSignUp extends StatelessWidget {
+class ClientSignUpScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers to retrieve user input
@@ -15,7 +15,7 @@ class clientSignUp extends StatelessWidget {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  clientSignUp({super.key});
+  ClientSignUpScreen({super.key});
 
   // Function to handle sign-up
   Future<void> _handleSignUp(BuildContext context) async{
@@ -231,10 +231,4 @@ class clientSignUp extends StatelessWidget {
 
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: clientSignUp(),
-  ));
 }

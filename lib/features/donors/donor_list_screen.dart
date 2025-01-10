@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:blood_sea/loginActivity.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/features/auth/login_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/profile/profile.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/share/share.dart';
+import 'package:blood_sea/features/privacy_policy/privacy_policy.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 
-class donorListFragment extends StatefulWidget {
-  const donorListFragment({super.key});
+class DonorListScreen extends StatefulWidget {
+  const DonorListScreen({super.key});
 
   @override
-  _DonorListFragment createState() => _DonorListFragment();
+  _DonorListScreen createState() => _DonorListScreen();
 }
 
-class _DonorListFragment extends State<donorListFragment> {
+class _DonorListScreen extends State<DonorListScreen> {
   String selectedBloodGroup = 'All';
   String selectedDistrict = 'All';
   DateTime threeMonthsAgo = DateTime.now().subtract(const Duration(days: 90));

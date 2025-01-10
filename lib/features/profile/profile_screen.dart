@@ -1,26 +1,26 @@
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/loginActivity.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/privacy_policy/privacy_policy.dart';
+import 'package:blood_sea/features/share/share.dart';
+import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/fragments/donorSearchFragment.dart';
-import 'package:blood_sea/fragments/donorRegistration.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/features/donors/donor_search_screen.dart';
+import 'package:blood_sea/features/auth/donor_registration_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class profileFragment extends StatefulWidget {
-  const profileFragment({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  _ProfileFragment createState() => _ProfileFragment();
+  State<ProfileScreen> createState() => _ProfileScreen();
 }
 
-class _ProfileFragment extends State<profileFragment> {
+class _ProfileScreen extends State<ProfileScreen> {
 
   //final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -179,7 +179,7 @@ class _ProfileFragment extends State<profileFragment> {
       //         title: Text("Profile"),
       //         onTap: () {
       //           Navigator.pop(context);
-      //           Navigator.push(context, MaterialPageRoute(builder: (context) => profileFragment()));
+      //           Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
       //         },
       //       ),
       //       ListTile(

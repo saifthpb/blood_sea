@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'loginActivity.dart'; // Import the Login page
+import '../auth/login_screen.dart'; // Import the Login page
 
-class splashScreenActivity extends StatefulWidget {
-  const splashScreenActivity({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  _splashScreenActivityState createState() => _splashScreenActivityState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _splashScreenActivityState extends State<splashScreenActivity> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();

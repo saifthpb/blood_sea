@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class shareFragment extends StatelessWidget {
-  const shareFragment({super.key});
+class ShareScreen extends StatelessWidget {
+  const ShareScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

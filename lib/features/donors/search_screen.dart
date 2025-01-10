@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:blood_sea/loginActivity.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/searchResultFragment.dart';
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/features/auth/login_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/profile/profile.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/donors/search_result_screen.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/share/share.dart';
+import 'package:blood_sea/features/privacy_policy/privacy_policy.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 
-class searchFragment extends StatefulWidget {
-  const searchFragment({super.key});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
 
   @override
-  _searchFragment createState() => _searchFragment();
+  State<SearchScreen> createState() => _SearchScreen();
 }
 
-class _searchFragment extends State<searchFragment> {
-  //const searchFragment({super.key});
+class _SearchScreen extends State<SearchScreen> {
+  //const SearchScreen({super.key});
 
   // Logout functionality using SharedPreferences (or Firebase if preferred)
   Future<void> _logout() async {
@@ -86,7 +86,7 @@ class _searchFragment extends State<searchFragment> {
                   // Navigate to search fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => searchFragment()),);
+                    MaterialPageRoute(builder: (context) => SearchScreen()),);
                 },
               ),
               ListTile(

@@ -1,25 +1,24 @@
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/privacyPolicyFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/loginActivity.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/privacy_policy/privacy_policy.dart';
+import 'package:blood_sea/features/share/share.dart';
+import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/fragments/donorSearchFragment.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/features/donors/donor_search_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/profile/profile.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class notificationFragment extends StatefulWidget {
-  const notificationFragment({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  _NotificationFragment createState() => _NotificationFragment();
-// Sample data for demonstration
+  State<NotificationScreen> createState() => _NotificationScreen();
 }
 
-class _NotificationFragment extends State<notificationFragment> {
+class _NotificationScreen extends State<NotificationScreen> {
   final List<Map<String, String>> _notifications = [];
 
   int _selectedIndex = 0;
@@ -85,7 +84,7 @@ class _NotificationFragment extends State<notificationFragment> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => notificationFragment()));
+                      builder: (context) => NotificationScreen()));
             },
           ),
           IconButton(
@@ -247,7 +246,7 @@ class _NotificationFragment extends State<notificationFragment> {
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => notificationFragment()),
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
               );
               break;
           }

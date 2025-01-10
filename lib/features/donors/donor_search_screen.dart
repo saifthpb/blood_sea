@@ -1,24 +1,24 @@
-import 'package:blood_sea/fragments/clientAreaFragment.dart';
-import 'package:blood_sea/fragments/donorsAreaFragment.dart';
-import 'package:blood_sea/fragments/notificationFragment.dart';
-import 'package:blood_sea/fragments/shareFragment.dart';
-import 'package:blood_sea/loginActivity.dart';
+import 'package:blood_sea/features/clients/client_area_screen.dart';
+import 'package:blood_sea/features/donors/donors_area_screen.dart';
+import 'package:blood_sea/features/notifications/notifications.dart';
+import 'package:blood_sea/features/share/share.dart';
+import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/fragments/donorSearchFragment.dart';
-import 'package:blood_sea/fragments/homeFragment.dart';
-import 'package:blood_sea/fragments/profileFragment.dart';
-import 'package:blood_sea/fragments/searchFragment.dart';
-import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:blood_sea/features/donors/donor_search_screen.dart';
+import 'package:blood_sea/features/home/home.dart';
+import 'package:blood_sea/features/profile/profile.dart';
+import 'package:blood_sea/features/donors/search.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 
-class donorSearchFragment extends StatefulWidget {
-  const donorSearchFragment({super.key});
+class DonorSearchScreen extends StatefulWidget {
+  const DonorSearchScreen({super.key});
 
   @override
-  _DonorSearchFragmentState createState() => _DonorSearchFragmentState();
+  _DonorSearchScreenState createState() => _DonorSearchScreenState();
 }
 
-class _DonorSearchFragmentState extends State<donorSearchFragment> {
+class _DonorSearchScreenState extends State<DonorSearchScreen> {
   final TextEditingController _dateController = TextEditingController();
 
   int _selectedIndex = 0;
