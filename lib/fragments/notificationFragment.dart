@@ -9,6 +9,7 @@ import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/profileFragment.dart';
 import 'package:blood_sea/fragments/searchFragment.dart';
 import 'package:blood_sea/fragments/contactFragment.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class notificationFragment extends StatefulWidget {
   const notificationFragment({super.key});
@@ -19,8 +20,25 @@ class notificationFragment extends StatefulWidget {
 }
 
 class _NotificationFragment extends State<notificationFragment> {
+  final List<Map<String, String>> _notifications = [];
 
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        setState(() {
+          _notifications.add({
+            'title': message.notification!.title ?? 'No Title',
+            'body': message.notification!.body ?? 'No Body',
+          });
+        });
+      }
+    });
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -36,7 +54,7 @@ class _NotificationFragment extends State<notificationFragment> {
     // Navigate to the login screen after logging out
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context)=> loginActivity()),
+      MaterialPageRoute(builder: (context) => loginActivity()),
     );
   }
 
@@ -50,21 +68,24 @@ class _NotificationFragment extends State<notificationFragment> {
         elevation: 5,
         titleSpacing: 0,
         actions: [
-
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               // Handle settings tap
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const shareFragment()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const shareFragment()));
             },
           ),
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
               // Handle notifications tap
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>notificationFragment()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => notificationFragment()));
             },
           ),
           IconButton(
@@ -72,7 +93,7 @@ class _NotificationFragment extends State<notificationFragment> {
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>searchFragment()));
+                  MaterialPageRoute(builder: (context) => searchFragment()));
             },
           ),
         ],
@@ -94,8 +115,10 @@ class _NotificationFragment extends State<notificationFragment> {
               title: const Text("Home"),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> homeFragment()),);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => homeFragment()),
+                );
               },
             ),
             ListTile(
@@ -106,7 +129,8 @@ class _NotificationFragment extends State<notificationFragment> {
                 // Navigate to profile fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => profileFragment()),);
+                  MaterialPageRoute(builder: (context) => profileFragment()),
+                );
               },
             ),
             ListTile(
@@ -117,7 +141,8 @@ class _NotificationFragment extends State<notificationFragment> {
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => searchFragment()),);
+                  MaterialPageRoute(builder: (context) => searchFragment()),
+                );
               },
             ),
             ListTile(
@@ -128,11 +153,14 @@ class _NotificationFragment extends State<notificationFragment> {
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const contactFragment()),);
+                  MaterialPageRoute(
+                      builder: (context) => const contactFragment()),
+                );
               },
             ),
-            const Divider(height: 2,),
-
+            const Divider(
+              height: 2,
+            ),
             ListTile(
               leading: const Icon(Icons.arrow_back),
               title: const Text("Privacy Policy"),
@@ -142,10 +170,11 @@ class _NotificationFragment extends State<notificationFragment> {
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+                  MaterialPageRoute(
+                      builder: (context) => privacyPolicyFragment()),
+                );
               },
             ),
-
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
@@ -164,15 +193,26 @@ class _NotificationFragment extends State<notificationFragment> {
           ],
         ),
       ),
-      body: const Center(
-        child: Text("Welcome to Notification Page",
-        style: TextStyle(
-          fontSize: 24,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.bold,
-          color: Colors.red
-        ),),
-      ),
+      body: _notifications.isEmpty
+          ? const Center(
+              child: Text(
+                'No Notifications Found',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          : ListView.builder(
+              itemCount: _notifications.length,
+              itemBuilder: (context, index) {
+                final notification = _notifications[index];
+                return ListTile(
+                  title: Text(notification['title']!),
+                  subtitle: Text(notification['body']!),
+                );
+              },
+            ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.red,

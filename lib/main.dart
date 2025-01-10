@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:blood_sea/fragments/homeFragment.dart';
 import 'package:blood_sea/fragments/notificationFragment.dart';
 import 'package:blood_sea/fragments/profileFragment.dart';
@@ -12,6 +13,15 @@ import 'package:flutter/material.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // Initialize Firebase
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // Request permission for iOS
+  NotificationSettings settings = await messaging.requestPermission();
+  print('Permission granted: ${settings.authorizationStatus}');
+    // Get the device token
+  String? token = await messaging.getToken();
+  print('Device Token: $token'); // Use this token in the Node.js script
+  
   runApp(const MyApp());
 }
 
