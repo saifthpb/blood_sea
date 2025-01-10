@@ -5,9 +5,6 @@ class ShareScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Share your thoughts")),
-      backgroundColor: Colors.blue,
-    );
+    return const Center(child: Text("Share your thoughts"))
   }
 }

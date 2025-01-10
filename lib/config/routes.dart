@@ -1,8 +1,20 @@
+import 'package:blood_sea/features/auth/client_signup_screen.dart';
+import 'package:blood_sea/features/auth/donor_registration_screen.dart';
 import 'package:blood_sea/features/auth/login_screen.dart';
+import 'package:blood_sea/features/auth/user_registration_screen.dart';
+import 'package:blood_sea/features/clients/client_area_screen.dart';
+import 'package:blood_sea/features/contact/contact_screen.dart';
 import 'package:blood_sea/features/donors/donor_list_screen.dart';
+import 'package:blood_sea/features/donors/donor_search_screen.dart';
+import 'package:blood_sea/features/donors/donors_area_screen.dart';
+import 'package:blood_sea/features/donors/request_screen.dart';
+import 'package:blood_sea/features/donors/search_result_screen.dart';
+import 'package:blood_sea/features/donors/search_screen.dart';
 import 'package:blood_sea/features/home/home_screen.dart';
 import 'package:blood_sea/features/notifications/notifications_screen.dart';
+import 'package:blood_sea/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:blood_sea/features/profile/profile_screen.dart';
+import 'package:blood_sea/features/share/share_screen.dart';
 import 'package:blood_sea/features/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +29,54 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginScreen(),
+    ),
+    GoRoute(
+      path: '/client-signup',
+      builder: (context, state) => ClientSignUpScreen(),
+    ),
+    GoRoute(
+      path: '/donor-registration',
+      builder: (context, state) => const DonorRegistrationScreen(),
+    ),
+    GoRoute(
+      path: '/user-registration',
+      builder: (context, state) => const UserRegistrationScreen(),
+    ),
+    GoRoute(
+      path: '/client-area',
+      builder: (context, state) => const ClientAreaScreen(),
+    ),
+    GoRoute(
+      path: '/contact',
+      builder: (context, state) => const ContactScreen(),
+    ),
+    GoRoute(
+      path: '/donor-search',
+      builder: (context, state) => const DonorSearchScreen(),
+    ),
+    GoRoute(
+      path: '/donors-area',
+      builder: (context, state) => const DonorsAreaScreen(),
+    ),
+    GoRoute(
+      path: '/request',
+      builder: (context, state) => const RequestScreen(),
+    ),
+    GoRoute(
+      path: '/search-result',
+      builder: (context, state) => const SearchResultScreen(),
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => const SearchScreen(),
+    ),
+    GoRoute(
+      path: '/privacy-policy',
+      builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: '/share',
+      builder: (context, state) => const ShareScreen(),
     ),
     ShellRoute(
       builder: (context, state, child) {

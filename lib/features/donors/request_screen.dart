@@ -56,11 +56,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Blood Request Form'),
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -187,7 +183,6 @@ class _RequestScreenState extends State<RequestScreen> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
