@@ -78,7 +78,6 @@ final goRouter = GoRouter(
   ],
 );
 
-export 'routes.dart';
 
 // Helper for AppBar title
 String _getAppBarTitle(String location) {

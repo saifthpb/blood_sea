@@ -1,13 +1,10 @@
 import 'package:blood_sea/features/auth/donor_registration_screen.dart';
-import 'package:blood_sea/features/home/home.dart';
 import 'package:blood_sea/features/auth/client_signup_screen.dart';
-import 'package:blood_sea/features/auth/user_registration.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:blood_sea/features/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../home/home.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -18,9 +15,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.red[50], // Light reddish background
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -103,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                           recognizer: TapGestureRecognizer()
                             ..onTap = (){
                             Navigator.push(context,
-                            MaterialPageRoute(builder: (context)=>clientSignUp()),
+                            MaterialPageRoute(builder: (context)=> ClientSignUpScreen()),
                               //MaterialPageRoute(builder: (context)=>userRegistration()),
                             );
                             }
@@ -141,7 +136,7 @@ class LoginScreen extends StatelessWidget {
                         );
                         // Navigate to homeFragment on successful login
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => homeFragment()),
+                            MaterialPageRoute(builder: (context) => const HomeScreen()),
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -172,51 +167,13 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30,),
-        
-                // Card(
-                //   elevation: 5,
-                //   color: Colors.blue,
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(8),
-                //   ),
-                //   child: Padding(
-                //       padding: EdgeInsets.all(5.0),
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: [
-                //         Text("Want to be a Donor?",
-                //         style: TextStyle(
-                //           fontSize: 10,
-                //           color: Colors.yellow,
-                //           fontStyle: FontStyle.italic,
-                //         ),
-                //         ),
-                //         SizedBox(height: 5,),
-                //         Icon(Icons.people_outline,
-                //         color: Colors.white,),
-                //         Text("Go Donor Registration",
-                //         style: TextStyle(
-                //             color: Colors.white,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //           ),
-                //         // Icon(
-                //         //   Icons.arrow_right,
-                //         //  color: Colors.white,
-                //         //     ),
-                //       ],
-                //     ),
-                //
-                //   ),
-                //
-                // )
+
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const donorRegistration(),
+                        builder: (context) => const DonorRegistrationScreen(),
                       ),
                     );
                   },
@@ -263,8 +220,6 @@ class LoginScreen extends StatelessWidget {
             
           ),
         ),
-      ),
-      
-    );
+      );
   }
 }
