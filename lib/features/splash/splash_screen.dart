@@ -20,31 +20,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkAuthStatus() async {
     try {
-      // Wait for 2 seconds to show splash screen
       await Future.delayed(const Duration(seconds: 2));
-
       if (!mounted) return;
 
-      // Check if user is signed in
       final User? currentUser = FirebaseAuth.instance.currentUser;
-
       if (!mounted) return;
 
-      if (currentUser != null) {
-        // User is signed in
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
-      } else {
-        // No user is signed in
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => currentUser != null 
+            ? const HomeScreen() 
+            : LoginScreen(),
+        ),
+      );
     } catch (e) {
-      // Handle any errors
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -55,69 +45,111 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Blood donation symbol
-          Icon(
-            Icons.bloodtype,
-            color: Colors.white,
-            size: 100,
-          ),
-          SizedBox(height: 20),
-          // App name or slogan
-          Text(
-            "Welcome to Blood Donation App",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+    return Scaffold(
+      // Add background color to prevent black screen
+      backgroundColor: Theme.of(context).primaryColor,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            // Add gradient background for better visual appeal
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withOpacity(0.8),
+              ],
             ),
           ),
-          Divider(
-            color: Colors.white, // Color of the line
-            thickness: 1, // Thickness of the line
-            height: 10, // Space around the line
-          ),
-          Text(
-            "Save Lives by Donating Blood",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Logo/Icon section
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  child: const Icon(
+                    Icons.bloodtype,
+                    color: Colors.white,
+                    size: 80,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                
+                // Title section
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Welcome to Blood Donation App",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  child: Divider(color: Colors.white, thickness: 1),
+                ),
+                
+                const Text(
+                  "Save Lives by Donating Blood",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                
+                const SizedBox(height: 40),
+                
+                // Loading indicator
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+                
+                const Spacer(),
+                
+                // Footer section
+                const Column(
+                  children: [
+                    Text(
+                      "Developed By Saiful Sarwar || Roquib Pramanik",
+                      style: TextStyle(
+                        color: Colors.yellow,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 1,
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        "Supported by teamExpressBD",
+                        style: TextStyle(
+                          color: Colors.yellow,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 30),
-          // Loading indicator
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-          SizedBox(
-            height: 150,
-          ),
-          Text(
-            "Developped By Saiful Sarwar || Roquib Pramanik",
-            style: TextStyle(
-              color: Colors.yellow,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Divider(
-            color: Colors.white, // Color of the line
-            thickness: 1, // Thickness of the line
-            height: 20, // Space around the line
-          ),
-          Text(
-            "Supported by teamExpressBD",
-            style: TextStyle(
-              color: Colors.yellow,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
