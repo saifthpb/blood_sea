@@ -1,11 +1,12 @@
-import 'dart:async';
-import 'package:blood_sea/features/auth/login_screen.dart';
-import 'package:blood_sea/features/home/home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final Function onInit;
+  
+  const SplashScreen({
+    super.key,
+    required this.onInit,
+  });
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -15,32 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkAuthStatus();
-  }
-
-  Future<void> checkAuthStatus() async {
-    try {
-      await Future.delayed(const Duration(seconds: 2));
-      if (!mounted) return;
-
-      final User? currentUser = FirebaseAuth.instance.currentUser;
-      if (!mounted) return;
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => currentUser != null 
-            ? const HomeScreen() 
-            : LoginScreen(),
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-    }
+    widget.onInit();
   }
 
   @override
