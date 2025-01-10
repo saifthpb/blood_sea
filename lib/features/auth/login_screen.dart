@@ -128,17 +128,19 @@ class LoginScreen extends StatelessWidget {
                         return;
                       }
                       try{
-                        UserCredential userCredential = await FirebaseAuth
+                        await FirebaseAuth
                             .instance
                             .signInWithEmailAndPassword(
                             email: email,
                             password: password
                         );
                         // Navigate to homeFragment on successful login
+                        // ignore: use_build_context_synchronously
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => const HomeScreen()),
                         );
                       } catch (e) {
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Invalid Email or Password! Please Try Again.", style: TextStyle(
                             backgroundColor: Colors.red,

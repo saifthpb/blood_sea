@@ -1,8 +1,4 @@
-import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/features/donors/donor_search_screen.dart';
-import 'package:blood_sea/features/contact/contact_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -15,7 +11,6 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreen extends State<NotificationScreen> {
   final List<Map<String, String>> _notifications = [];
 
-  int _selectedIndex = 0;
 
   @override
   void initState() {

@@ -1,6 +1,7 @@
 import 'package:blood_sea/config/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
@@ -10,10 +11,14 @@ void main() async{
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   // Request permission for iOS
   NotificationSettings settings = await messaging.requestPermission();
-  print('Permission granted: ${settings.authorizationStatus}');
+  if (kDebugMode) {
+    print('Permission granted: ${settings.authorizationStatus}');
+  }
     // Get the device token
   String? token = await messaging.getToken();
-  print('Device Token: $token'); // Use this token in the Node.js script
+  if (kDebugMode) {
+    print('Device Token: $token');
+  } // Use this token in the Node.js script
   
   runApp(const MyApp());
 }

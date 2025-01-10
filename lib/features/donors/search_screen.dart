@@ -1,14 +1,10 @@
+import 'package:blood_sea/features/home/home_screen.dart';
+import 'package:blood_sea/features/privacy_policy/privacy_policy_screen.dart';
+import 'package:blood_sea/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:blood_sea/features/auth/login_screen.dart';
-import 'package:blood_sea/features/home/home.dart';
-import 'package:blood_sea/features/profile/profile.dart';
-import 'package:blood_sea/features/donors/search.dart';
 import 'package:blood_sea/features/donors/search_result_screen.dart';
-import 'package:blood_sea/features/notifications/notifications.dart';
-import 'package:blood_sea/features/share/share.dart';
-import 'package:blood_sea/features/privacy_policy/privacy_policy.dart';
 import 'package:blood_sea/features/contact/contact_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -28,8 +24,9 @@ class _SearchScreen extends State<SearchScreen> {
 
     // Navigate to the login screen after logging out
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
-      MaterialPageRoute(builder: (context)=> loginActivity()),
+      MaterialPageRoute(builder: (context)=> LoginScreen()),
     );
   }
 
@@ -64,7 +61,7 @@ class _SearchScreen extends State<SearchScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> homeFragment()),);
+                    MaterialPageRoute(builder: (context)=> const HomeScreen()),);
                 },
               ),
               ListTile(
@@ -75,7 +72,7 @@ class _SearchScreen extends State<SearchScreen> {
                   // Navigate to profile fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => profileFragment()),);
+                    MaterialPageRoute(builder: (context) => const ProfileScreen()),);
                 },
               ),
               ListTile(
@@ -86,7 +83,7 @@ class _SearchScreen extends State<SearchScreen> {
                   // Navigate to search fragment
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchScreen()),);
+                    MaterialPageRoute(builder: (context) => const SearchScreen()),);
                 },
               ),
               ListTile(
@@ -97,7 +94,7 @@ class _SearchScreen extends State<SearchScreen> {
                   // Navigate to contact page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const contactFragment()),);
+                    MaterialPageRoute(builder: (context) => const ContactScreen()),);
                 },
               ),
               const Divider(height: 2,),
@@ -111,7 +108,7 @@ class _SearchScreen extends State<SearchScreen> {
                   // Navigate to contact page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+                    MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),);
                 },
               ),
 
@@ -153,7 +150,7 @@ class _SearchScreen extends State<SearchScreen> {
     onPressed: () {
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => searchResultFragment()),
+    MaterialPageRoute(builder: (context) => const SearchResultScreen()),
     );
 
 

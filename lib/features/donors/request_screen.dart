@@ -47,7 +47,6 @@ class _RequestScreenState extends State<RequestScreen> {
 
   void _submitRequest() {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement the request submission logic
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Processing Blood Request...')),
       );

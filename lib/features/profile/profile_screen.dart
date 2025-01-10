@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,13 +58,17 @@ class _ProfileScreen extends State<ProfileScreen> {
         setState(() {
           isLoading = false;
         });
-        print("No user data found");
+        if (kDebugMode) {
+          print("No user data found");
+        }
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      print("Error fetching user data: $e");
+      if (kDebugMode) {
+        print("Error fetching user data: $e");
+      }
     }
   }
 
@@ -83,7 +88,9 @@ class _ProfileScreen extends State<ProfileScreen> {
       }
       return "${date.day}-${date.month}-${date.year}"; // Format: DD-MM-YYYY
     } catch (e) {
-      print("Error formatting date: $e");
+      if (kDebugMode) {
+        print("Error formatting date: $e");
+      }
       return null;
     }
   }

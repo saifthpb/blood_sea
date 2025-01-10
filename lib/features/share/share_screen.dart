@@ -5,6 +5,6 @@ class ShareScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Share your thoughts"))
+    return const Center(child: Text("Share your thoughts"));
   }
 }

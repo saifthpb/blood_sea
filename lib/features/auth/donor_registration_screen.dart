@@ -53,7 +53,10 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
         }
       }
     } catch (e) {
-      print("Error fetching user data: $e");
+      if (kDebugMode) {
+        print("Error fetching user data: $e");
+      }
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error fetching user data: $e")),
       );
@@ -69,7 +72,9 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
         return await uploadTask.ref.getDownloadURL();
       }
     } catch (e) {
-      print("Error uploading image: $e");
+      if (kDebugMode) {
+        print("Error uploading image: $e");
+      }
       return null;
     }
     return null;
@@ -101,9 +106,7 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
         }
 
         // Convert the 'lastDonateDate' from string to Timestamp - added these lines 26 december 24, but does not work
-        DateTime lastDonateDate =
-            DateTime.parse(_lastDonateDateController.text.trim());
-        Timestamp lastDonateTimestamp = Timestamp.fromDate(lastDonateDate);
+        DateTime.parse(_lastDonateDateController.text.trim());
 
         //lastDonate Date
 
@@ -128,11 +131,13 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
           _selectedImage = null;
         });
 
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Donor registration successful!")),
         );
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error submitting data: $e")),
       );

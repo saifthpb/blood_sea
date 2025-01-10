@@ -1,4 +1,5 @@
 import 'package:blood_sea/features/donors/donors_area_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DonorSearchScreen extends StatefulWidget {
@@ -64,7 +65,9 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
                     );
                   }).toList(),
                   onChanged: (value) {
-                    print("Selected Blood Group: $value");
+                    if (kDebugMode) {
+                      print("Selected Blood Group: $value");
+                    }
                   },
                 ),
               ),
@@ -117,7 +120,9 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
                     );
                   },
                   onSelected: (String selection) {
-                    print("Selected Hospital: $selection");
+                    if (kDebugMode) {
+                      print("Selected Hospital: $selection");
+                    }
                   },
                 ),
               ),
@@ -125,7 +130,9 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
                 padding: const EdgeInsets.all(5),
                 child: ElevatedButton(
                   onPressed: () {
-                    print("Show Donor List button clicked");
+                    if (kDebugMode) {
+                      print("Show Donor List button clicked");
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 15),
@@ -168,6 +175,7 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
                   child: DataTable(
                     columnSpacing: 10, // Reduce space between columns
                     headingRowHeight: 35, // Smaller header row height
+                    // ignore: deprecated_member_use
                     dataRowHeight: 40, // Smaller data row height
                     columns: const [
                       DataColumn(

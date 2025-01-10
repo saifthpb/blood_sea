@@ -40,6 +40,7 @@ class ClientSignUpScreen extends StatelessWidget {
           'created_at': Timestamp.now(),
         });
         // Success feedback
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Succesfully Signed Up")),
         );
@@ -53,10 +54,12 @@ class ClientSignUpScreen extends StatelessWidget {
 
         // Optionally navigate to another page
         Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Something went wrong, please try again: $e")),
         );

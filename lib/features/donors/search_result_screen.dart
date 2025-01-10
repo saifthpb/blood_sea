@@ -1,17 +1,6 @@
-import 'package:blood_sea/features/notifications/notifications.dart';
-import 'package:blood_sea/features/privacy_policy/privacy_policy.dart';
-import 'package:blood_sea/features/share/share.dart';
-import 'package:blood_sea/features/auth/login_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // For session management
-import 'package:blood_sea/features/donors/donor_search_screen.dart';
-import 'package:blood_sea/features/home/home.dart';
-import 'package:blood_sea/features/profile/profile.dart';
-import 'package:blood_sea/features/donors/search.dart';
-import 'package:blood_sea/features/contact/contact_screen.dart';
-import 'package:blood_sea/features/donors/donor_list_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../auth/donor_registration_screen.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key});
@@ -60,7 +49,9 @@ class _SearchResultScreen extends State<SearchResultScreen> {
         filteredDonors = donors; // Update the list
       });
     } catch (e) {
-      print('Error filtering donors: $e');
+      if (kDebugMode) {
+        print('Error filtering donors: $e');
+      }
     }
   }
 

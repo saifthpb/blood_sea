@@ -1,10 +1,6 @@
-import 'package:blood_sea/features/auth/auth_service.dart';
-import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:blood_sea/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:blood_sea/features/donors/donor_search_screen.dart';
-import 'package:blood_sea/features/contact/contact_screen.dart';
 import 'package:blood_sea/features/donors/donor_list_screen.dart';
 import '../auth/donor_registration_screen.dart';
 
@@ -16,36 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<void> _logout() async {
-    try {
-      await AuthService.signOut();
-
-      if (!mounted) return;
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Successfully logged out'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      // Navigate to login screen and remove all previous routes
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-        (Route<dynamic> route) => false,
-      );
-    } catch (e) {
-      // Show error message if logout fails
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Logout failed: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
