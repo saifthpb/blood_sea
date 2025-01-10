@@ -27,6 +27,7 @@ class _HomeFragmentState extends State<homeFragment> {
       _selectedIndex = index;
     });
   }
+
 // Logout functionality using SharedPreferences (or Firebase if preferred)
   Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,10 +36,9 @@ class _HomeFragmentState extends State<homeFragment> {
     // Navigate to the login screen after logging out
     Navigator.pushReplacement(
       context,
-    MaterialPageRoute(builder: (context)=> loginActivity()),
+      MaterialPageRoute(builder: (context) => loginActivity()),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,21 +50,24 @@ class _HomeFragmentState extends State<homeFragment> {
         elevation: 5,
         titleSpacing: 0,
         actions: [
-
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               // Handle settings tap
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>const shareFragment()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const shareFragment()));
             },
           ),
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
               // Handle notifications tap
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>notificationFragment()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => notificationFragment()));
             },
           ),
           IconButton(
@@ -72,7 +75,7 @@ class _HomeFragmentState extends State<homeFragment> {
             onPressed: () {
               // Handle settings tap
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>searchFragment()));
+                  MaterialPageRoute(builder: (context) => searchFragment()));
             },
           ),
         ],
@@ -94,8 +97,10 @@ class _HomeFragmentState extends State<homeFragment> {
               title: const Text("Home"),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> homeFragment()),);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => homeFragment()),
+                );
               },
             ),
             ListTile(
@@ -105,8 +110,9 @@ class _HomeFragmentState extends State<homeFragment> {
                 Navigator.pop(context);
                 // Navigate to profile fragment
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => profileFragment()),);
+                  context,
+                  MaterialPageRoute(builder: (context) => profileFragment()),
+                );
               },
             ),
             ListTile(
@@ -117,7 +123,8 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to search fragment
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => searchFragment()),);
+                  MaterialPageRoute(builder: (context) => searchFragment()),
+                );
               },
             ),
             ListTile(
@@ -128,11 +135,14 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const contactFragment()),);
+                  MaterialPageRoute(
+                      builder: (context) => const contactFragment()),
+                );
               },
             ),
-            const Divider(height: 2,),
-
+            const Divider(
+              height: 2,
+            ),
             ListTile(
               leading: const Icon(Icons.arrow_back),
               title: const Text("Privacy Policy"),
@@ -142,10 +152,11 @@ class _HomeFragmentState extends State<homeFragment> {
                 // Navigate to contact page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),);
+                  MaterialPageRoute(
+                      builder: (context) => privacyPolicyFragment()),
+                );
               },
             ),
-
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
@@ -164,123 +175,139 @@ class _HomeFragmentState extends State<homeFragment> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.favorite,
-              size: 80,
-              color: Colors.redAccent,
-            ),
-            const SizedBox(height: 20),
-            // Text(
-            //   "Welcome to Blood Donation App!",
-            //   style: TextStyle(
-            //     fontSize: 24,
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.redAccent,
-            //   ),
-            // ),
-            const SizedBox(height: 10),
-            // Text(
-            //   "Save lives by donating blood.",
-            //   style: TextStyle(
-            //     fontSize: 16,
-            //     color: Colors.black54,
-            //   ),
-            // ),
-            const SizedBox(height: 20,),
-            const Text("Need Blood?",
-              style: TextStyle(
-              fontSize: 24,
-              color: Colors.red,
-                fontWeight: FontWeight.bold,
-            ),
-      ),
-            GestureDetector(
-              onTap: (){
-                // Navigate to privacyPolicyFragment.dart
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => privacyPolicyFragment()),
-                );
-              },
-              child: const Text("read terms and conditions",
-              style:
-                TextStyle(
-                  fontSize: 11,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.blue,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.favorite,
+                size: 80,
+                color: Colors.redAccent,
+              ),
+              const SizedBox(height: 20),
+              // Text(
+              //   "Welcome to Blood Donation App!",
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.redAccent,
+              //   ),
+              // ),
+              const SizedBox(height: 10),
+              // Text(
+              //   "Save lives by donating blood.",
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     color: Colors.black54,
+              //   ),
+              // ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "Need Blood?",
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.push(
-                    context, MaterialPageRoute(
-                    builder: (context)=> donorSearchFragment(),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to privacyPolicyFragment.dart
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => privacyPolicyFragment()),
+                  );
+                },
+                child: const Text(
+                  "read terms and conditions",
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                minimumSize: const Size(double.infinity, 50),
               ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => donorSearchFragment(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Send Request",
+                      Text(
+                        "Send Request",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 5, width: 8,),
+                      SizedBox(
+                        height: 5,
+                        width: 8,
+                      ),
                       Icon(
                         Icons.arrow_right_alt,
                         size: 30,
                       ),
                     ],
-                )
-
-
-            ),
-            const SizedBox(height: 10,),
-            const Text("Total Donor: .....Dynamic Code",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              //fontFamily: 'fonts/Lato-Bold.ttf',
-              color: Colors.green,
-            ),
-            ),
-            const SizedBox(height: 10,),
-            OutlinedButton(
-              onPressed: (){
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => donorList()),);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => donorListFragment()),);
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(
-                  color: Colors.blue,
-                  width: 2,
-                ),
-                foregroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(horizontal:8, vertical: 4),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                  ),
-                ),
-              minimumSize: const Size(50, 36)
+                  )),
+              const SizedBox(
+                height: 10,
               ),
+              const Text(
+                "Total Donor: .....Dynamic Code",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  //fontFamily: 'fonts/Lato-Bold.ttf',
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => donorList()),);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => donorListFragment()),
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      color: Colors.blue,
+                      width: 2,
+                    ),
+                    foregroundColor: Colors.blue,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    minimumSize: const Size(50, 36)),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -288,91 +315,102 @@ class _HomeFragmentState extends State<homeFragment> {
                     Icon(
                       Icons.person,
                     ),
-                    SizedBox(width: 5,),
+                    SizedBox(
+                      width: 5,
+                    ),
                     Text("See Donor List"),
-
                   ],
                 ),
-            ),
-            const SizedBox(width: 5,),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Center row contents if needed
-                children: [
-                  const Text(
-                    "Want to be a Donor?",
-                    style: TextStyle(
-                      color: Colors.red,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center row contents if needed
+                  children: [
+                    const Text(
+                      "Want to be a Donor?",
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8), // Space between text and image
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const donorRegistration()),);
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child:  Container(
-                            height: 50,
-                            width: 80,
-                            color: Colors.red,
-                            child: const Center(
-                              child:   Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                    const SizedBox(width: 8), // Space between text and image
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const donorRegistration()),
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              height: 50,
+                              width: 80,
+                              color: Colors.red,
+                              child: const Center(
+                                child: Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-
-            const SizedBox(height: 15,),
-            //start donor registration text
-
-            //start donor registration text
-            Card(
-              elevation: 20,
-                color: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.people,
-                      color: Colors.white,
-                        size: 40,
-                    ),
-                    SizedBox(height: 5,),
-                    Text("Total Clients: 2145",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white
-                      ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
 
-          ],
+              const SizedBox(
+                height: 15,
+              ),
+              //start donor registration text
+
+              //start donor registration text
+              Card(
+                elevation: 20,
+                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Total Clients: 2145",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -433,7 +471,6 @@ class _HomeFragmentState extends State<homeFragment> {
           ),
         ],
       ),
-
     );
   }
 }
