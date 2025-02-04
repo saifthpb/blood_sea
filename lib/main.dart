@@ -1,5 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'dart:html' as html;
 import 'package:blood_sea/config/routes.dart';
 import 'package:blood_sea/config/theme.dart'; // Import your theme
 import 'package:firebase_core/firebase_core.dart';
@@ -25,8 +25,18 @@ void main() async {
     print('Permission granted: ${settings.authorizationStatus}');
   }
   if (kIsWeb) {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    await js.context.callMethod('importScripts', ['firebase-messaging-sw.js']);
+    // ✅ Register service worker FIRST
+    final registration = await html.window.navigator.serviceWorker
+        ?.register('/firebase-messaging-sw.js');
+
+    if (registration != null) {
+      print("✅ Service worker registered successfully!");
+
+      // ✅ Now initialize FCM
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    } else {
+      print("❌ Failed to register service worker.");
+    }
   }
 
   String? token = await messaging.getToken();
