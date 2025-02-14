@@ -20,31 +20,31 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  NotificationSettings settings = await messaging.requestPermission();
-  if (kDebugMode) {
-    print('Permission granted: ${settings.authorizationStatus}');
-  }
-  if (kIsWeb) {
-    // ✅ Register service worker FIRSTW
-    final registration = await html.window.navigator.serviceWorker
-        ?.register('/firebase-messaging-sw.js');
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // NotificationSettings settings = await messaging.requestPermission();
+  // if (kDebugMode) {
+  //   print('Permission granted: ${settings.authorizationStatus}');
+  // }
+  // if (kIsWeb) {
+  //   // ✅ Register service worker FIRSTW
+  //   final registration = await html.window.navigator.serviceWorker
+  //       ?.register('/firebase-messaging-sw.js');
 
-    if (registration != null) {
-      print("✅ Service worker registered successfully!");
+  //   if (registration != null) {
+  //     print("✅ Service worker registered successfully!");
 
-      // ✅ Now initialize FCM
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
-    } else {
-      print("❌ Failed to register service worker.");
-    }
-  }
+  //     // ✅ Now initialize FCM
+  //     FirebaseMessaging.onBackgroundMessage(
+  //         _firebaseMessagingBackgroundHandler);
+  //   } else {
+  //     print("❌ Failed to register service worker.");
+  //   }
+  // }
 
-  String? token = await messaging.getToken();
-  if (kDebugMode) {
-    print('Device Token: $token');
-  }
+  // String? token = await messaging.getToken();
+  // if (kDebugMode) {
+  //   print('Device Token: $token');
+  // }
 
   runApp(const MyApp());
 }

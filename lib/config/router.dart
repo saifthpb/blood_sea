@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:blood_sea/features/auth/login_screen.dart';
 import 'package:blood_sea/features/donors/donor_list_screen.dart';
 import 'package:blood_sea/features/home/home_screen.dart';
-import 'package:blood_sea/features/notifications/notifications_screen.dart';
 import 'package:blood_sea/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:blood_sea/features/profile/profile_screen.dart';
 import 'package:blood_sea/features/share/share_screen.dart';
@@ -25,6 +24,8 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/bloc/auth_bloc.dart';
 import '../features/donors/donor_detail_screen.dart';
+import '../features/notifications/models/notification_model.dart';
+import '../features/notifications/screens/notification_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -221,6 +222,20 @@ GoRouter createRouter(BuildContext context) {
             donorId: state.pathParameters['id']!,
           ),
         ),
+        // GoRoute(
+        //   path: '/blood-request/:requestId',
+        //   builder: (context, state) => BloodRequestDetailScreen(
+        //     requestId: state.pathParameters['requestId']!,
+        //     notification: state.extra as NotificationModel?,
+        //   ),
+        // ),
+        // GoRoute(
+        //   path: '/chat/:userId',
+        //   builder: (context, state) => ChatScreen(
+        //     otherUserId: state.pathParameters['userId']!,
+        //     notification: state.extra as NotificationModel?,
+        //   ),
+        // ),
         GoRoute(
           path: '/request',
           name: 'request',
