@@ -24,6 +24,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/auth/bloc/auth_bloc.dart';
+import '../features/donors/donor_detail_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -213,6 +214,12 @@ GoRouter createRouter(BuildContext context) {
           path: '/donors-area',
           name: 'donorsArea',
           builder: (context, state) => const DonorsAreaScreen(),
+        ),
+        GoRoute(
+          path: '/donor-detail/:id',
+          builder: (context, state) => DonorDetailScreen(
+            donorId: state.pathParameters['id']!,
+          ),
         ),
         GoRoute(
           path: '/request',
