@@ -55,11 +55,27 @@ class MainScreen extends StatelessWidget {
                     ? Colors.blue
                     : Colors.redAccent,
                 actions: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Text(
-                      user.name?.substring(0, 1).toUpperCase() ??
-                          user.email.substring(0, 1).toUpperCase(),
+                  IconButton(
+                    icon: const Icon(Icons.notifications),
+                    onPressed: () {
+                      context.push('/notifications');
+                    },
+                  ),
+                  GestureDetector(
+                    onTap: () => context.push('/profile'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Text(
+                          user.name?.substring(0, 1).toUpperCase() ??
+                              user.email.substring(0, 1).toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   IconButton(
@@ -86,14 +102,6 @@ class MainScreen extends StatelessWidget {
                     icon: Icon(Icons.list),
                     label: 'Donor List',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Profile',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.notifications),
-                    label: 'Notifications',
-                  ),
                 ],
               ),
             );
@@ -104,16 +112,12 @@ class MainScreen extends StatelessWidget {
   String _getAppBarTitle(String location) {
     if (location.startsWith('/home')) return 'Home';
     if (location.startsWith('/donor-list')) return 'Donor List';
-    if (location.startsWith('/profile')) return 'Profile';
-    if (location.startsWith('/notifications')) return 'Notifications';
     return 'Blood Sea';
   }
 
   int _getSelectedIndex(String location) {
     if (location.startsWith('/home')) return 0;
     if (location.startsWith('/donor-list')) return 1;
-    if (location.startsWith('/profile')) return 2;
-    if (location.startsWith('/notifications')) return 3;
     return 0;
   }
 
@@ -124,12 +128,6 @@ class MainScreen extends StatelessWidget {
         break;
       case 1:
         context.go('/donor-list');
-        break;
-      case 2:
-        context.go('/profile');
-        break;
-      case 3:
-        context.go('/notifications');
         break;
     }
   }
@@ -256,6 +254,14 @@ GoRouter createRouter(BuildContext context) {
           name: 'share',
           builder: (context, state) => const ShareScreen(),
         ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          builder: (context, state) => const NotificationScreen(),
+        ),
         // Protected routes under ShellRoute with bottom navigation
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
@@ -270,14 +276,6 @@ GoRouter createRouter(BuildContext context) {
             GoRoute(
               path: '/donor-list',
               builder: (context, state) => const DonorListScreen(),
-            ),
-            GoRoute(
-              path: '/profile',
-              builder: (context, state) => const ProfileScreen(),
-            ),
-            GoRoute(
-              path: '/notifications',
-              builder: (context, state) => const NotificationScreen(),
             ),
           ],
         ),

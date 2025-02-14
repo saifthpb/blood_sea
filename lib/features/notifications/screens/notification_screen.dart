@@ -13,59 +13,106 @@ class NotificationScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => NotificationBloc()..add(LoadNotifications()),
       child: Scaffold(
-        body: BlocBuilder<NotificationBloc, NotificationState>(
-          builder: (context, state) {
-            if (state is NotificationLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state is NotificationError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      state.message,
-                      style: const TextStyle(color: Colors.red),
-                      textAlign: TextAlign.center,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            context.read<NotificationBloc>().add(LoadNotifications());
+          },
+          child: BlocConsumer<NotificationBloc, NotificationState>(
+            listener: (context, state) {
+              if (state is NotificationError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                    action: SnackBarAction(
+                      label: 'Retry',
+                      onPressed: () {
+                        context.read<NotificationBloc>().add(LoadNotifications());
+                      },
                     ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => context
-                          .read<NotificationBloc>()
-                          .add(LoadNotifications()),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            if (state is NotificationLoaded) {
-              if (state.notifications.isEmpty) {
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is NotificationLoading) {
                 return const Center(
-                  child: Text('No notifications'),
+                  child: CircularProgressIndicator(),
                 );
               }
 
-              return ListView.builder(
-                itemCount: state.notifications.length,
-                itemBuilder: (context, index) {
-                  final notification = state.notifications[index];
-                  return NotificationCard(
-                    notification: notification,
-                    onTap: () => _handleNotificationTap(context, notification),
-                    onDismiss: () => _handleNotificationDismiss(
-                      context,
-                      notification,
+              if (state is NotificationError) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        state.message,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          context
+                              .read<NotificationBloc>()
+                              .add(LoadNotifications());
+                        },
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              if (state is NotificationLoaded) {
+                if (state.notifications.isEmpty) {
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.notifications_none,
+                          size: 64,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'No notifications yet',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
                   );
-                },
-              );
-            }
+                }
 
-            return const SizedBox.shrink();
-          },
+                return ListView.builder(
+                  itemCount: state.notifications.length,
+                  itemBuilder: (context, index) {
+                    final notification = state.notifications[index];
+                    return NotificationCard(
+                      notification: notification,
+                      onTap: () => _handleNotificationTap(context, notification),
+                      onDismiss: () =>
+                          _handleNotificationDismiss(context, notification),
+                    );
+                  },
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
     );
