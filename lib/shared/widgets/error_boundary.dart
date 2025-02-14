@@ -1,20 +1,18 @@
 // lib/shared/widgets/error_boundary.dart
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ErrorBoundary extends StatefulWidget {
   final Widget child;
   final Function()? onRetry;
   final String? title;
-  // Add onError callback
-  final void Function(Object error, StackTrace stackTrace)? onError;
+  final void Function(Object error, StackTrace stackTrace, BuildContext context)? onError;
 
   const ErrorBoundary({
     super.key,
     required this.child,
     this.onRetry,
     this.title,
-    this.onError, // Add onError parameter
+    this.onError,
   });
 
   @override
@@ -30,8 +28,12 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
   void initState() {
     super.initState();
     ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-      // Call onError callback if provided
-      widget.onError?.call(errorDetails.exception, errorDetails.stack ?? StackTrace.empty);
+      // Pass the current context to onError
+      widget.onError?.call(
+        errorDetails.exception, 
+        errorDetails.stack ?? StackTrace.empty,
+        context,
+      );
       
       setState(() {
         hasError = true;
@@ -71,19 +73,6 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
                     error.toString(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.red),
-                  ),
-                if (stackTrace != null && kDebugMode)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      stackTrace.toString(),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    ),
                   ),
                 const SizedBox(height: 16),
                 if (widget.onRetry != null)
