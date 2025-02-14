@@ -1,175 +1,283 @@
-import 'package:blood_sea/shared/widgets/error_boundary.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../auth/bloc/auth_bloc.dart';
+import '../auth/models/user_model.dart';
+import 'bloc/profile_bloc.dart';
+import 'widgets/edit_profile_dialog.dart';
 
-class ProfileScreen extends StatefulWidget {
+// lib/features/profile/screens/profile_screen.dart
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreen();
-}
-
-class _ProfileScreen extends State<ProfileScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  String? name;
-  String? email;
-  String? phone;
-  String? bloodGroup;
-  String? district;
-  String? thana;
-  String? photoUrl;
-  String? lastDonateDate;
-  bool isLoading = true;
-  String? error;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchProfileData();
-  }
-
-  Future<void> fetchProfileData() async {
-    try {
-      setState(() {
-        isLoading = true;
-        error = null;
-      });
-
-      // Get current user
-      final User? currentUser = _auth.currentUser;
-      if (currentUser == null) {
-        throw Exception('No authenticated user found');
-      }
-
-      // Try to fetch from users collection first
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(currentUser.uid).get();
-
-      // If not found in users, try clients collection
-      if (!userDoc.exists) {
-        userDoc =
-            await _firestore.collection('clients').doc(currentUser.uid).get();
-      }
-
-      if (userDoc.exists) {
-        final data = userDoc.data() as Map<String, dynamic>;
-        setState(() {
-          name = data['name'];
-          email = data['email'];
-          phone =
-              data['phoneNumber'] ?? data['phone']; // Handle both field names
-          bloodGroup = data['bloodGroup'];
-          district = data['district'];
-          thana = data['thana'];
-          photoUrl = data['photoUrl'];
-          lastDonateDate = data['lastDonationDate']?.toString();
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          error = 'User profile not found';
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching profile: $e');
-      }
-      setState(() {
-        error = 'Error loading profile: ${e.toString()}';
-        isLoading = false;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ErrorBoundary(
-      title: "Error Loading Profile",
-      onRetry: fetchProfileData,
-      child: _buildProfileContent(),
-    );
-  }
-
-  Widget _buildProfileContent() {
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              error!,
-              style: const TextStyle(color: Colors.red),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: fetchProfileData,
-              child: const Text('Retry'),
+    return BlocProvider(
+      create: (context) => ProfileBloc()..add(LoadProfile()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Profile'),
+          backgroundColor: Colors.redAccent,
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: (value) async {
+                switch (value) {
+                  case 'logout':
+                    final shouldLogout = await _showLogoutDialog(context);
+                    if (shouldLogout) {
+                      if (context.mounted) {
+                        context.read<AuthBloc>().add(LogoutRequested());
+                        context.go('/login'); // Navigate to login screen
+                      }
+                    }
+                    break;
+                  case 'edit':
+                    // Handle edit profile
+                    if (context.mounted) {
+                      final state = context.read<ProfileBloc>().state;
+                      if (state is ProfileLoaded) {
+                        _showEditProfileDialog(context, state.user);
+                      }
+                    }
+                    break;
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      Icon(Icons.edit, color: Colors.blue),
+                      SizedBox(width: 8),
+                      Text('Edit Profile'),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, color: Colors.red),
+                      SizedBox(width: 8),
+                      Text('Logout'),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      );
-    }
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (photoUrl != null && photoUrl!.isNotEmpty)
-            Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(photoUrl!),
-                backgroundColor: Colors.grey.shade200,
-                onBackgroundImageError: (e, s) {
-                  if (kDebugMode) {
-                    print('Error loading profile image: $e');
-                  }
-                },
-              ),
-            ),
-          const SizedBox(height: 16),
-          _buildInfoCard(
-            title: 'Personal Information',
-            children: [
-              _buildInfoRow('Name', name),
-              _buildInfoRow('Email', email),
-              _buildInfoRow('Phone', phone),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _buildInfoCard(
-            title: 'Location Information',
-            children: [
-              _buildInfoRow('District', district),
-              _buildInfoRow('Thana', thana),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _buildInfoCard(
-            title: 'Blood Donation Information',
-            children: [
-              _buildInfoRow('Blood Group', bloodGroup),
-              _buildInfoRow('Last Donation', lastDonateDate),
-            ],
-          ),
-        ],
+            if (state is ProfileError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 48,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      state.message,
+                      style: const TextStyle(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () =>
+                          context.read<ProfileBloc>().add(LoadProfile()),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Retry'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (state is ProfileLoaded) {
+              return _buildProfileContent(context, state.user);
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildInfoCard(
-      {required String title, required List<Widget> children}) {
+  Future<bool> _showLogoutDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.logout, color: Colors.red),
+              SizedBox(width: 8),
+              Text('Logout'),
+            ],
+          ),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Logout'),
+            ),
+          ],
+        );
+      },
+    );
+
+    return result ?? false;
+  }
+
+  Widget _buildProfileContent(BuildContext context, UserModel user) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<ProfileBloc>().add(LoadProfile());
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.red.shade100,
+                    child: Text(
+                      user.name?.substring(0, 1).toUpperCase() ??
+                          user.email.substring(0, 1).toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red.shade900,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        size: 20,
+                        color: Colors.red.shade900,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: Column(
+                children: [
+                  Text(
+                    user.name ?? 'No Name',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    user.email,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            _buildInfoCard(
+              title: 'Personal Information',
+              icon: Icons.person,
+              children: [
+                _buildInfoRow(
+                  label: 'Phone',
+                  value: user.phoneNumber,
+                  icon: Icons.phone,
+                ),
+                if (user.bloodGroup != null)
+                  _buildInfoRow(
+                    label: 'Blood Group',
+                    value: user.bloodGroup!,
+                    icon: Icons.bloodtype,
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildInfoCard(
+              title: 'Location',
+              icon: Icons.location_on,
+              children: [
+                _buildInfoRow(
+                  label: 'District',
+                  value: user.district,
+                  icon: Icons.location_city,
+                ),
+                _buildInfoRow(
+                  label: 'Thana',
+                  value: user.thana,
+                  icon: Icons.place,
+                ),
+              ],
+            ),
+            if (user.lastDonationDate != null) ...[
+              const SizedBox(height: 16),
+              _buildInfoCard(
+                title: 'Donation History',
+                icon: Icons.history,
+                children: [
+                  _buildInfoRow(
+                    label: 'Last Donation',
+                    value: _formatDate(user.lastDonationDate!),
+                    icon: Icons.calendar_today,
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoCard({
+    required String title,
+    required IconData icon,
+    required List<Widget> children,
+  }) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -177,12 +285,18 @@ class _ProfileScreen extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                Icon(icon, color: Colors.red),
+                const SizedBox(width: 8),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             const Divider(),
             ...children,
@@ -192,28 +306,52 @@ class _ProfileScreen extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildInfoRow(String label, String? value) {
+  Widget _buildInfoRow({
+    required String label,
+    required String? value,
+    required IconData icon,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            value ?? 'Not Available',
-            style: TextStyle(
-              fontSize: 16,
-              color: value == null ? Colors.grey : Colors.black,
+          Icon(icon, color: Colors.grey, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  value ?? 'Not provided',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: value != null ? Colors.black : Colors.grey,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+
+  void _showEditProfileDialog(BuildContext context, UserModel user) {
+    // Implement edit profile dialog
+    showDialog(
+      context: context,
+      builder: (context) => EditProfileDialog(user: user),
     );
   }
 }
