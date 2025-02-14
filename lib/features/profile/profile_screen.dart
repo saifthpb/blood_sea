@@ -1,3 +1,4 @@
+import 'package:blood_sea/shared/widgets/error_boundary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,12 +12,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreen extends State<ProfileScreen> {
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  //final FirebaseStorage _storage = FirebaseStorage.instance;
-  //Map<String, dynamic>? userProfile;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Variables to store user data
   String? name;
   String? email;
   String? phone;
@@ -25,7 +23,8 @@ class _ProfileScreen extends State<ProfileScreen> {
   String? thana;
   String? photoUrl;
   String? lastDonateDate;
-  bool isLoading = true; // To manage loading state
+  bool isLoading = true;
+  String? error;
 
   @override
   void initState() {
@@ -34,113 +33,187 @@ class _ProfileScreen extends State<ProfileScreen> {
   }
 
   Future<void> fetchProfileData() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String userEmail = prefs.getString('email') ?? ''; // Replace with actual method to get logged-in user's email
     try {
-      // Replace 'userID' with the UID of the logged-in user
-      String userID = FirebaseAuth.instance.currentUser!.uid;
+      setState(() {
+        isLoading = true;
+        error = null;
+      });
+
+      // Get current user
+      final User? currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw Exception('No authenticated user found');
+      }
+
+      // Try to fetch from users collection first
       DocumentSnapshot userDoc =
-          await _firestore.collection('clients').doc(userID).get();
+          await _firestore.collection('users').doc(currentUser.uid).get();
+
+      // If not found in users, try clients collection
+      if (!userDoc.exists) {
+        userDoc =
+            await _firestore.collection('clients').doc(currentUser.uid).get();
+      }
 
       if (userDoc.exists) {
+        final data = userDoc.data() as Map<String, dynamic>;
         setState(() {
-          name = userDoc['name'];
-          email = userDoc['email'];
-          phone = userDoc['phone'];
-          bloodGroup = userDoc['bloodGroup'];
-          district = userDoc['district'];
-          thana = userDoc['thana'];
-          photoUrl = userDoc['photoUrl'];
-          lastDonateDate = userDoc['lastDonateDate'];
+          name = data['name'];
+          email = data['email'];
+          phone =
+              data['phoneNumber'] ?? data['phone']; // Handle both field names
+          bloodGroup = data['bloodGroup'];
+          district = data['district'];
+          thana = data['thana'];
+          photoUrl = data['photoUrl'];
+          lastDonateDate = data['lastDonationDate']?.toString();
           isLoading = false;
         });
       } else {
         setState(() {
+          error = 'User profile not found';
           isLoading = false;
         });
-        if (kDebugMode) {
-          print("No user data found");
-        }
       }
     } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching profile: $e');
+      }
       setState(() {
+        error = 'Error loading profile: ${e.toString()}';
         isLoading = false;
       });
-      if (kDebugMode) {
-        print("Error fetching user data: $e");
-      }
-    }
-  }
-
-  // Helper method to format the date
-// Helper method to format the date
-  String? formatDate(dynamic timestamp) {
-    if (timestamp == null) return null;
-    try {
-      DateTime date;
-      if (timestamp is Timestamp) {
-        date = timestamp.toDate(); // Convert Firestore Timestamp to DateTime
-      } else if (timestamp is String) {
-        date = DateTime.parse(
-            timestamp); // Assuming it's already a string representation of a date
-      } else {
-        return null;
-      }
-      return "${date.day}-${date.month}-${date.year}"; // Format: DD-MM-YYYY
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error formatting date: $e");
-      }
-      return null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const Center(
-            child:
-                CircularProgressIndicator()) // Show loading spinner if data isn't loaded
-        : Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (photoUrl != null && photoUrl!.isNotEmpty)
-                  Center(
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(photoUrl!),
-                      backgroundColor: Colors.grey.shade200,
-                    ),
-                  ),
-                const SizedBox(height: 8),
-                Text("Name: ${name ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text("Email: ${email ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text("Phone: ${phone ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text("Thana: ${thana ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text("District: ${district ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text("Blood Group: ${bloodGroup ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text("Photo: ${photoUrl ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                Text(
-                    "Last Donate Date: ${formatDate(lastDonateDate) ?? 'Not Available'}",
-                    style: const TextStyle(fontSize: 18)),
-              ],
+    return ErrorBoundary(
+      title: "Error Loading Profile",
+      onRetry: fetchProfileData,
+      child: _buildProfileContent(),
+    );
+  }
+
+  Widget _buildProfileContent() {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              error!,
+              style: const TextStyle(color: Colors.red),
+              textAlign: TextAlign.center,
             ),
-          );
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: fetchProfileData,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (photoUrl != null && photoUrl!.isNotEmpty)
+            Center(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(photoUrl!),
+                backgroundColor: Colors.grey.shade200,
+                onBackgroundImageError: (e, s) {
+                  if (kDebugMode) {
+                    print('Error loading profile image: $e');
+                  }
+                },
+              ),
+            ),
+          const SizedBox(height: 16),
+          _buildInfoCard(
+            title: 'Personal Information',
+            children: [
+              _buildInfoRow('Name', name),
+              _buildInfoRow('Email', email),
+              _buildInfoRow('Phone', phone),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildInfoCard(
+            title: 'Location Information',
+            children: [
+              _buildInfoRow('District', district),
+              _buildInfoRow('Thana', thana),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildInfoCard(
+            title: 'Blood Donation Information',
+            children: [
+              _buildInfoRow('Blood Group', bloodGroup),
+              _buildInfoRow('Last Donation', lastDonateDate),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard(
+      {required String title, required List<Widget> children}) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Divider(),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(
+            value ?? 'Not Available',
+            style: TextStyle(
+              fontSize: 16,
+              color: value == null ? Colors.grey : Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

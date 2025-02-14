@@ -99,6 +99,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
+  Future<void> checkAuthStatus() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Force token refresh to ensure latest permissions
+      await user.getIdToken(true);
+    }
+  }
+
   Future<void> _loadUserData(User firebaseUser) async {
     try {
       final userDoc = await _firestore
