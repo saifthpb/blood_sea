@@ -1,11 +1,13 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'package:blood_sea/config/routes.dart';
+import 'package:blood_sea/config/router.dart';
 import 'package:blood_sea/config/theme.dart'; // Import your theme
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/auth/bloc/auth_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -15,9 +17,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission();
@@ -25,7 +25,7 @@ void main() async {
     print('Permission granted: ${settings.authorizationStatus}');
   }
   if (kIsWeb) {
-    // ✅ Register service worker FIRST
+    // ✅ Register service worker FIRSTW
     final registration = await html.window.navigator.serviceWorker
         ?.register('/firebase-messaging-sw.js');
 
@@ -33,7 +33,8 @@ void main() async {
       print("✅ Service worker registered successfully!");
 
       // ✅ Now initialize FCM
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
     } else {
       print("❌ Failed to register service worker.");
     }
@@ -43,7 +44,7 @@ void main() async {
   if (kDebugMode) {
     print('Device Token: $token');
   }
-  
+
   runApp(const MyApp());
 }
 
@@ -52,11 +53,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Blood Sea',
-      theme: AppTheme.lightTheme(),
-      routerConfig: goRouter,
-      debugShowCheckedModeBanner: false,
+    return BlocProvider(
+      create: (context) => AuthBloc(),
+      child: Builder(
+        builder: (context) => MaterialApp.router(
+          title: 'Blood Sea',
+          theme: AppTheme.lightTheme(),
+          routerConfig: createRouter(context),
+          debugShowCheckedModeBanner: false,
+        ),
+      ),
     );
   }
 }
