@@ -3,12 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-enum UserStatus {
-  online,
-  offline,
-  away
-}
+enum UserStatus { online, offline, away }
 
+// lib/features/auth/models/user_model.dart
 class UserModel extends Equatable {
   final String uid;
   final String email;
@@ -20,14 +17,14 @@ class UserModel extends Equatable {
   final DateTime? lastDonationDate;
   final bool isDonor;
   final List<String>? donationHistory;
-  // New chat-related fields
   final UserStatus status;
   final DateTime? lastSeen;
   final List<String>? activeChatIds;
-  final String? fcmToken; // For push notifications
+  final String? fcmToken;
   final String? profileImageUrl;
-  final Map<String, dynamic>? chatSettings; // User's chat preferences
-  final bool isAvailable; // For blood donation availability
+  final Map<String, dynamic>? chatSettings;
+  final bool isAvailable;
+  final String userType; // Add this field
 
   const UserModel({
     required this.uid,
@@ -47,6 +44,7 @@ class UserModel extends Equatable {
     this.profileImageUrl,
     this.chatSettings,
     this.isAvailable = true,
+    required this.userType, // Add this parameter
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String uid) {
@@ -76,6 +74,7 @@ class UserModel extends Equatable {
       profileImageUrl: map['profileImageUrl'],
       chatSettings: map['chatSettings'],
       isAvailable: map['isAvailable'] ?? true,
+      userType: map['userType'] ?? 'client', // Add default value
     );
   }
 
@@ -99,20 +98,11 @@ class UserModel extends Equatable {
       'profileImageUrl': profileImageUrl,
       'chatSettings': chatSettings,
       'isAvailable': isAvailable,
+      'userType': userType, // Add this field
     };
   }
 
-  static UserStatus _parseUserStatus(String? status) {
-    switch (status) {
-      case 'online':
-        return UserStatus.online;
-      case 'away':
-        return UserStatus.away;
-      default:
-        return UserStatus.offline;
-    }
-  }
-
+  // Update copyWith method
   UserModel copyWith({
     String? name,
     String? phoneNumber,
@@ -129,6 +119,7 @@ class UserModel extends Equatable {
     String? profileImageUrl,
     Map<String, dynamic>? chatSettings,
     bool? isAvailable,
+    String? userType,
   }) {
     return UserModel(
       uid: uid,
@@ -148,6 +139,7 @@ class UserModel extends Equatable {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       chatSettings: chatSettings ?? this.chatSettings,
       isAvailable: isAvailable ?? this.isAvailable,
+      userType: userType ?? this.userType,
     );
   }
 
@@ -222,7 +214,9 @@ class UserModel extends Equatable {
 
   bool canReceiveNotifications() => fcmToken != null;
 
-  Map<String, dynamic> getChatSettings() => chatSettings ?? {
+  Map<String, dynamic> getChatSettings() =>
+      chatSettings ??
+      {
         'notifications': true,
         'sound': true,
         'vibration': true,
@@ -260,6 +254,19 @@ class UserModel extends Equatable {
       });
     } catch (e) {
       debugPrint('Error adding active chat: $e');
+    }
+  }
+
+  // Helper method to parse UserStatus from string
+  static UserStatus _parseUserStatus(String? status) {
+    switch (status) {
+      case 'online':
+        return UserStatus.online;
+      case 'away':
+        return UserStatus.away;
+      case 'offline':
+      default:
+        return UserStatus.offline;
     }
   }
 

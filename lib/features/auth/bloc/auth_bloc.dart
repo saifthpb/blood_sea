@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// lib/features/auth/bloc/auth_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/user_model.dart';
+import '../repositories/user_repository.dart';
 
 // Events
 abstract class AuthEvent extends Equatable {
@@ -59,12 +60,11 @@ class AuthError extends AuthState {
 }
 
 // Bloc
-
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final UserRepository _userRepository;
 
-  AuthBloc() : super(AuthLoading()) {
+  AuthBloc(this._userRepository) : super(AuthLoading()) {
     // Listen to auth state changes
     _auth.authStateChanges().listen((user) {
       if (user != null) {
@@ -87,58 +87,119 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.email,
           password: event.password,
         );
-        await _loadUserData(userCredential.user!);
+        
+        // Update user's online status and last seen
+        if (userCredential.user != null) {
+          await _userRepository.updateUserStatus(
+            userCredential.user!.uid, 
+            UserStatus.online
+          );
+          await _loadUserData(userCredential.user!);
+        }
       } catch (e) {
-        emit(AuthError(e.toString()));
+        emit(AuthError(_getErrorMessage(e)));
       }
     });
 
     on<LogoutRequested>((event, emit) async {
-      await _auth.signOut();
-      emit(Unauthenticated());
+      try {
+        final user = _auth.currentUser;
+        if (user != null) {
+          // Update user's status to offline before logging out
+          await _userRepository.updateUserStatus(user.uid, UserStatus.offline);
+          // Clear FCM token
+          await _userRepository.updateFcmToken(user.uid, null);
+        }
+        await _auth.signOut();
+        emit(Unauthenticated());
+      } catch (e) {
+        emit(AuthError(_getErrorMessage(e)));
+      }
     });
   }
 
   Future<void> checkAuthStatus() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Force token refresh to ensure latest permissions
-      await user.getIdToken(true);
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        // Force token refresh to ensure latest permissions
+        await user.getIdToken(true);
+        await _loadUserData(user);
+      } else {
+        emit(Unauthenticated());
+      }
+    } catch (e) {
+      emit(AuthError(_getErrorMessage(e)));
     }
   }
 
   Future<void> _loadUserData(User firebaseUser) async {
     try {
-      final userDoc = await _firestore
-          .collection('users')
-          .doc(firebaseUser.uid)
-          .get();
+      final userModel = await _userRepository.getUserById(firebaseUser.uid);
 
-      if (userDoc.exists) {
-        final userData = userDoc.data() as Map<String, dynamic>;
-        final userModel = UserModel.fromMap({
-          'uid': firebaseUser.uid,
-          'email': firebaseUser.email,
-          ...userData,
-        });
-        // ignore: invalid_use_of_visible_for_testing_member
+      if (userModel != null) {
         emit(Authenticated(firebaseUser, userModel));
       } else {
         // Create new user document if it doesn't exist
-        final userModel = UserModel(
+        final newUserModel = UserModel(
           uid: firebaseUser.uid,
           email: firebaseUser.email!,
+          userType: 'client',
+          name: firebaseUser.displayName,
+          status: UserStatus.online,
         );
-        await _firestore
-            .collection('users')
-            .doc(firebaseUser.uid)
-            .set(userModel.toMap());
-        // ignore: invalid_use_of_visible_for_testing_member
-        emit(Authenticated(firebaseUser, userModel));
+
+        await _userRepository.createUser(
+          uid: newUserModel.uid,
+          email: newUserModel.email,
+          name: newUserModel.name ?? '',
+          phoneNumber: '',
+          bloodGroup: '',
+          district: '',
+          thana: '',
+          userType: 'client',
+        );
+
+        emit(Authenticated(firebaseUser, newUserModel));
       }
     } catch (e) {
-      // ignore: invalid_use_of_visible_for_testing_member
-      emit(AuthError(e.toString()));
+      emit(AuthError(_getErrorMessage(e)));
     }
+  }
+
+  String _getErrorMessage(dynamic error) {
+    if (error is FirebaseAuthException) {
+      switch (error.code) {
+        case 'user-not-found':
+          return 'No user found with this email.';
+        case 'wrong-password':
+          return 'Wrong password provided.';
+        case 'invalid-email':
+          return 'The email address is badly formatted.';
+        case 'user-disabled':
+          return 'This user account has been disabled.';
+        case 'too-many-requests':
+          return 'Too many unsuccessful login attempts. Please try again later.';
+        case 'operation-not-allowed':
+          return 'Email/password accounts are not enabled. Please contact support.';
+        case 'email-already-in-use':
+          return 'An account already exists for this email.';
+        case 'weak-password':
+          return 'The password provided is too weak.';
+        default:
+          return 'An error occurred during authentication.';
+      }
+    }
+    return error.toString();
+  }
+
+  @override
+  Future<void> close() {
+    // Update user status to offline when bloc is closed
+    final user = _auth.currentUser;
+    if (user != null) {
+      _userRepository.updateUserStatus(user.uid, UserStatus.offline);
+    }
+    return super.close();
   }
 }

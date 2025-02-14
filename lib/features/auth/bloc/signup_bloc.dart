@@ -96,7 +96,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         email: event.email,
         name: event.name,
         phoneNumber: event.phone,
-        address: event.address,
         userType: 'client',
         isAvailable: true,
       );
