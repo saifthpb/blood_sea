@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/user_model.dart';
 
 // Events
 abstract class AuthEvent extends Equatable {
@@ -36,11 +39,13 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {
-  final User user;
-  Authenticated(this.user);
+  final User firebaseUser;
+  final UserModel userModel;
+  
+  Authenticated(this.firebaseUser, this.userModel);
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [firebaseUser, userModel];
 }
 
 class Unauthenticated extends AuthState {}
@@ -54,19 +59,23 @@ class AuthError extends AuthState {
 }
 
 // Bloc
+
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   AuthBloc() : super(AuthInitial()) {
     // Listen to auth state changes
     _auth.authStateChanges().listen((user) {
-      add(AuthStateChanged(user));
+      if (user != null) {
+        _loadUserData(user);
+      } else {
+        add(AuthStateChanged(null));
+      }
     });
 
     on<AuthStateChanged>((event, emit) {
-      if (event.user != null) {
-        emit(Authenticated(event.user!));
-      } else {
+      if (event.user == null) {
         emit(Unauthenticated());
       }
     });
@@ -74,10 +83,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-        await _auth.signInWithEmailAndPassword(
+        final userCredential = await _auth.signInWithEmailAndPassword(
           email: event.email,
           password: event.password,
         );
+        await _loadUserData(userCredential.user!);
       } catch (e) {
         emit(AuthError(e.toString()));
       }
@@ -85,6 +95,42 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<LogoutRequested>((event, emit) async {
       await _auth.signOut();
+      emit(Unauthenticated());
     });
+  }
+
+  Future<void> _loadUserData(User firebaseUser) async {
+    try {
+      final userDoc = await _firestore
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>;
+        final userModel = UserModel.fromMap({
+          'uid': firebaseUser.uid,
+          'email': firebaseUser.email,
+          ...userData,
+        });
+        // ignore: invalid_use_of_visible_for_testing_member
+        emit(Authenticated(firebaseUser, userModel));
+      } else {
+        // Create new user document if it doesn't exist
+        final userModel = UserModel(
+          uid: firebaseUser.uid,
+          email: firebaseUser.email!,
+        );
+        await _firestore
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .set(userModel.toMap());
+        // ignore: invalid_use_of_visible_for_testing_member
+        emit(Authenticated(firebaseUser, userModel));
+      }
+    } catch (e) {
+      // ignore: invalid_use_of_visible_for_testing_member
+      emit(AuthError(e.toString()));
+    }
   }
 }
