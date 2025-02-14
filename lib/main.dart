@@ -2,6 +2,7 @@
 import 'dart:html' as html;
 import 'package:blood_sea/config/router.dart';
 import 'package:blood_sea/config/theme.dart'; // Import your theme
+import 'package:blood_sea/shared/widgets/error_boundary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -53,18 +54,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(),
-      child: Builder(
-        builder: (context) => MaterialApp.router(
-          title: 'Blood Sea',
-          theme: ThemeData(
-              primarySwatch: Colors.red,
-              visualDensity: VisualDensity.adaptivePlatformDensity),
-          routerConfig: createRouter(context),
-          debugShowCheckedModeBanner: false,
-        ),
-      ),
-    );
+    return ErrorBoundary(
+        onRetry: () {print("on retry main.dart");},
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => AuthBloc()),
+          ],
+          child: Builder(
+            builder: (context) => MaterialApp.router(
+              title: 'Blood Sea',
+              theme: ThemeData(
+                  primarySwatch: Colors.red,
+                  visualDensity: VisualDensity.adaptivePlatformDensity),
+              routerConfig: createRouter(context),
+              debugShowCheckedModeBanner: false,
+            ),
+          ),
+        ));
   }
 }

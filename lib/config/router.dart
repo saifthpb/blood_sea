@@ -18,7 +18,7 @@ import 'package:blood_sea/features/donors/donors_area_screen.dart';
 import 'package:blood_sea/features/donors/request_screen.dart';
 import 'package:blood_sea/features/donors/search_result_screen.dart';
 import 'package:blood_sea/features/donors/search_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:blood_sea/shared/widgets/error_boundary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -34,66 +34,69 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is! Authenticated) {
-          return LoginScreen();
-        }
+    return ErrorBoundary(
+        title: 'Navigation Error',
+        onRetry: () => context.go('/home'),
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is! Authenticated) {
+              return LoginScreen();
+            }
 
-        final location = GoRouterState.of(context).uri.toString();
-        final user = state.userModel;
+            final location = GoRouterState.of(context).uri.toString();
+            final user = state.userModel;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(_getAppBarTitle(location)),
-            backgroundColor: location.startsWith('/notifications')
-                ? Colors.blue
-                : Colors.redAccent,
-            actions: [
-              CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  user.name?.substring(0, 1).toUpperCase() ??
-                      user.email.substring(0, 1).toUpperCase(),
-                ),
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(_getAppBarTitle(location)),
+                backgroundColor: location.startsWith('/notifications')
+                    ? Colors.blue
+                    : Colors.redAccent,
+                actions: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Text(
+                      user.name?.substring(0, 1).toUpperCase() ??
+                          user.email.substring(0, 1).toUpperCase(),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.logout),
+                    onPressed: () {
+                      context.read<AuthBloc>().add(LogoutRequested());
+                    },
+                  ),
+                ],
               ),
-              IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () {
-                  context.read<AuthBloc>().add(LogoutRequested());
-                },
+              body: child,
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: _getSelectedIndex(location),
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: Colors.red,
+                unselectedItemColor: Colors.grey,
+                onTap: (index) => _onItemTapped(index, context),
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.list),
+                    label: 'Donor List',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: 'Profile',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.notifications),
+                    label: 'Notifications',
+                  ),
+                ],
               ),
-            ],
-          ),
-          body: child,
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _getSelectedIndex(location),
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.red,
-            unselectedItemColor: Colors.grey,
-            onTap: (index) => _onItemTapped(index, context),
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'Donor List',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: 'Notifications',
-              ),
-            ],
-          ),
-        );
-      },
-    );
+            );
+          },
+        ));
   }
 
   String _getAppBarTitle(String location) {
