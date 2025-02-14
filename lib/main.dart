@@ -2,6 +2,7 @@
 import 'dart:html' as html;
 import 'package:blood_sea/config/router.dart';
 import 'package:blood_sea/config/theme.dart'; // Import your theme
+import 'package:blood_sea/core/di/injection.dart';
 import 'package:blood_sea/shared/widgets/error_boundary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         onRetry: () {print("on retry main.dart");},
         child: MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => AuthBloc()),
+            BlocProvider(create: (context) => AuthBloc(userRepository)),
           ],
           child: Builder(
             builder: (context) => MaterialApp.router(
