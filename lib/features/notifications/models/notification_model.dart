@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 enum NotificationType {
   bloodRequest,
@@ -34,21 +35,38 @@ class NotificationModel extends Equatable {
   });
 
   factory NotificationModel.fromMap(Map<String, dynamic> map, String id) {
-    return NotificationModel(
-      id: id,
-      title: map['title'] ?? '',
-      message: map['message'] ?? '',
-      senderId: map['senderId'] ?? '',
-      senderName: map['senderName'] ?? '',
-      recipientId: map['recipientId'] ?? '',
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
-      isRead: map['isRead'] ?? false,
-      type: NotificationType.values.firstWhere(
-        (type) => type.name == map['type'],
-        orElse: () => NotificationType.message,
-      ),
-      additionalData: map['additionalData'],
-    );
+    try {
+      return NotificationModel(
+        id: id,
+        title: map['title'] ?? 'No Title',
+        message: map['message'] ?? 'No Message',
+        senderId: map['senderId'] ?? '',
+        senderName: map['senderName'] ?? 'Unknown',
+        recipientId: map['recipientId'] ?? '',
+        createdAt: (map['createdAt'] as Timestamp).toDate(),
+        isRead: map['isRead'] ?? false,
+        type: _parseNotificationType(map['type']),
+        additionalData: map['additionalData'] as Map<String, dynamic>?,
+      );
+    } catch (e) {
+      debugPrint('Error parsing notification: $e');
+      rethrow;
+    }
+  }
+  
+  static NotificationType _parseNotificationType(String? type) {
+    switch (type) {
+      case 'bloodRequest':
+        return NotificationType.bloodRequest;
+      case 'requestAccepted':
+        return NotificationType.requestAccepted;
+      case 'requestRejected':
+        return NotificationType.requestRejected;
+      case 'message':
+        return NotificationType.message;
+      default:
+        return NotificationType.message;
+    }
   }
 
   Map<String, dynamic> toMap() {

@@ -69,7 +69,6 @@ class NotificationError extends NotificationState {
   List<Object?> get props => [message];
 }
 
-
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -103,25 +102,31 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           .where('recipientId', isEqualTo: currentUser.uid)
           .orderBy('createdAt', descending: true)
           .limit(50); // Add limit for performance
+      debugPrint('Loading notifications for user: ${currentUser.uid}');
 
       // Start listening to notifications
       _notificationSubscription = query.snapshots().listen(
         (snapshot) {
+          debugPrint('Received ${snapshot.docs.length} notifications');
           try {
-            final notifications = snapshot.docs.map((doc) {
-              try {
-                return NotificationModel.fromMap(
-                  doc.data() as Map<String, dynamic>,
-                  doc.id,
-                );
-              } catch (e) {
-                if (kDebugMode) {
-                  print('Error parsing notification: $e');
-                  print('Document data: ${doc.data()}');
-                }
-                return null;
-              }
-            }).where((notification) => notification != null).toList();
+            final notifications = snapshot.docs
+                .map((doc) {
+                  try {
+                    debugPrint('Processing notification: ${doc.id}');
+                    return NotificationModel.fromMap(
+                      doc.data() as Map<String, dynamic>,
+                      doc.id,
+                    );
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print('Error parsing notification: $e');
+                      print('Document data: ${doc.data()}');
+                    }
+                    return null;
+                  }
+                })
+                .where((notification) => notification != null)
+                .toList();
 
             final unreadCount = notifications
                 .where((notification) => !notification!.isRead)
