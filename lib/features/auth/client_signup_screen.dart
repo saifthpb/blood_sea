@@ -49,21 +49,37 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                   backgroundColor: Colors.green,
                 ),
               );
-              
+
               // Update AuthBloc state with the new user
               context.read<AuthBloc>().add(
                     AuthStateChanged(state.user as User?),
                   );
-                  
+
               // Navigate to home screen
               context.go('/home');
             }
-            
+
             if (state is SignUpFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.error),
                   backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 5),
+                  action: SnackBarAction(
+                    label: 'Retry',
+                    onPressed: () {
+                      // Retry signup
+                      context.read<SignUpBloc>().add(
+                            SignUpRequested(
+                              name: _nameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              phone: _phoneController.text.trim(),
+                              address: _addressController.text.trim(),
+                            ),
+                          );
+                    },
+                  ),
                 ),
               );
             }
@@ -92,7 +108,8 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          prefixIcon: const Icon(Icons.person, color: Colors.red),
+                          prefixIcon:
+                              const Icon(Icons.person, color: Colors.red),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
@@ -112,7 +129,8 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          prefixIcon: const Icon(Icons.email, color: Colors.red),
+                          prefixIcon:
+                              const Icon(Icons.email, color: Colors.red),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
@@ -160,7 +178,8 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          prefixIcon: const Icon(Icons.phone, color: Colors.red),
+                          prefixIcon:
+                              const Icon(Icons.phone, color: Colors.red),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
@@ -184,7 +203,8 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          prefixIcon: const Icon(Icons.location_on, color: Colors.red),
+                          prefixIcon:
+                              const Icon(Icons.location_on, color: Colors.red),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
@@ -207,9 +227,11 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                                         SignUpRequested(
                                           name: _nameController.text.trim(),
                                           email: _emailController.text.trim(),
-                                          password: _passwordController.text.trim(),
+                                          password:
+                                              _passwordController.text.trim(),
                                           phone: _phoneController.text.trim(),
-                                          address: _addressController.text.trim(),
+                                          address:
+                                              _addressController.text.trim(),
                                         ),
                                       );
                                 }

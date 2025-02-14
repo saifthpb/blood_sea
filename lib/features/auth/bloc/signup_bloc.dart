@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -91,11 +92,37 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         isAvailable: true,
       );
 
-      // Store user data in Firestore
-      await _firestore
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set(userModel.toMap());
+      // Retry logic for Firestore
+      int retryCount = 0;
+      const maxRetries = 3;
+      
+      while (retryCount < maxRetries) {
+        try {
+          // Store user data in Firestore
+          await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .set(userModel.toMap())
+              .timeout(const Duration(seconds: 10)); // Add timeout
+
+          // If successful, break the retry loop
+          break;
+        } on FirebaseException catch (e) {
+          retryCount++;
+          if (retryCount == maxRetries) {
+            // If all retries failed, delete the auth user and throw error
+            await userCredential.user?.delete();
+            throw FirebaseException(
+              plugin: 'firestore',
+              code: e.code,
+              message: 'Failed to store user data after multiple attempts',
+            );
+          }
+          // Wait before retrying
+          await Future.delayed(Duration(seconds: retryCount));
+          continue;
+        }
+      }
 
       // Update user profile in Firebase Auth
       await userCredential.user!.updateDisplayName(event.name);
@@ -117,17 +144,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           errorMessage = 'The password provided is too weak';
           break;
         default:
-          errorMessage = 'An error occurred during registration';
+          errorMessage = 'Authentication error: ${e.message}';
       }
       emit(SignUpFailure(errorMessage));
+    } on FirebaseException catch (e) {
+      emit(SignUpFailure('Database error: ${e.message}'));
     } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
       emit(SignUpFailure(e.toString()));
     }
-  }
-
-  @override
-  Future<void> close() {
-    // Clean up any resources here
-    return super.close();
   }
 }
