@@ -64,7 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  AuthBloc() : super(AuthInitial()) {
+  AuthBloc() : super(AuthLoading()) {
     // Listen to auth state changes
     _auth.authStateChanges().listen((user) {
       if (user != null) {

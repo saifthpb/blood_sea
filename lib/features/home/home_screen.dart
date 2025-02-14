@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blood_sea/features/auth/bloc/auth_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../auth/models/user_model.dart';
+
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final UserModel? userModel;
+  const HomeScreen({super.key,this.userModel});  
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final user = state.userModel;
+        final user = widget.userModel ?? state.userModel;
 
         return SingleChildScrollView(
           child: Center(

@@ -58,7 +58,9 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) => MaterialApp.router(
           title: 'Blood Sea',
-          theme: AppTheme.lightTheme(),
+          theme: ThemeData(
+              primarySwatch: Colors.red,
+              visualDensity: VisualDensity.adaptivePlatformDensity),
           routerConfig: createRouter(context),
           debugShowCheckedModeBanner: false,
         ),

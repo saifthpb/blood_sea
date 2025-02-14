@@ -32,12 +32,22 @@ GoRouter createRouter(BuildContext context) {
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
       debugLogDiagnostics: true,
-      initialLocation: '/login',
+      initialLocation: '/',
       redirect: (context, state) {
+        // Don't redirect if we're on the splash screen
+        if (state.uri.toString() == '/') {
+          return null;
+        }
+
         final authState = context.read<AuthBloc>().state;
         final isLoggedIn = authState is Authenticated;
         final isLoggingIn = state.uri.toString() == '/login';
+        final isSplash = state.uri.toString() == '/';
 
+        // Allow access to splash screen
+        if (isSplash) return null;
+
+        // Handle other redirects
         if (!isLoggedIn && !isLoggingIn) {
           return '/login';
         }
@@ -49,6 +59,10 @@ GoRouter createRouter(BuildContext context) {
         return null;
       },
       routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const SplashScreen(),
+        ),
         GoRoute(
           path: '/login',
           name: 'login',
@@ -159,7 +173,7 @@ GoRouter createRouter(BuildContext context) {
                 return BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if (state is Authenticated) {
-                      return HomeScreen(user: state.userModel);
+                      return HomeScreen(userModel: state.userModel);
                     }
                     return const HomeScreen();
                   },
