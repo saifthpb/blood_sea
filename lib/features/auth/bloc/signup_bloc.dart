@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 // Events
 abstract class SignUpEvent extends Equatable {
@@ -63,6 +64,7 @@ class SignUpFailure extends SignUpState {
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Connectivity _connectivity = Connectivity();
 
   SignUpBloc() : super(SignUpInitial()) {
     on<SignUpRequested>(_onSignUpRequested);
@@ -75,6 +77,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     emit(SignUpLoading());
 
     try {
+      // Check connectivity first
+      final connectivityResult = await _connectivity.checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        emit(const SignUpFailure('No internet connection. Please check your network and try again.'));
+        return;
+      }
+
       // Create Firebase Authentication user
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: event.email,
@@ -98,6 +107,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       
       while (retryCount < maxRetries) {
         try {
+          // Check connectivity again before Firestore operation
+          final connectivityResult = await _connectivity.checkConnectivity();
+          if (connectivityResult == ConnectivityResult.none) {
+            throw FirebaseException(
+              plugin: 'firestore',
+              code: 'network-error',
+              message: 'Lost internet connection',
+            );
+          }
+
           // Store user data in Firestore
           await _firestore
               .collection('users')
@@ -155,5 +174,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       }
       emit(SignUpFailure(e.toString()));
     }
+  }
+
+  // Optional: Listen to connectivity changes
+  Stream<ConnectivityResult> get connectivityStream => _connectivity.onConnectivityChanged;
+
+  @override
+  Future<void> close() {
+    // Clean up any resources here
+    return super.close();
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +23,34 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
 
+  StreamSubscription? _connectivitySubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupConnectivityListener();
+  }
+
+  void _setupConnectivityListener() {
+    _connectivitySubscription =
+        context.read<SignUpBloc>().connectivityStream.listen(
+      (ConnectivityResult result) {
+        if (result == ConnectivityResult.none) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No internet connection'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      },
+    );
+  }
+
   @override
   void dispose() {
+    _connectivitySubscription?.cancel();
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
