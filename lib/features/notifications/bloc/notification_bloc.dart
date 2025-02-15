@@ -10,11 +10,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   StreamSubscription<QuerySnapshot>? _notificationSubscription;
+  bool _isIndexing = false;
 
   NotificationBloc() : super(NotificationInitial()) {
     on<LoadNotifications>(_onLoadNotifications);
     on<NotificationReceived>(_onNotificationReceived);
     on<MarkAsRead>(_onMarkAsRead);
+    on<NotificationEventError>(_onNotificationError);
   }
 
   Future<void> _onLoadNotifications(
@@ -26,7 +28,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
       final user = _auth.currentUser;
       if (user == null) {
-        emit(const NotificationError('User not authenticated') as NotificationState);
+        emit(const NotificationError('User not authenticated'));
         return;
       }
 
@@ -44,19 +46,26 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           .listen(
         (snapshot) {
           if (!isClosed) {
+            _isIndexing = false;
             add(NotificationReceived(snapshot));
           }
         },
         onError: (error) {
           print('Error listening to notifications: $error');
           if (!isClosed) {
-            add(NotificationEventError(error.toString()));
+            if (error.toString().contains('failed-precondition') ||
+                error.toString().contains('requires an index')) {
+              _isIndexing = true;
+              emit(NotificationIndexing());
+            } else {
+              add(NotificationEventError(error.toString()));
+            }
           }
         },
       );
     } catch (e) {
       print('Error in _onLoadNotifications: $e');
-      emit(NotificationEventError(e.toString()) as NotificationState);
+      emit(NotificationError(e.toString()));
     }
   }
 
@@ -75,7 +84,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       emit(NotificationLoaded(notifications));
     } catch (e) {
       print('Error in _onNotificationReceived: $e');
-      emit(NotificationError(e.toString()) as NotificationState);
+      emit(NotificationError(e.toString()));
     }
   }
 
@@ -94,6 +103,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     }
   }
 
+  void _onNotificationError(
+    NotificationEventError event,
+    Emitter<NotificationState> emit,
+  ) {
+    emit(NotificationError(event.message));
+  }
+
   @override
   Future<void> close() async {
     await _notificationSubscription?.cancel();
@@ -101,7 +117,10 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 }
 
+// Add new NotificationIndexing state
+class NotificationIndexing extends NotificationState {}
 
+// Rest of your existing event classes
 abstract class NotificationEvent extends Equatable {
   const NotificationEvent();
 
@@ -138,7 +157,7 @@ class MarkAsRead extends NotificationEvent {
   List<Object?> get props => [notificationId];
 }
 
-
+// State classes
 abstract class NotificationState extends Equatable {
   const NotificationState();
 

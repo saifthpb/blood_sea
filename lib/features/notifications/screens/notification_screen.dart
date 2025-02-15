@@ -43,12 +43,26 @@ class NotificationScreen extends StatelessWidget {
                 );
               }
 
+              if (state is NotificationIndexing) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 16),
+                      Text('Creating database index, please wait...'),
+                    ],
+                  ),
+                );
+              }
+
               if (state is NotificationError) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                      const Icon(Icons.error_outline,
+                          size: 48, color: Colors.red),
                       const SizedBox(height: 16),
                       Text(
                         state.message,
@@ -57,7 +71,9 @@ class NotificationScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
-                          context.read<NotificationBloc>().add(LoadNotifications());
+                          context
+                              .read<NotificationBloc>()
+                              .add(LoadNotifications());
                         },
                         child: const Text('Retry'),
                       ),
@@ -104,4 +120,3 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 }
-
