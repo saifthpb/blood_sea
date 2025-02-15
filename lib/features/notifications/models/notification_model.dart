@@ -7,20 +7,26 @@ class NotificationModel extends Equatable {
   final String title;
   final String message;
   final String recipientId;
+  final String senderId;
+  final String senderName;
+  final String senderImage;
   final DateTime createdAt;
   final bool isRead;
-  final String? type;
-  final Map<String, dynamic>? data;
+  final String type;
+  final Map<String, dynamic>? additionalData;
 
   const NotificationModel({
     required this.id,
     required this.title,
     required this.message,
     required this.recipientId,
+    required this.senderId,
+    required this.senderName,
+    required this.senderImage,
     required this.createdAt,
-    this.isRead = false,
-    this.type,
-    this.data,
+    required this.isRead,
+    required this.type,
+    this.additionalData,
   });
 
   factory NotificationModel.fromMap(Map<String, dynamic> map, String id) {
@@ -32,7 +38,10 @@ class NotificationModel extends Equatable {
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       isRead: map['isRead'] ?? false,
       type: map['type'],
-      data: map['data'],
+      senderId: map['senderId'] ?? '',
+      senderName: map['senderName'] ?? '',
+      senderImage: map['senderImage'] ?? '',
+      additionalData: map['additionalData'] ?? {},
     );
   }
 
@@ -44,7 +53,10 @@ class NotificationModel extends Equatable {
       'createdAt': Timestamp.fromDate(createdAt),
       'isRead': isRead,
       'type': type,
-      'data': data,
+      'senderId': senderId,
+      'senderName': senderName,
+      'senderImage': senderImage,
+      'additionalData': additionalData,
     };
   }
 
@@ -65,7 +77,10 @@ class NotificationModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       isRead: isRead ?? this.isRead,
       type: type ?? this.type,
-      data: data ?? this.data,
+      senderId: senderId,
+      senderName: senderName,
+      senderImage: senderImage,
+      additionalData: data ?? additionalData,
     );
   }
 
@@ -78,6 +93,9 @@ class NotificationModel extends Equatable {
         createdAt,
         isRead,
         type,
-        data,
+        senderId,
+        senderName,
+        senderImage,
+        additionalData,
       ];
 }
