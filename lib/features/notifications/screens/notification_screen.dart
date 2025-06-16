@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/navigation/navigation_service.dart';
 import '../../../shared/utils/error_handler.dart';
 import '../bloc/notification_bloc.dart';
+import '../models/notification_type.dart';
 import 'package:intl/intl.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -147,10 +148,10 @@ class NotificationScreen extends StatelessWidget {
                               // Sender's profile picture
                               CircleAvatar(
                                 radius: 24,
-                                backgroundImage: notification.senderImage.isNotEmpty
-                                    ? NetworkImage(notification.senderImage)
+                                backgroundImage: notification.senderImage!.isNotEmpty
+                                    ? NetworkImage(notification.senderImage!)
                                     : null,
-                                child: notification.senderImage.isEmpty
+                                child: notification.senderImage!.isEmpty
                                     ? const Icon(Icons.person)
                                     : null,
                               ),
@@ -206,7 +207,7 @@ class NotificationScreen extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Text(
-                                        notification.type.toUpperCase(),
+                                        NotificationType.fromValue(notification.type).displayName,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: _getTypeColor(notification.type),
@@ -244,15 +245,7 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Color _getTypeColor(String type) {
-    switch (type.toLowerCase()) {
-      case 'request':
-        return Colors.blue;
-      case 'alert':
-        return Colors.red;
-      case 'info':
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
+    final notificationType = NotificationType.fromValue(type);
+    return NotificationType.getColor(notificationType);
   }
 }

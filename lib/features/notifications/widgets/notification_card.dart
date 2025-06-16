@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/notification_model.dart';
+import '../models/notification_type.dart';
+
 
 class NotificationCard extends StatelessWidget {
   final NotificationModel notification;
@@ -72,10 +74,12 @@ class NotificationCard extends StatelessWidget {
   }
 
   Widget _buildNotificationIcon() {
-    IconData iconData;
-    Color iconColor;
-
-    switch (notification.type) {
+    IconData iconData = Icons.notifications;
+    Color iconColor = Colors.grey;
+    
+    final notificationType = NotificationType.fromValue(notification.type);
+    
+    switch (notificationType) {
       case NotificationType.bloodRequest:
         iconData = Icons.bloodtype;
         iconColor = Colors.red;
@@ -92,9 +96,18 @@ class NotificationCard extends StatelessWidget {
         iconData = Icons.message;
         iconColor = Colors.blue;
         break;
+      case NotificationType.alert:
+        iconData = Icons.warning_amber;
+        iconColor = Colors.orange;
+        break;
+      case NotificationType.info:
+        iconData = Icons.info;
+        iconColor = Colors.blue;
+        break;
     }
 
     return CircleAvatar(
+      // ignore: deprecated_member_use
       backgroundColor: iconColor.withOpacity(0.1),
       child: Icon(
         iconData,
