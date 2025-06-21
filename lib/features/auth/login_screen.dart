@@ -1,6 +1,7 @@
 import 'package:blood_sea/features/auth/bloc/auth_bloc.dart';
 import 'package:blood_sea/features/auth/donor_registration_screen.dart';
 import 'package:blood_sea/features/auth/client_signup_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,13 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginScreen({super.key});
+  LoginScreen({super.key}) {
+    // Set default values for local development
+    if (kDebugMode) {
+      _emailController.text = 'roquib03@gmail.com';
+      _passwordController.text = '12345678';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
