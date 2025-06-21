@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, doc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, deleteDoc, query, where, UpdateData, DocumentData } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Client } from '@/types';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -41,16 +41,28 @@ export default function ClientsPage() {
       const clientRef = doc(db, 'users', client.id);
       
       // Clean up the client object to remove undefined values
-      const updateData = {
+      const updateData: UpdateData<DocumentData> = {
         name: client.name,
         email: client.email,
         phone: client.phone,
         userType: client.userType,
-        location: client.location,
         updatedAt: new Date(),
-        // Only include profileImage if it exists
-        ...(client.profileImage && { profileImage: client.profileImage }),
       };
+
+      // Only include location if it exists and is properly formed
+      if (client.location && typeof client.location === 'object') {
+        updateData.location = {
+          city: client.location.city || '',
+          state: client.location.state || '',
+          address: client.location.address || '',
+          ...(client.location.coordinates && { coordinates: client.location.coordinates }),
+        };
+      }
+
+      // Only include profileImage if it exists
+      if (client.profileImage) {
+        updateData.profileImage = client.profileImage;
+      }
       
       await updateDoc(clientRef, updateData);
       

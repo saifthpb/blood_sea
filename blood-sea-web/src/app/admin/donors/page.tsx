@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, doc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, deleteDoc, query, where, UpdateData, DocumentData } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Donor } from '@/types';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -46,23 +46,39 @@ export default function DonorsPage() {
       const donorRef = doc(db, 'users', donor.id);
       
       // Clean up the donor object to remove undefined values and non-updatable fields
-      const updateData = {
+      const updateData: UpdateData<DocumentData> = {
         name: donor.name,
         email: donor.email,
         phone: donor.phone,
         bloodGroup: donor.bloodGroup,
         isAvailable: donor.isAvailable,
         userType: donor.userType,
-        location: donor.location,
         updatedAt: new Date(),
-        // Only include lastDonation if it's not undefined
-        ...(donor.lastDonation && { lastDonation: donor.lastDonation }),
-        // Only include profileImage if it exists
-        ...(donor.profileImage && { profileImage: donor.profileImage }),
-        // Only include rating and totalDonations if they exist
-        ...(donor.rating !== undefined && { rating: donor.rating }),
-        ...(donor.totalDonations !== undefined && { totalDonations: donor.totalDonations }),
       };
+
+      // Only include location if it exists and is properly formed
+      if (donor.location && typeof donor.location === 'object') {
+        updateData.location = {
+          city: donor.location.city || '',
+          state: donor.location.state || '',
+          address: donor.location.address || '',
+          ...(donor.location.coordinates && { coordinates: donor.location.coordinates }),
+        };
+      }
+
+      // Only include optional fields if they're not undefined
+      if (donor.lastDonation) {
+        updateData.lastDonation = donor.lastDonation;
+      }
+      if (donor.profileImage) {
+        updateData.profileImage = donor.profileImage;
+      }
+      if (donor.rating !== undefined) {
+        updateData.rating = donor.rating;
+      }
+      if (donor.totalDonations !== undefined) {
+        updateData.totalDonations = donor.totalDonations;
+      }
       
       await updateDoc(donorRef, updateData);
       
@@ -311,6 +327,42 @@ export default function DonorsPage() {
                       onChange={(e) => setEditingDonor({...editingDonor, phone: e.target.value})}
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                       required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">City</label>
+                    <input
+                      type="text"
+                      value={editingDonor.location?.city || ''}
+                      onChange={(e) => setEditingDonor({
+                        ...editingDonor,
+                        location: { 
+                          ...editingDonor.location, 
+                          city: e.target.value,
+                          address: editingDonor.location?.address || '',
+                          state: editingDonor.location?.state || ''
+                        }
+                      })}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">State</label>
+                    <input
+                      type="text"
+                      value={editingDonor.location?.state || ''}
+                      onChange={(e) => setEditingDonor({
+                        ...editingDonor,
+                        location: { 
+                          ...editingDonor.location, 
+                          state: e.target.value,
+                          address: editingDonor.location?.address || '',
+                          city: editingDonor.location?.city || ''
+                        }
+                      })}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
                   
