@@ -143,7 +143,7 @@ export default function ClientsPage() {
           {/* Clients Table */}
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -235,7 +235,7 @@ export default function ClientsPage() {
           {/* Edit Modal */}
           {editingClient && (
             <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-              <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+              <div className="relative top-4 md:top-20 mx-auto p-5 border w-full max-w-md mx-4 shadow-lg rounded-md bg-white">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Edit Client</h3>
                 <form onSubmit={(e) => {
                   e.preventDefault();
