@@ -25,15 +25,8 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
 
   StreamSubscription? _connectivitySubscription;
 
-  @override
-  void initState() {
-    super.initState();
-    _setupConnectivityListener();
-  }
-
-  void _setupConnectivityListener() {
-    _connectivitySubscription =
-        context.read<SignUpBloc>().connectivityStream.listen(
+  void _setupConnectivityListener(SignUpBloc bloc) {
+    _connectivitySubscription = bloc.connectivityStream.listen(
       (ConnectivityResult result) {
         if (result == ConnectivityResult.none) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +55,11 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignUpBloc(),
+      create: (context) {
+        final bloc = SignUpBloc();
+        _setupConnectivityListener(bloc);
+        return bloc;
+      },
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Client Sign Up'),
