@@ -39,10 +39,20 @@ export default function ClientsPage() {
   const handleUpdateClient = async (client: Client) => {
     try {
       const clientRef = doc(db, 'users', client.id);
-      await updateDoc(clientRef, {
-        ...client,
+      
+      // Clean up the client object to remove undefined values
+      const updateData = {
+        name: client.name,
+        email: client.email,
+        phone: client.phone,
+        userType: client.userType,
+        location: client.location,
         updatedAt: new Date(),
-      });
+        // Only include profileImage if it exists
+        ...(client.profileImage && { profileImage: client.profileImage }),
+      };
+      
+      await updateDoc(clientRef, updateData);
       
       await fetchClients();
       setEditingClient(null);

@@ -44,10 +44,27 @@ export default function DonorsPage() {
   const handleUpdateDonor = async (donor: Donor) => {
     try {
       const donorRef = doc(db, 'users', donor.id);
-      await updateDoc(donorRef, {
-        ...donor,
+      
+      // Clean up the donor object to remove undefined values and non-updatable fields
+      const updateData = {
+        name: donor.name,
+        email: donor.email,
+        phone: donor.phone,
+        bloodGroup: donor.bloodGroup,
+        isAvailable: donor.isAvailable,
+        userType: donor.userType,
+        location: donor.location,
         updatedAt: new Date(),
-      });
+        // Only include lastDonation if it's not undefined
+        ...(donor.lastDonation && { lastDonation: donor.lastDonation }),
+        // Only include profileImage if it exists
+        ...(donor.profileImage && { profileImage: donor.profileImage }),
+        // Only include rating and totalDonations if they exist
+        ...(donor.rating !== undefined && { rating: donor.rating }),
+        ...(donor.totalDonations !== undefined && { totalDonations: donor.totalDonations }),
+      };
+      
+      await updateDoc(donorRef, updateData);
       
       await fetchDonors();
       setEditingDonor(null);
