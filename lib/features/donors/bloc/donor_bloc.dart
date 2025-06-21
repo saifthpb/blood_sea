@@ -88,7 +88,11 @@ class DonorBloc extends Bloc<DonorEvent, DonorState> {
       final QuerySnapshot snapshot = await query.get();
 
       final List<DonorModel> donors = snapshot.docs
-          .map((doc) => DonorModel.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            data['uid'] = doc.id; // Add document ID to data
+            return DonorModel.fromMap(data);
+          })
           .where((donor) {
             if (donor.lastDonationDate == null) return true;
             return donor.lastDonationDate!.isBefore(threeMonthsAgo);
