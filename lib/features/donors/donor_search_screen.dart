@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../notifications/services/blood_request_service.dart';
 
 class DonorSearchScreen extends StatefulWidget {
   const DonorSearchScreen({super.key});
@@ -12,6 +12,7 @@ class DonorSearchScreen extends StatefulWidget {
 
 class _DonorSearchScreenState extends State<DonorSearchScreen> {
   final TextEditingController _dateController = TextEditingController();
+  final BloodRequestService _bloodRequestService = BloodRequestService();
   String? _selectedBloodGroup;
   String? _selectedHospital;
   List<Map<String, dynamic>> _filteredDonors = [];
@@ -365,7 +366,7 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
                                   ],
                                 ),
                                 trailing: ElevatedButton(
-                                  onPressed: () => _showContactOptions(context, donor),
+                                  onPressed: () => _sendBloodRequest(context, donor),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.redAccent,
                                     minimumSize: const Size(80, 30),
@@ -410,69 +411,248 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
     );
   }
 
-  void _showContactOptions(BuildContext context, Map<String, dynamic> donor) {
-    showModalBottomSheet(
+  Future<void> _sendBloodRequest(BuildContext context, Map<String, dynamic> donor) async {
+    // Validate required fields
+    if (_selectedBloodGroup == null) {
+      _showErrorSnackBar(context, 'Please select a blood group');
+      return;
+    }
+
+    if (_dateController.text.isEmpty) {
+      _showErrorSnackBar(context, 'Please select a date');
+      return;
+    }
+
+    // Show confirmation dialog with additional options
+    final result = await showDialog<Map<String, dynamic>>(
       context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      builder: (BuildContext context) => _buildRequestDialog(context, donor),
+    );
+
+    if (result == null) return; // User cancelled
+
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: Card(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('Sending blood request...'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Send the blood request
+      final success = await _bloodRequestService.sendBloodRequest(
+        donorId: donor['id'],
+        donorName: donor['name'],
+        bloodGroup: _selectedBloodGroup!,
+        patientLocation: _selectedHospital ?? 'Location not specified',
+        requiredDate: _dateController.text,
+        urgencyLevel: result['urgency'] ?? 'Normal',
+        additionalMessage: result['message'],
+      );
+
+      // Hide loading dialog
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+
+      if (success) {
+        _showSuccessSnackBar(
+          context,
+          'Blood request sent to ${donor['name']} successfully!',
+        );
+      }
+    } catch (e) {
+      // Hide loading dialog
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+      
+      _showErrorSnackBar(
+        context,
+        'Failed to send blood request: ${e.toString()}',
+      );
+    }
+  }
+
+  Widget _buildRequestDialog(BuildContext context, Map<String, dynamic> donor) {
+    final TextEditingController messageController = TextEditingController();
+    String selectedUrgency = 'Normal';
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Row(
             children: [
-              Text(
-                'Contact ${donor['name']}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              const Icon(Icons.bloodtype, color: Colors.red),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Send Request to ${donor['name']}',
+                  style: const TextStyle(fontSize: 16),
                 ),
-              ),
-              const SizedBox(height: 20),
-              ListTile(
-                leading: const Icon(Icons.phone, color: Colors.green),
-                title: const Text('Call'),
-                subtitle: Text(donor['phoneNumber']),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Implement phone call functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Calling ${donor['phoneNumber']}...'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.message, color: Colors.blue),
-                title: const Text('Send Message'),
-                subtitle: const Text('Request blood donation'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Implement messaging functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Opening message...'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.email, color: Colors.orange),
-                title: const Text('Email'),
-                subtitle: Text(donor['email']),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Implement email functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Emailing ${donor['email']}...'),
-                    ),
-                  );
-                },
               ),
             ],
           ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Request Summary
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.red.shade200),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Request Summary',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Blood Group: $_selectedBloodGroup'),
+                      Text('Required Date: ${_dateController.text}'),
+                      Text('Location: ${_selectedHospital ?? 'Not specified'}'),
+                      Text('Donor: ${donor['name']}'),
+                      Text('Contact: ${donor['phoneNumber']}'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Urgency Level
+                const Text(
+                  'Urgency Level',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: selectedUrgency,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  items: ['Normal', 'Urgent', 'Emergency'].map((urgency) {
+                    return DropdownMenuItem(
+                      value: urgency,
+                      child: Row(
+                        children: [
+                          Icon(
+                            urgency == 'Emergency' ? Icons.warning : 
+                            urgency == 'Urgent' ? Icons.priority_high : Icons.info,
+                            color: urgency == 'Emergency' ? Colors.red : 
+                                   urgency == 'Urgent' ? Colors.orange : Colors.blue,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(urgency),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedUrgency = value!;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+                
+                // Additional Message
+                const Text(
+                  'Additional Message (Optional)',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: messageController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Add any additional information about the patient or urgency...',
+                    contentPadding: EdgeInsets.all(12),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop({
+                  'urgency': selectedUrgency,
+                  'message': messageController.text.trim().isEmpty 
+                      ? null 
+                      : messageController.text.trim(),
+                });
+              },
+              icon: const Icon(Icons.send),
+              label: const Text('Send Request'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
         );
       },
+    );
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.error, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 4),
+      ),
     );
   }
 }

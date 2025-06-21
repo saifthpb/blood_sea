@@ -24,8 +24,8 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/bloc/auth_bloc.dart';
 import '../features/donors/donor_detail_screen.dart';
-import '../features/notifications/models/notification_model.dart';
 import '../features/notifications/screens/notification_screen.dart';
+import '../features/notifications/screens/blood_requests_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -257,6 +257,10 @@ GoRouter createRouter(BuildContext context) {
         GoRoute(
           path: '/notifications',
           builder: (context, state) => const NotificationScreen(),
+        ),
+        GoRoute(
+          path: '/blood-requests',
+          builder: (context, state) => const BloodRequestsScreen(),
         ),
         // Protected routes under ShellRoute with bottom navigation
         ShellRoute(

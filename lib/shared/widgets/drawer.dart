@@ -46,6 +46,13 @@ Drawer appDrawer({
           },
         ),
         ListTile(
+          leading: const Icon(Icons.bloodtype),
+          title: const Text("Blood Requests"),
+          onTap: () {
+            context.go('/blood-requests');
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.contact_emergency),
           title: const Text("Contact"),
           onTap: () {
