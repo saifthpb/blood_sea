@@ -93,11 +93,7 @@ class DonorBloc extends Bloc<DonorEvent, DonorState> {
             data['uid'] = doc.id; // Add document ID to data
             return DonorModel.fromMap(data);
           })
-          .where((donor) {
-            if (donor.lastDonationDate == null) return true;
-            return donor.lastDonationDate!.isBefore(threeMonthsAgo);
-          })
-          .toList();
+          .toList(); // Remove the 3-month filtering to show ALL donors
 
       emit(DonorLoaded(
         donors: donors,
