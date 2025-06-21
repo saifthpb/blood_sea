@@ -13,7 +13,7 @@ class NotificationService {
     required String senderId,
     required String senderName,
     required String recipientId,
-    required NotificationType type,
+    required String type,
     Map<String, dynamic>? additionalData,
   }) async {
     try {
@@ -26,6 +26,7 @@ class NotificationService {
         recipientId: recipientId,
         createdAt: DateTime.now(),
         type: type,
+        isRead: false, // Optional, can be set later
         additionalData: additionalData,
       );
 

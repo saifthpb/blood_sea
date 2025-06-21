@@ -9,7 +9,7 @@ class NotificationModel extends Equatable {
   final String recipientId;
   final String senderId;
   final String senderName;
-  final String senderImage;
+  final String? senderImage;
   final DateTime createdAt;
   final bool isRead;
   final String type;
@@ -22,10 +22,10 @@ class NotificationModel extends Equatable {
     required this.recipientId,
     required this.senderId,
     required this.senderName,
-    required this.senderImage,
     required this.createdAt,
     required this.isRead,
     required this.type,
+    this.senderImage,
     this.additionalData,
   });
 
