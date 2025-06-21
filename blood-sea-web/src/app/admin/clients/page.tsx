@@ -161,9 +161,9 @@ export default function ClientsPage() {
                         <div className="text-sm text-gray-500">{client.phone}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{client.location.city}</div>
-                        <div className="text-sm text-gray-500">{client.location.state}</div>
-                        <div className="text-xs text-gray-400">{client.location.address}</div>
+                        <div className="text-sm text-gray-900">{client.location?.city || 'N/A'}</div>
+                        <div className="text-sm text-gray-500">{client.location?.state || 'N/A'}</div>
+                        <div className="text-xs text-gray-400">{client.location?.address || 'N/A'}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
