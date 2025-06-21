@@ -24,10 +24,14 @@ class ProfileScreen extends StatelessWidget {
                 switch (value) {
                   case 'logout':
                     final shouldLogout = await _showLogoutDialog(context);
-                    if (shouldLogout) {
-                      if (context.mounted) {
+                    if (shouldLogout && context.mounted) {
+                      try {
                         context.read<AuthBloc>().add(LogoutRequested());
                         context.go('/login'); // Navigate to login screen
+                      } catch (e) {
+                        // Handle case where AuthBloc is not available
+                        print('Error accessing AuthBloc: $e');
+                        context.go('/login');
                       }
                     }
                     break;

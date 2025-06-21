@@ -11,6 +11,7 @@ class DonorSearchScreen extends StatefulWidget {
 
 class _DonorSearchScreenState extends State<DonorSearchScreen> {
   final TextEditingController _dateController = TextEditingController();
+  String? _selectedBloodGroup;
 
   @override
   void dispose() {
@@ -40,7 +41,12 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Blood Request'),
+        backgroundColor: Colors.redAccent,
+      ),
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -51,6 +57,7 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
               Padding(
                 padding: const EdgeInsets.all(5),
                 child: DropdownButtonFormField<String>(
+                  value: _selectedBloodGroup,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Select Blood Group",
@@ -65,9 +72,18 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
                     );
                   }).toList(),
                   onChanged: (value) {
+                    setState(() {
+                      _selectedBloodGroup = value;
+                    });
                     if (kDebugMode) {
                       print("Selected Blood Group: $value");
                     }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a blood group';
+                    }
+                    return null;
                   },
                 ),
               ),
@@ -255,6 +271,7 @@ class _DonorSearchScreenState extends State<DonorSearchScreen> {
             ],
           ),
         ),
-      );
+      ),
+    );
   }
 }

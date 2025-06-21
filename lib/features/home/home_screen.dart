@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 
                 const SizedBox(height: 10),
                 OutlinedButton(
-                  onPressed: () => context.pushNamed('donorList'),
+                  onPressed: () => context.go('/donor-list'),
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(
                       color: Colors.blue,
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(width: 8),
                         GestureDetector(
-                          onTap: () => context.pushNamed('donorRegistration'),
+                          onTap: () => context.go('/donor-registration'),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15),
                     child: ElevatedButton.icon(
-                      onPressed: () => context.pushNamed('emergency'),
+                      onPressed: () => context.go('/emergency'),
                       icon: const Icon(Icons.emergency, color: Colors.white),
                       label: const Text(
                         "Emergency Contact",

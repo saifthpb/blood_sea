@@ -255,10 +255,6 @@ GoRouter createRouter(BuildContext context) {
           builder: (context, state) => const ShareScreen(),
         ),
         GoRoute(
-          path: '/profile',
-          builder: (context, state) => const ProfileScreen(),
-        ),
-        GoRoute(
           path: '/notifications',
           builder: (context, state) => const NotificationScreen(),
         ),
@@ -276,6 +272,10 @@ GoRouter createRouter(BuildContext context) {
             GoRoute(
               path: '/donor-list',
               builder: (context, state) => const DonorListScreen(),
+            ),
+            GoRoute(
+              path: '/profile',
+              builder: (context, state) => const ProfileScreen(),
             ),
           ],
         ),
