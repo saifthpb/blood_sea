@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - users can read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Allow reading other users' public data for donor search
+      allow read: if request.auth != null;
+    }
+    
+    // Notifications collection - users can read/write notifications they send or receive
+    match /notifications/{notificationId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.senderId || 
+         request.auth.uid == resource.data.recipientId);
+      // Allow creating new notifications
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.senderId;
+    }
+    
+    // Blood requests collection - users can read/write requests they create or receive
+    match /blood_requests/{requestId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.requesterId || 
+         request.auth.uid == resource.data.donorId);
+      // Allow creating new blood requests
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.requesterId;
+    }
+    
+    // Default rule - deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
