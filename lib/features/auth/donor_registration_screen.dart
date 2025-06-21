@@ -41,12 +41,12 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
       final user = _auth.currentUser;
       if (user != null) {
         final userDoc =
-            await _firestore.collection('clients').doc(user.uid).get();
+            await _firestore.collection('users').doc(user.uid).get();
         if (userDoc.exists) {
           setState(() {
             _userName = userDoc['name'];
             _userEmail = userDoc['email'];
-            _userPhone = userDoc['phone'];
+            _userPhone = userDoc['phoneNumber']; // Note: field name is phoneNumber, not phone
           });
         } else {
           throw "User data does not exist in Firestore.";
@@ -105,20 +105,25 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
           photoUrl = await _uploadImage(_selectedImage!);
         }
 
-        // Convert the 'lastDonateDate' from string to Timestamp - added these lines 26 december 24, but does not work
-        DateTime.parse(_lastDonateDateController.text.trim());
-
-        //lastDonate Date
-
-        await _firestore.collection('clients').doc(user.uid).update({
+        // Parse the date from dd/MM/yyyy format and convert to Timestamp
+        List<String> dateParts = _lastDonateDateController.text.trim().split('/');
+        DateTime lastDonateDate = DateTime(
+          int.parse(dateParts[2]), // year
+          int.parse(dateParts[1]), // month
+          int.parse(dateParts[0]), // day
+        );
+        
+        await _firestore.collection('users').doc(user.uid).update({
           'name': _userName,
           'email': _userEmail,
-          'phone': _userPhone,
+          'phoneNumber': _userPhone,
           'bloodGroup': _selectedBloodGroup,
           'district': _districtController.text.trim(),
           'thana': _thanaController.text.trim(),
           'photoUrl': photoUrl,
-          //'lastDonateDate': lastDonateTimestamp, // Storing as Timestamp
+          'lastDonationDate': Timestamp.fromDate(lastDonateDate),
+          'userType': 'donor',
+          'isDonor': true,
           'registeredAt': FieldValue.serverTimestamp(),
         });
 
@@ -182,9 +187,14 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
     );
 
-    return _userName == null || _userEmail == null || _userPhone == null
-        ? const Center(child: CircularProgressIndicator())
-        : SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Donor Registration'),
+        backgroundColor: Colors.redAccent,
+      ),
+      body: _userName == null || _userEmail == null || _userPhone == null
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
@@ -272,6 +282,7 @@ class _DonorRegistrationScreenState extends State<DonorRegistrationScreen> {
                 ),
               ],
             ),
-          );
+          ),
+    );
   }
 }
