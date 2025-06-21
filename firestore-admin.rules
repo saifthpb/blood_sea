@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+        (request.auth.token.email == 'admin@bloodsea.com' || 
+         request.auth.token.email == 'your-admin-email@gmail.com' ||
+         request.auth.uid in ['admin-uid-1', 'admin-uid-2']); // Add your admin UIDs here
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read/write their own data
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Allow reading other users' public data for donor search
+      allow read: if request.auth != null;
+      // Allow admin full access
+      allow read, write: if isAdmin();
+    }
+    
+    // Notifications collection
+    match /notifications/{notificationId} {
+      // Users can read notifications sent to them
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.recipientId;
+      // Users can create notifications they send
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.senderId;
+      // Admin can read/write/delete all notifications
+      allow read, write, delete: if isAdmin();
+    }
+    
+    // Blood requests collection
+    match /blood_requests/{requestId} {
+      // Users can read/write requests they create
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.requesterId;
+      // Donors can read blood requests
+      allow read: if request.auth != null;
+      // Allow creating new blood requests
+      allow create: if request.auth != null;
+      // Admin can read/write/delete all requests
+      allow read, write, delete: if isAdmin();
+    }
+    
+    // Temporary rule for development - REMOVE IN PRODUCTION
+    // This allows all authenticated users full access - USE ONLY FOR TESTING
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
