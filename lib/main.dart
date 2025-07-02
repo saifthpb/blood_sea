@@ -1,5 +1,6 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+// dart:html removed - not available on mobile platforms
+// If you need web-specific functionality, use conditional imports:
+// import 'dart:html' as html if (dart.library.html) 'dart:html';
 import 'package:blood_sea/config/router.dart';
 import 'package:blood_sea/config/theme.dart'; // Import your theme
 import 'package:blood_sea/core/di/injection.dart';
