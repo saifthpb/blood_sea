@@ -1,17 +1,23 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
 class FCMService {
   static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
 
   // Initialize FCM
   static Future<void> initialize() async {
     try {
+      // Initialize local notifications
+      await _initializeLocalNotifications();
+
       // Request permission for notifications
       NotificationSettings settings = await _firebaseMessaging.requestPermission(
         alert: true,
@@ -56,6 +62,47 @@ class FCMService {
     }
   }
 
+  // Initialize local notifications
+  static Future<void> _initializeLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await _localNotifications.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: _onNotificationTap,
+    );
+  }
+
+  // Handle local notification tap
+  static void _onNotificationTap(NotificationResponse notificationResponse) {
+    final String? payload = notificationResponse.payload;
+    if (payload != null) {
+      print('Notification payload: $payload');
+      // Handle navigation based on payload
+      try {
+        final Map<String, dynamic> data = jsonDecode(payload);
+        if (data['type'] == 'blood_request') {
+          _navigateToBloodRequest(data['requestId']);
+        }
+      } catch (e) {
+        print('Error parsing notification payload: $e');
+      }
+    }
+  }
+
   // Save FCM token to Firestore
   static Future<void> _saveTokenToDatabase(String token) async {
     try {
@@ -97,11 +144,41 @@ class FCMService {
     }
   }
 
-  // Show in-app notification
-  static void _showInAppNotification(RemoteMessage message) {
-    // You can implement a custom in-app notification widget here
-    // or use a package like flutter_local_notifications
-    print('Showing in-app notification: ${message.notification?.title}');
+  // Show in-app notification using flutter_local_notifications
+  static Future<void> _showInAppNotification(RemoteMessage message) async {
+    try {
+      const AndroidNotificationDetails androidNotificationDetails =
+          AndroidNotificationDetails(
+        'blood_sea_channel',
+        'Blood Sea Notifications',
+        channelDescription: 'Notifications for blood donation requests',
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: '@mipmap/ic_launcher',
+      );
+
+      const DarwinNotificationDetails iOSNotificationDetails =
+          DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+
+      const NotificationDetails notificationDetails = NotificationDetails(
+        android: androidNotificationDetails,
+        iOS: iOSNotificationDetails,
+      );
+
+      await _localNotifications.show(
+        DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        message.notification?.title ?? 'Blood Sea',
+        message.notification?.body ?? 'You have a new notification',
+        notificationDetails,
+        payload: jsonEncode(message.data),
+      );
+    } catch (e) {
+      print('Error showing in-app notification: $e');
+    }
   }
 
   // Navigate to blood request screen
@@ -208,17 +285,10 @@ class FCMService {
     );
   }
 
-  // Get current user ID - implement based on your auth system
+  // Get current user ID from Firebase Auth
   static String? getCurrentUserId() {
-    // Implement this based on your authentication system
-    // Example: return FirebaseAuth.instance.currentUser?.uid;
     try {
-      // You can import firebase_auth and use:
-      // return FirebaseAuth.instance.currentUser?.uid;
-      
-      // For now, return null - you'll need to implement this
-      // based on your existing auth system
-      return null; // Replace with actual implementation
+      return FirebaseAuth.instance.currentUser?.uid;
     } catch (e) {
       print('Error getting current user ID: $e');
       return null;

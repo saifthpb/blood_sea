@@ -5,6 +5,7 @@ import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, limit } fr
 import { db } from '@/lib/firebase';
 import { Notification, User } from '@/types';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { sendPushNotificationToMultiple, openFirebaseConsole, showFCMSetupInstructions } from '@/lib/fcm';
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -107,6 +108,27 @@ export default function NotificationsPage() {
       });
 
       await Promise.all(promises);
+
+      // Send push notifications
+      try {
+        const pushData: Record<string, string> = {
+          type: newNotification.type,
+          ...(newNotification.bloodGroup && { bloodGroup: newNotification.bloodGroup }),
+          ...(newNotification.urgency && { urgency: newNotification.urgency }),
+        };
+
+        const result = await sendPushNotificationToMultiple(
+          recipients,
+          newNotification.title,
+          newNotification.message,
+          pushData
+        );
+
+        console.log(`Push notifications sent: ${result.success} successful, ${result.failed} failed`);
+      } catch (error) {
+        console.error('Error sending push notifications:', error);
+        // Don't fail the whole operation if push notifications fail
+      }
       
       setShowCreateModal(false);
       setNewNotification({
@@ -157,17 +179,45 @@ export default function NotificationsPage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
-          <div className="mb-8 flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Notifications Management</h1>
-              <p className="text-gray-600">Send and manage notifications to users</p>
+          <div className="mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Notifications Management</h1>
+                <p className="text-gray-600">Send and manage notifications to users</p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={() => {
+                    showFCMSetupInstructions();
+                    openFirebaseConsole();
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm"
+                >
+                  Test Push Notifications
+                </button>
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                >
+                  Create Notification
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-            >
-              Create Notification
-            </button>
+            
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-start">
+                <svg className="w-5 h-5 text-yellow-600 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <div>
+                  <h3 className="text-sm font-medium text-yellow-800">Push Notification Setup Required</h3>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    To send actual push notifications, you need to set up Cloud Functions or use Firebase Console. 
+                    Click &quot;Test Push Notifications&quot; for setup instructions.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Stats */}
