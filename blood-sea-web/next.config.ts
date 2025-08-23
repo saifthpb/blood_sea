@@ -1,10 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  // Removed output: 'export' to enable API routes
   trailingSlash: true,
   images: {
     unoptimized: true
+  },
+  // Enable experimental features for better API support
+  experimental: {
+    serverComponentsExternalPackages: ['firebase-admin']
   }
 };
 

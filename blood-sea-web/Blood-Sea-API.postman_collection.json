@@ -1,0 +1,418 @@
+{
+  "info": {
+    "name": "Blood Sea API",
+    "description": "Complete API collection for testing the Blood Sea NextJS API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "YOUR_FIREBASE_ID_TOKEN_HERE",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Get Health Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/health/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save FCM Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fcmToken\": \"test-fcm-token-123456789\",\n  \"platform\": \"android\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/fcm-token/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "fcm-token", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove FCM Token",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/fcm-token/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "fcm-token", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Notification Settings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/notification-settings/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "notification-settings", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Notification Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bloodRequests\": true,\n  \"emergencyRequests\": true,\n  \"generalAnnouncements\": false,\n  \"donationReminders\": true,\n  \"soundEnabled\": true,\n  \"vibrationEnabled\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/notification-settings/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "notification-settings", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Test Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Custom test notification message\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/test-notification/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "test-notification", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Donor Availability",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isAvailable\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/availability/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "availability", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Send Single Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"test-user-id\",\n  \"title\": \"Test Notification\",\n  \"body\": \"This is a test notification\",\n  \"type\": \"general\",\n  \"priority\": \"normal\",\n  \"data\": {\n    \"customField\": \"customValue\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/send/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "send", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Bulk Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userIds\": [\"user1\", \"user2\", \"user3\"],\n  \"title\": \"Bulk Notification\",\n  \"body\": \"This is a bulk notification\",\n  \"type\": \"announcement\",\n  \"priority\": \"high\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/bulk/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "bulk", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Blood Request Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bloodType\": \"O+\",\n  \"hospital\": \"City General Hospital\",\n  \"urgency\": \"high\",\n  \"location\": \"Downtown Medical District\",\n  \"contactInfo\": \"+1-555-0123\",\n  \"requesterId\": \"requester-user-id\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/blood-request/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "blood-request", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Testing",
+      "item": [
+        {
+          "name": "Test 401 - No Auth Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test 401 - Invalid Auth Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer invalid-token"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test 400 - Validation Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invalidField\": \"value\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/fcm-token/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "fcm-token", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test 404 - Non-existent Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/nonexistent/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "nonexistent", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CORS Testing",
+      "item": [
+        {
+          "name": "Test CORS Preflight",
+          "request": {
+            "method": "OPTIONS",
+            "header": [
+              {
+                "key": "Access-Control-Request-Method",
+                "value": "POST"
+              },
+              {
+                "key": "Access-Control-Request-Headers",
+                "value": "Content-Type, Authorization"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

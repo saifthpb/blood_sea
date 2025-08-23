@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Firebase ID Token</title>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Your Firebase config (replace with your actual config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY", // Replace with your actual API key
+            authDomain: "blood-sea-57816.firebaseapp.com",
+            projectId: "blood-sea-57816",
+            storageBucket: "blood-sea-57816.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // Replace
+            appId: "YOUR_APP_ID" // Replace
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Function to get ID token
+        async function getIdToken() {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    const idToken = await user.getIdToken();
+                    document.getElementById('token-output').innerHTML = `
+                        <h3>✅ Firebase ID Token:</h3>
+                        <textarea readonly style="width: 100%; height: 200px; font-family: monospace;">${idToken}</textarea>
+                        <br><br>
+                        <button onclick="navigator.clipboard.writeText('${idToken}')">📋 Copy Token</button>
+                    `;
+                    console.log('Firebase ID Token:', idToken);
+                } catch (error) {
+                    console.error('Error getting ID token:', error);
+                    document.getElementById('token-output').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                }
+            } else {
+                document.getElementById('token-output').innerHTML = '<p style="color: red;">No user logged in!</p>';
+            }
+        }
+
+        // Function to sign in
+        async function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                document.getElementById('login-status').innerHTML = '<p style="color: green;">✅ Signed in successfully!</p>';
+                await getIdToken();
+            } catch (error) {
+                console.error('Sign in error:', error);
+                document.getElementById('login-status').innerHTML = `<p style="color: red;">❌ Sign in failed: ${error.message}</p>`;
+            }
+        }
+
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User signed in:', user.email);
+                document.getElementById('user-info').innerHTML = `
+                    <p>✅ Signed in as: <strong>${user.email}</strong></p>
+                    <button onclick="getIdToken()">🔑 Get ID Token</button>
+                `;
+            } else {
+                console.log('User signed out');
+                document.getElementById('user-info').innerHTML = '<p>❌ Not signed in</p>';
+            }
+        });
+
+        // Make functions global
+        window.signIn = signIn;
+        window.getIdToken = getIdToken;
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        input, button { padding: 10px; margin: 5px; font-size: 16px; }
+        button { background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #3367d6; }
+        .warning { background: #fff3cd; padding: 15px; border-radius: 4px; margin: 10px 0; border-left: 4px solid #ffc107; }
+    </style>
+</head>
+<body>
+    <h1>🔑 Get Firebase ID Token</h1>
+    
+    <div class="warning">
+        <strong>⚠️ Configuration Required:</strong><br>
+        You need to replace the Firebase config values in this file with your actual project settings from Firebase Console → Project Settings → General.
+    </div>
+
+    <h2>1. Sign In</h2>
+    <div>
+        <input type="email" id="email" placeholder="Email" style="width: 200px;">
+        <input type="password" id="password" placeholder="Password" style="width: 200px;">
+        <button onclick="signIn()">🚪 Sign In</button>
+    </div>
+    
+    <div id="login-status"></div>
+    <div id="user-info"></div>
+
+    <h2>2. Get ID Token</h2>
+    <div id="token-output">
+        <p>👆 Sign in first to get your Firebase ID token</p>
+    </div>
+
+    <h2>📝 Instructions</h2>
+    <ol>
+        <li><strong>Update Firebase Config:</strong> Replace the placeholder values in the JavaScript code with your actual Firebase project configuration</li>
+        <li><strong>Create Test User:</strong> Go to Firebase Console → Authentication → Users and create a test user, or use an existing one</li>
+        <li><strong>Sign In:</strong> Enter the email and password above</li>
+        <li><strong>Get Token:</strong> Click "Get ID Token" button</li>
+        <li><strong>Copy Token:</strong> Use the "Copy Token" button</li>
+        <li><strong>Test API:</strong> Use the copied token in your API tests</li>
+    </ol>
+
+    <h2>🔧 Firebase Config Location</h2>
+    <p>Get your Firebase config from:</p>
+    <ul>
+        <li>Firebase Console → Your Project → Settings ⚙️ → General</li>
+        <li>Scroll down to "Your apps" section</li>
+        <li>Look for "Firebase SDK snippet" → Config</li>
+    </ul>
+
+    <h2>🧪 Once You Have the Token</h2>
+    <p>Use it in your API tests like this:</p>
+    <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px;">
+curl -X GET http://localhost:3000/api/users/profile/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_COPIED_ID_TOKEN"
+    </pre>
+</body>
+</html>
