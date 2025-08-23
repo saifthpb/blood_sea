@@ -54,3 +54,9 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Firebase credentials and sensitive files
+*firebase-adminsdk*.json
+serviceAccountKey.json
+google-services.json
+GoogleService-Info.plist
